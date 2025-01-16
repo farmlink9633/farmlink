@@ -8,6 +8,7 @@ class Splashscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
+
         Container(
           decoration: BoxDecoration(
               image: DecorationImage(

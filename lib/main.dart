@@ -1,3 +1,4 @@
+import 'package:farmlink/authscreens/login.dart';
 import 'package:farmlink/authscreens/register.dart';
 import 'package:farmlink/authscreens/splashscreen.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
      
-      home:Splashscreen()
+      home:LoginScreen()
     );
   }
 }

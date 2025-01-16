@@ -21,7 +21,7 @@ class Registration extends StatelessWidget {
               "Register",
               style: GoogleFonts.rubik(
                   fontSize: 35,
-                  color: const Color.fromARGB(255, 4, 46, 4),
+                  color: const Color.fromARGB(255, 7, 75, 7),
                   fontWeight: FontWeight.bold,
                   ),
             
@@ -31,7 +31,7 @@ class Registration extends StatelessWidget {
             ),
             
             Text(
-              "Create Your Account",
+              "Create your new account",
               style: TextStyle(
                   fontSize: 16,
                   color: const Color.fromARGB(255, 198, 180, 180)),
@@ -195,7 +195,7 @@ class Registration extends StatelessWidget {
               onTap:() {
                 Navigator.push(context, MaterialPageRoute(builder: (contex)=> LoginScreen()));
               },
-                child: Text("Login",style: TextStyle(fontSize: 13,color: Color.fromARGB(255, 4, 46, 4),fontWeight: FontWeight.bold
+                child: Text("Login",style: TextStyle(decoration:TextDecoration.underline,fontSize: 13,color: Color.fromARGB(255, 4, 46, 4),fontWeight: FontWeight.bold
                 )),
               )
             ],)

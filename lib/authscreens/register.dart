@@ -1,4 +1,6 @@
+import 'package:farmlink/authscreens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Registration extends StatelessWidget {
   const Registration({super.key});
@@ -19,8 +21,10 @@ class Registration extends StatelessWidget {
               "Register",
               style: TextStyle(
                   fontSize: 35,
-                  color: const Color.fromARGB(255, 4, 56, 4),
-                  fontWeight: FontWeight.bold),
+                  color: const Color.fromARGB(255, 4, 46, 4),
+                  fontWeight: FontWeight.bold,
+                  ),
+              
             ),
             SizedBox(
               height: 8,
@@ -30,7 +34,7 @@ class Registration extends StatelessWidget {
               "Create Your Account",
               style: TextStyle(
                   fontSize: 16,
-                  color: const Color.fromARGB(255, 229, 212, 212)),
+                  color: const Color.fromARGB(255, 198, 180, 180)),
             ),
             SizedBox(
               height: 18,
@@ -144,21 +148,57 @@ class Registration extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            DropdownMenu(dropdownMenuEntries: ),
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+                fillColor: Color(0xFFC1DFCB),
+                filled: true,
+                label: Text("Role, eg:farmer",
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: const Color.fromARGB(255, 4, 56, 4),
+                        fontWeight: FontWeight.bold)),
+              ),
+            ),
+
             SizedBox(
-              height: 35,
+              height: 35
             ),
 
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 7, 23, 7),
-                  fixedSize: Size(500, 10)),
+                  backgroundColor: const Color.fromARGB(255, 4, 46, 4),
+                  fixedSize: Size(500, 11)),
               child: Text(
                 "Sign up",
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
-            )
+            ),
+            SizedBox(
+              height: 25,
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Text("Already have an account",style: TextStyle(
+                fontSize: 11,color: Colors.black,fontWeight: FontWeight.bold
+              )),
+              SizedBox(
+                width: 6,
+              ),
+            GestureDetector (
+              onTap:() {
+                Navigator.push(context, MaterialPageRoute(builder: (contex)=> LoginScreen()));
+              },
+                child: Text("Login",style: TextStyle(fontSize: 13,color: Color.fromARGB(255, 4, 46, 4),fontWeight: FontWeight.bold
+                )),
+              )
+            ],)
           ],
         ),
       ),

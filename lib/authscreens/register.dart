@@ -18,7 +18,7 @@ class Registration extends StatelessWidget {
             decoration: InputDecoration(
               prefixIcon:Icon(Icons.email,),
               border:OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide:BorderSide(color: Colors.lightGreenAccent) ),
-              fillColor: const Color.fromARGB(255, 7, 23, 1),
+              fillColor: const Color.fromARGB(255, 26, 87, 4),
               filled: true,
               
 label: Text("email"),
@@ -28,6 +28,7 @@ label: Text("email"),
             TextField(
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.password),
+                border:OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide:BorderSide(color: Colors.lightGreenAccent) ),
                 fillColor: const Color.fromARGB(255, 7, 23, 1),
                 filled: true,
 

@@ -19,17 +19,17 @@ class Registration extends StatelessWidget {
           children: [
             Text(
               "Register",
-              style: TextStyle(
+              style: GoogleFonts.rubik(
                   fontSize: 35,
                   color: const Color.fromARGB(255, 4, 46, 4),
                   fontWeight: FontWeight.bold,
                   ),
-              
+            
             ),
             SizedBox(
               height: 8,
             ),
-
+            
             Text(
               "Create Your Account",
               style: TextStyle(

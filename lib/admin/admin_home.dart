@@ -6,7 +6,12 @@ class Adminhomescreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Icon(Icons.search),
+        backgroundColor: Colors.white,
+        foregroundColor: const Color.fromARGB(255, 4, 56, 4),
       
+      ),
     );
   }
 }

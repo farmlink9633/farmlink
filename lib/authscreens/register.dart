@@ -12,14 +12,16 @@ class Registration extends StatelessWidget {
         leading: Icon(Icons.arrow_back_ios),
         backgroundColor: Colors.white,
         foregroundColor: const Color.fromARGB(255, 4, 56, 4),
+
       ),
+      
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Column(
           children: [
             Text(
               "Register",
-              style: GoogleFonts.rubik(
+              style: GoogleFonts.nunitoSans(
                   fontSize: 35,
                   color: const Color.fromARGB(255, 7, 75, 7),
                   fontWeight: FontWeight.bold,

@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Container(
                   width: double.infinity,
-                  height: 200,
+                  height: 250,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Row(
                     children: [
-                      Checkbox(activeColor: Colors.green,
+                      Checkbox(activeColor: const Color.fromARGB(255, 9, 118, 13),
                         value: _terms,
                         onChanged: (bool? value) {
                           setState(() {
@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 100),
             ElevatedButton(
               onPressed: () {
                 // Add your login logic here

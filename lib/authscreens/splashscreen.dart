@@ -1,3 +1,5 @@
+import 'package:farmlink/authscreens/login.dart';
+import 'package:farmlink/authscreens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,7 +30,7 @@ class Splashscreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Your plants",
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts.josefinSans(
                         fontSize: 45,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -37,7 +39,7 @@ class Splashscreen extends StatelessWidget {
                     height: 10
                   ),
                   Text("deserves the",
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts.josefinSans(
                         fontSize: 45,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -46,7 +48,7 @@ class Splashscreen extends StatelessWidget {
                     height: 10,
                   ),
                   Text("best care",
-                      style: GoogleFonts.nunito(
+                      style: GoogleFonts.josefinSans(
                         fontSize: 45,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -55,7 +57,9 @@ class Splashscreen extends StatelessWidget {
                     height: 110,
                   ),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder:(context)=>Registration()));
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           fixedSize: Size(350, 15)),
@@ -69,7 +73,9 @@ class Splashscreen extends StatelessWidget {
                     height: 15,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder:(context)=>LoginScreen()));
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 4, 46, 4),
                         fixedSize: Size(350, 15)),

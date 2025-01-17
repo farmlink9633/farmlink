@@ -2,9 +2,14 @@ import 'package:farmlink/authscreens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,24 +18,24 @@ class LoginScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: const Color.fromARGB(255, 4, 56, 4),
       ),
-      body: Stack(children: [
-        Container(
+      body: Column(children: [
+        Container(width: 1800,height: 300,
           decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.fitHeight,
-                  image: NetworkImage("https://img3.wallspic.com/previews/0/0/4/3/3/133400/133400-light-water-leaf-darkness-black-x750.jpg")),
+                  image: NetworkImage("https://images.pexels.com/photos/1353938/pexels-photo-1353938.jpeg")),
 
                   ),
         ),
       
       Padding(
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
 
             Text(
               "Welcome back",
-              style: GoogleFonts.rubik(
+              style: GoogleFonts.josefinSans(
                   fontSize: 35,
                   color: const Color.fromARGB(255, 7, 75, 7),
                   fontWeight: FontWeight.bold,
@@ -81,20 +86,21 @@ class LoginScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
             )),
             SizedBox(
-              height: 6,
+              height: 4,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Checkbox(value: false, onChanged: (value) {
+                  
+                },),
               Text("Remember Me",style: TextStyle(
               fontSize: 11,color: const Color.fromARGB(255, 4, 46, 4) ,fontWeight: FontWeight.bold
               )),
               SizedBox(
-                width: 20 
+                width: 90 
               ),
-              Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              
               Text("Forgot Password",style: TextStyle(
                 fontSize: 12,color: const Color.fromARGB(255, 4, 46, 4) ,fontWeight: FontWeight.bold
               ),
@@ -102,7 +108,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 height: 120 ,
               ),
-          ]),
+        
           ],),
               ElevatedButton(
                 onPressed: () {},

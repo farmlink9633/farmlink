@@ -21,7 +21,7 @@ class Registration extends StatelessWidget {
           children: [
             Text(
               "Register",
-              style: GoogleFonts.nunitoSans(
+              style: GoogleFonts.rubik(
                   fontSize: 35,
                   color: const Color.fromARGB(255, 7, 75, 7),
                   fontWeight: FontWeight.bold,
@@ -167,7 +167,7 @@ class Registration extends StatelessWidget {
             ),
 
             SizedBox(
-              height: 35
+              height: 36
             ),
 
             ElevatedButton(

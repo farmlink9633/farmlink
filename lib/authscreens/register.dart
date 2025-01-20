@@ -1,4 +1,5 @@
 import 'package:farmlink/authscreens/login.dart';
+import 'package:farmlink/farmer/rootscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,7 +13,7 @@ class Registration extends StatelessWidget {
         leading: Icon(Icons.arrow_back_ios),
         backgroundColor: Colors.white,
         foregroundColor: const Color.fromARGB(255, 4, 56, 4),
-
+        
       ),
       
       body: Padding(
@@ -171,7 +172,14 @@ class Registration extends StatelessWidget {
             ),
 
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>Rootscreen(),
+                      ),
+                    );
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 4, 46, 4),
                   fixedSize: Size(500, 11)),

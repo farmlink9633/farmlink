@@ -1,4 +1,5 @@
 import 'package:farmlink/authscreens/register.dart';
+import 'package:farmlink/farmer/rootscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -140,6 +141,12 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 100),
             ElevatedButton(
               onPressed: () {
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>Rootscreen(),
+                      ),
+                    );
                 // Add your login logic here
               },
               style: ElevatedButton.styleFrom(

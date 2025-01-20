@@ -4,6 +4,7 @@ class Rootscreen extends StatefulWidget {
   _RootscreenState createState() => _RootscreenState();
 }
 
+
 class _RootscreenState extends State<Rootscreen> {
   int _selectedIndex = 0;
 
@@ -11,8 +12,8 @@ class _RootscreenState extends State<Rootscreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     ScreenContent(title: 'Home Screen', color: Colors.green), // Home is green
     ScreenContent(title: 'Product Screen', color: Colors.orange), // Product remains orange
-    ScreenContent(title: 'Chat Screen', color: Colors.green), // Chat is green
-    ScreenContent(title: 'Profile Screen', color: Colors.green), // Profile is green
+    ScreenContent(title: 'Chat Screen', color: Colors.blue), // Chat is blue
+    ScreenContent(title: 'Profile Screen', color: Colors.purple), // Profile is purple
   ];
 
   void _onItemTapped(int index) {
@@ -54,8 +55,6 @@ class _RootscreenState extends State<Rootscreen> {
     );
   }
 }
-
-
 class ScreenContent extends StatelessWidget {
   final String title;
   final Color color;
@@ -79,3 +78,6 @@ class ScreenContent extends StatelessWidget {
     );
   }
 }
+
+
+

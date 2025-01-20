@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Container(
                   width: double.infinity,
-                  height: 250,
+                  height: 260,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   label: Text(
                     "Email",
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 13,
                       color: const Color.fromARGB(255, 4, 56, 4),
                       fontWeight: FontWeight.bold,
                     ),
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   label: Text(
                     "Password",
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 13,
                       color: const Color.fromARGB(255, 4, 56, 4),
                       fontWeight: FontWeight.bold,
                     ),
@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 100),
+            SizedBox(height: 105),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -158,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 18),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 class Rootscreen extends StatefulWidget {
   @override
   _RootscreenState createState() => _RootscreenState();
@@ -86,6 +90,56 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  File? _image; // To store the captured image
+  final ImagePicker _picker = ImagePicker(); // ImagePicker instance
+
+
+    /// Method to handle camera permissions and image capture
+  Future<void> openCamera() async {
+    // Request camera permission
+    final permissionStatus = await Permission.camera.request();
+
+    if (permissionStatus.isGranted) {
+      try {
+        // Open the camera and capture an image
+        final XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+        if (pickedFile != null) {
+          setState(() {
+            _image = File(pickedFile.path); // Update the UI with the captured image
+          });
+        } else {
+          print('No image captured.');
+        }
+      } catch (e) {
+        print('Error capturing image: $e');
+      }
+    } else {
+      print('Camera permission denied');
+      _showPermissionDeniedDialog(); // Show a dialog if permission is denied
+    }
+  }
+
+  /// Show a dialog when camera permission is denied
+  void _showPermissionDeniedDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Permission Denied'),
+          content: const Text('Camera access is required to capture images.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   
   @override
   Widget build(BuildContext context) {
@@ -115,11 +169,11 @@ class _HomeScreenState extends State<HomeScreen> {
         Padding(
           padding: const EdgeInsets.all(60.0),
           child: ElevatedButton.icon(
-            onPressed: _openDiseaseDetection,
+            onPressed: openCamera,
             icon: Icon(Icons.camera_alt,color: Colors.black), // Camera icon
             label: Text('Detect Plant Disease'),
             style: ElevatedButton.styleFrom(
-              foregroundColor: const Color.fromARGB(255, 93, 141, 88), padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              foregroundColor: const Color.fromARGB(255, 49, 88, 45), padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                backgroundColor: const Color.fromARGB(255, 217, 233, 221), // White text
             ),
           ),

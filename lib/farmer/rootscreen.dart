@@ -3,22 +3,19 @@ class Rootscreen extends StatefulWidget {
   @override
   _RootscreenState createState() => _RootscreenState();
 }
-
-
 class _RootscreenState extends State<Rootscreen> {
   int _selectedIndex = 0;
 
-  // List of widget options corresponding to the bottom navigation items
-  static const List<Widget> _widgetOptions = <Widget>[
-    ScreenContent(title: 'Home Screen', color: Colors.green), // Home is green
-    ScreenContent(title: 'Product Screen', color: Colors.orange), // Product remains orange
-    ScreenContent(title: 'Chat Screen', color: Colors.blue), // Chat is blue
-    ScreenContent(title: 'Profile Screen', color: Colors.purple), // Profile is purple
+  static List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
+    const ScreenContent(title: 'Product Screen', color: Colors.orange),
+    const ScreenContent(title: 'Chat Screen', color: Colors.blue),
+    const ScreenContent(title: 'Profile Screen', color: Colors.purple),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // Update the selected index
+      _selectedIndex = index;
     });
   }
 
@@ -26,10 +23,11 @@ class _RootscreenState extends State<Rootscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bottom Navigation Bar Example'),
+        title: const Text('Welcome')
       ),
-      body: _widgetOptions.elementAt(_selectedIndex), // Display the selected screen
+      body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -49,12 +47,100 @@ class _RootscreenState extends State<Rootscreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 7, 25, 7),
-        onTap: _onItemTapped, // Handle tap on bottom navigation items
+        selectedItemColor: const Color.fromARGB(255, 8, 86, 14),
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+        showUnselectedLabels: true,
       ),
     );
   }
 }
+
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String searchQuery = '';
+
+  // Method to handle the plant disease detection
+  void _openDiseaseDetection() {
+    // Navigate to the disease detection screen (can be a new page or dialog)
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Plant Disease Detection'),
+          content: Text('This is a feature for detecting plant diseases using the camera.'),
+          actions: [
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Search Bar
+        Padding(
+          padding: const EdgeInsets.all(13.0),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Search...',
+              prefixIcon: const Icon(Icons.search,color: Colors.black),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6.0),
+              ),
+              filled: true,
+              fillColor: const Color.fromARGB(255, 191, 213, 184),
+            ),
+            onChanged: (value) {
+              setState(() {
+                searchQuery = value; // Update search query
+              });
+            },
+          ),
+        ),
+                // Plant Disease Detection Button
+        Padding(
+          padding: const EdgeInsets.all(60.0),
+          child: ElevatedButton.icon(
+            onPressed: _openDiseaseDetection,
+            icon: Icon(Icons.camera_alt,color: Colors.black), // Camera icon
+            label: Text('Detect Plant Disease'),
+            style: ElevatedButton.styleFrom(
+              foregroundColor: const Color.fromARGB(255, 93, 141, 88), padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+               backgroundColor: const Color.fromARGB(255, 217, 233, 221), // White text
+            ),
+          ),
+        ),
+
+        // Content Below the Search Bar
+        Expanded(
+          child: Center(
+            child: Text(
+              searchQuery.isEmpty
+                  ? 'Type something to search!'
+                  : 'Search Query: $searchQuery',
+              style: const TextStyle(fontSize: 18, color: Colors.black54),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class ScreenContent extends StatelessWidget {
   final String title;
   final Color color;
@@ -65,9 +151,9 @@ class ScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1), // Add some opacity for background color
+          color: color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(
@@ -79,5 +165,9 @@ class ScreenContent extends StatelessWidget {
   }
 }
 
-
-
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: Rootscreen(),
+  ));
+}

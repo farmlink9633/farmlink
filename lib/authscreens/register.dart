@@ -111,7 +111,7 @@ class Registration extends StatelessWidget {
               ),
             ),
             SizedBox(
-            height: 15,
+            height: 15
             ),
             TextField(
               decoration: InputDecoration(

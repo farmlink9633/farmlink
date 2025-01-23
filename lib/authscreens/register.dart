@@ -7,9 +7,14 @@ import 'dart:convert';
 import 'package:farmlink/authscreens/login.dart';
 import 'package:farmlink/farmer/rootscreen.dart';
 
-class Registration extends StatelessWidget {
+class Registration extends StatefulWidget {
   Registration({super.key});
 
+  @override
+  _RegistrationState createState() => _RegistrationState();
+}
+
+class _RegistrationState extends State<Registration> {
   // Controllers for input fields
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -18,9 +23,15 @@ class Registration extends StatelessWidget {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController methodsController = TextEditingController();
 
+  bool isLoading = false; // Loading state
+
   // Function to handle form submission
   Future<void> register(BuildContext context) async {
-     String url = "$baseurl/register/"; // Replace with your API endpoint
+    String url = "$baseurl/register/"; // Replace with your API endpoint
+
+    setState(() {
+      isLoading = true;
+    });
 
     try {
       final response = await http.post(
@@ -38,7 +49,6 @@ class Registration extends StatelessWidget {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        // Navigate to the next screen if registration is successful
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Registration Successful!")),
         );
@@ -47,7 +57,6 @@ class Registration extends StatelessWidget {
           MaterialPageRoute(builder: (context) => Rootscreen()),
         );
       } else {
-        // Handle errors
         final error = json.decode(response.body)['message'] ?? "Something went wrong";
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Error: $error")),
@@ -57,6 +66,10 @@ class Registration extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("An error occurred: $e")),
       );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -102,17 +115,19 @@ class Registration extends StatelessWidget {
               SizedBox(height: 15),
               buildTextField("Methods", methodsController),
               SizedBox(height: 36),
-              ElevatedButton(
-                onPressed: () => register(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 4, 46, 4),
-                  fixedSize: Size(500, 50),
-                ),
-                child: Text(
-                  "Sign up",
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
+              isLoading
+                  ? CircularProgressIndicator() // Show loading spinner
+                  : ElevatedButton(
+                      onPressed: () => register(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 4, 46, 4),
+                        fixedSize: Size(500, 50),
+                      ),
+                      child: Text(
+                        "Sign up",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ),
               SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

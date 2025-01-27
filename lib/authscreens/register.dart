@@ -27,13 +27,14 @@ class _RegistrationState extends State<Registration> {
 
   // Function to handle form submission
   Future<void> register(BuildContext context) async {
-    String url = "$baseurl/register/"; // Replace with your API endpoint
+    String url = "${baseurl.trim()}/register/"; // Replace with your API endpoint
 
     setState(() {
       isLoading = true;
     });
 
     try {
+      print(Uri.parse(url));
       final response = await http.post(
         Uri.parse(url),
         headers: {"Content-Type": "application/json"},

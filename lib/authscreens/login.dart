@@ -1,7 +1,10 @@
 import 'package:farmlink/authscreens/register.dart';
 import 'package:farmlink/farmer/rootscreen.dart';
+import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,7 +14,66 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _terms = false; // Initialize the checkbox state
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _terms = false;
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    final String email = _emailController.text;
+    final String password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields.')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final Uri url = Uri.parse('${baseurl.trim()}/login/');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        print(data);
+        // Handle successful login (e.g., save token, navigate to next screen)
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Rootscreen()),
+        );
+      } else {
+        final error = jsonDecode(response.body)['error'] ?? 'Login failed';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error)),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An error occurred: $e')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -78,6 +141,8 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
+                controller: _passwordController,
+                obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -104,7 +169,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Row(
                     children: [
-                      Checkbox(activeColor: const Color.fromARGB(255, 9, 118, 13),
+                      Checkbox(
+                        activeColor: const Color.fromARGB(255, 9, 118, 13),
                         value: _terms,
                         onChanged: (bool? value) {
                           setState(() {
@@ -139,25 +205,19 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             SizedBox(height: 105),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>Rootscreen(),
-                      ),
-                    );
-                // Add your login logic here
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 4, 46, 4),
-                fixedSize: Size(300, 50),
-              ),
-              child: Text(
-                "Login",
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-            ),
+            _isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _login,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 4, 46, 4),
+                      fixedSize: Size(300, 50),
+                    ),
+                    child: Text(
+                      "Login",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
             SizedBox(height: 18),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

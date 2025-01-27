@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:farmlink/farmer/farmerprofilescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -14,7 +15,7 @@ class _RootscreenState extends State<Rootscreen> {
     HomeScreen(),
     const ScreenContent(title: 'Product Screen', color: Colors.orange),
     const ScreenContent(title: 'Chat Screen', color: Colors.blue),
-    const ScreenContent(title: 'Profile Screen', color: Colors.purple),
+    ProfileScreen()
   ];
 
   void _onItemTapped(int index) {

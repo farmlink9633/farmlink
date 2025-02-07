@@ -66,9 +66,9 @@ class ProfileScreen extends StatelessWidget {
                     child: Text(
                       "John Doe",
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green[700], // Green text color
+                        color: const Color.fromARGB(255, 13, 102, 17), // Green text color
                       ),
                     ),
                   ),
@@ -79,7 +79,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Text(
                     "johndoe@example.com",
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 15,
                       color: Colors.green[500], // Lighter green for email
                     ),
                   ),
@@ -133,20 +133,20 @@ class ProfileScreen extends StatelessWidget {
       ),
       elevation: 5, // Higher elevation for prominence
       child: ListTile(
-        leading: Icon(icon, color: Colors.green[700], size: 30), // Icon next to text
+        leading: Icon(icon, color: const Color.fromARGB(255, 14, 89, 18), size: 30), // Icon next to text
         title: Text(
           title,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.green[800], // Darker green for titles
+            color: const Color.fromARGB(255, 4, 46, 4), // Darker green for titles
           ),
         ),
         trailing: Text(
           info,
           style: TextStyle(
             fontSize: 16,
-            color: Colors.green[600], // Lighter green for info
+            color: const Color.fromARGB(255, 5, 99, 10), // Lighter green for info
           ),
         ),
       ),
@@ -164,7 +164,7 @@ class ProfileScreen extends StatelessWidget {
             text,
             style: TextStyle(
               fontSize: 16,
-              color: const Color.fromARGB(255, 65, 171, 70), // Green color for section title
+              color: const Color.fromARGB(255, 4, 46, 4), // Green color for section title
               fontWeight: FontWeight.bold,
             ),
           ),

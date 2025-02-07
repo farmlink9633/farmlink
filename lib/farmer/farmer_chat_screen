@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class ChatScreen extends StatefulWidget {
+  final String officerId;
+  final String farmerId;
+
+  ChatScreen({required this.officerId, required this.farmerId});
+
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  List chats = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchChat();
+  }
+
+  Future<void> fetchChat() async {
+    final response = await http.get(
+      Uri.parse('https://97b0-59-94-194-254.ngrok-free.app/chatview/?officerid=${widget.officerId}&farmerid=${widget.farmerId}'),
+    );
+    if (response.statusCode == 200) {
+      setState(() {
+        chats = json.decode(response.body);
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chat View'),
+        backgroundColor: Colors.green,
+      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              padding: EdgeInsets.all(10),
+              itemCount: chats.length,
+              itemBuilder: (context, index) {
+                final chat = chats[index];
+                bool isOfficer = chat['sender'] == 'officer';
+                return Align(
+                  alignment: isOfficer ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isOfficer ? Colors.green[100] : Colors.blue[100],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(chat['message'], style: TextStyle(fontSize: 16)),
+                  ),
+                );
+              },
+            ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Type a message...',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.send, color: Colors.green),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: ChatScreen(officerId: '1', farmerId: '2'),
+  ));
+}

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:farmlink/farmer/farmer_chat_screen';
 import 'package:farmlink/farmer/farmer_product_screen.dart';
 import 'package:farmlink/farmer/farmerprofilescreen.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class _RootscreenState extends State<Rootscreen> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     FarmersProductScreen(),
+    Scaffold(),
     const ScreenContent(title: 'Chat Screen', color: Colors.blue),
     ProfileScreen()
   ];

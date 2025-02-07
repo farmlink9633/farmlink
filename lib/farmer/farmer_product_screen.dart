@@ -22,6 +22,7 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
 
   Future<void> fetchProducts() async {
     final response = await http.get(Uri.parse('$baseurl/GetProductsData/'));
+
     if (response.statusCode == 200) {
       setState(() {
         products = json.decode(response.body);

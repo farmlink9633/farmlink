@@ -87,7 +87,7 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
                           children: [
                             Expanded(
                               child: product['image'] != null
-                                  ? Image.network(product['image'], fit: BoxFit.cover)
+                                  ? Image.network(baseurl+product['image'], fit: BoxFit.cover)
                                   : Icon(Icons.image, size: 50, color: Colors.grey),
                             ),
                             Padding(

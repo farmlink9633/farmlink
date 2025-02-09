@@ -16,7 +16,7 @@ class _RootscreenState extends State<Rootscreen> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     FarmersProductScreen(),
-    Scaffold(),
+    
     const ScreenContent(title: 'Chat Screen', color: Colors.blue),
     ProfileScreen()
   ];
@@ -63,6 +63,8 @@ class _RootscreenState extends State<Rootscreen> {
     );
   }
 }
+
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -160,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(6.0),
               ),
               filled: true,
-              fillColor: const Color.fromARGB(255, 191, 213, 184),
+              fillColor: const Color.fromARGB(255, 179, 221, 167),
             ),
             onChanged: (value) {
               setState(() {
@@ -177,23 +179,14 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.camera_alt,color: Colors.black), // Camera icon
             label: Text('Detect Plant Disease'),
             style: ElevatedButton.styleFrom(
-              foregroundColor: const Color.fromARGB(255, 49, 88, 45), padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-               backgroundColor: const Color.fromARGB(255, 217, 233, 221), // White text
+              foregroundColor: const Color.fromARGB(255, 11, 52, 5), padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+               backgroundColor: const Color.fromARGB(255, 155, 203, 167), // White text
             ),
           ),
         ),
 
         // Content Below the Search Bar
-        Expanded(
-          child: Center(
-            child: Text(
-              searchQuery.isEmpty
-                  ? 'Type something to search!'
-                  : 'Search Query: $searchQuery',
-              style: const TextStyle(fontSize: 18, color: Colors.black54),
-            ),
-          ),
-        ),
+      
       ],
     );
   }

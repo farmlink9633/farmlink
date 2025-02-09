@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -65,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     child: Text(
                       "John Doe",
-                      style: TextStyle(
+                      style: GoogleFonts.rubik(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color: const Color.fromARGB(255, 13, 102, 17), // Green text color
@@ -100,7 +101,7 @@ class ProfileScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      backgroundColor: Colors.green[600], // Green button color
+                      backgroundColor: const Color.fromARGB(255, 58, 120, 61), // Green button color
                       shadowColor: Colors.green[700], // Green shadow color
                       elevation: 12, // More elevation for the button
                     ),
@@ -174,3 +175,5 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
+

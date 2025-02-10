@@ -1,19 +1,93 @@
+import 'dart:convert';
+import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
-class ProfileScreen extends StatelessWidget {
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Farmer Profile',
+      theme: ThemeData(primarySwatch: Colors.green),
+      home: ProfileScreen(),
+    );
+  }
+}
+
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String name = "Loading...";
+  String email = "Loading...";
+  String phone = "Loading...";
+  String aadhaar = "Loading...";
+  String role = "Loading...";
+  String avatarUrl = "https://www.w3schools.com/w3images/avatar2.png";
+  bool isLoading = true;
+  
+  
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProfile();
+  }
+
+  Future<void> fetchProfile() async {
+    final String url = "$baseurl/farmer_profile_view/?farmer_id=3";
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        setState(() {
+          name = data['profile']['username'] ?? "No Name";
+          email = data['profile']['email'] ?? "No Email";
+          phone = data['profile']['phone'] ?? "No Phone";
+          aadhaar = data['aadhaar'] ?? "No Aadhaar";
+          role = data['profile']['role'] ?? "No Role";
+          isLoading = false;
+        });
+      } else {
+        throw Exception("Failed to load profile");
+      }
+    } catch (e) {
+      print("Error fetching profile: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[700], // Green color for AppBar
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.green[700]!, Colors.green[900]!],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         title: Text("Profile", style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              // Add settings functionality here
-            },
+            icon: Icon(Icons.settings, color: Colors.white),
+            onPressed: () {},
           ),
         ],
       ),
@@ -22,158 +96,139 @@ class ProfileScreen extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-                'https://img.freepik.com/free-vector/leaves-background-with-metallic-foil_79603-914.jpg?semt=ais_hybrid'), // Leaf background image
+                'https://img.freepik.com/free-vector/leaves-background-with-metallic-foil_79603-914.jpg'),
             fit: BoxFit.cover,
           ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView( // Makes the screen scrollable in case of overflow
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Profile Picture with shadow and round container
-                Center(
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
+          child: isLoading
+              ? Center(child: CircularProgressIndicator(color: Colors.green))
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white.withOpacity(0.2),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color.fromARGB(66, 149, 128, 128),
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 60,
+                                backgroundImage: NetworkImage(avatarUrl),
+                              ),
+                              SizedBox(height: 15),
+                              Text(
+                                name,
+                                style: GoogleFonts.rubik(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color.fromARGB(255, 26, 53, 19),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                email,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundImage: NetworkImage(
-                          'https://www.w3schools.com/w3images/avatar2.png'),
-                      backgroundColor: Colors.transparent,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                // Name in a container with padding for better spacing
-                Center(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.green[50], // Slight green background
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      "John Doe",
-                      style: GoogleFonts.rubik(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 13, 102, 17), // Green text color
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                // Email with a lighter green shade
-                Center(
-                  child: Text(
-                    "johndoe@example.com",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.green[500], // Lighter green for email
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                // Custom Divider with Icon
-                _buildDividerWithIcon("Contact Information"),
-                SizedBox(height: 20),
-                // Info Rows with icons inside a card for more prominence
-                _buildInfoRow(Icons.phone, "Phone", "+1 234 567 890"),
-                _buildInfoRow(Icons.credit_card, "Aadhar Number", "XXXX-XXXX-XXXX"),
-                SizedBox(height: 20),
-                // Log out button with gradient and rounded corners
-                Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      SizedBox(height: 30),
+                      _buildDividerWithIcon("Contact Information"),
+                      SizedBox(height: 20),
+                      _buildInfoRow(Icons.phone, "Phone", phone),
+                      _buildInfoRow(Icons.credit_card, "Aadhaar Number", aadhaar),
+                      _buildInfoRow(Icons.person, "Role", role),
+                      SizedBox(height: 30),
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            backgroundColor: Colors.green[700],
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            "Log Out",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
-                      backgroundColor: const Color.fromARGB(255, 58, 120, 61), // Green button color
-                      shadowColor: Colors.green[700], // Green shadow color
-                      elevation: 12, // More elevation for the button
-                    ),
-                    onPressed: () {
-                      // Log out or perform any action here
-                    },
-                    child: Text(
-                      "Log Out",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
         ),
       ),
     );
   }
 
-  // Helper method for the info rows with icons and Card styling for better prominence
   Widget _buildInfoRow(IconData icon, String title, String info) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 10),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(15),
       ),
-      elevation: 5, // Higher elevation for prominence
+      elevation: 6,
+      shadowColor: Colors.black45,
       child: ListTile(
-        leading: Icon(icon, color: const Color.fromARGB(255, 14, 89, 18), size: 30), // Icon next to text
+        leading: Icon(icon, color: Colors.green[800], size: 30),
         title: Text(
           title,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: const Color.fromARGB(255, 4, 46, 4), // Darker green for titles
+            color: Colors.green[900],
           ),
         ),
         trailing: Text(
           info,
           style: TextStyle(
             fontSize: 16,
-            color: const Color.fromARGB(255, 5, 99, 10), // Lighter green for info
+            color: Colors.green[700],
           ),
         ),
       ),
     );
   }
 
-  // Custom Divider with Icon
   Widget _buildDividerWithIcon(String text) {
     return Row(
       children: [
-        Expanded(child: Divider(color: Colors.green[300])),
+        Expanded(child: Divider(color: Colors.green[300], thickness: 1.5)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
             text,
             style: TextStyle(
               fontSize: 16,
-              color: const Color.fromARGB(255, 4, 46, 4), // Green color for section title
+              color: Colors.green[900],
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
-        Expanded(child: Divider(color: Colors.green[300])),
+        Expanded(child: Divider(color: Colors.green[300], thickness: 1.5)),
       ],
     );
   }
 }
-
-

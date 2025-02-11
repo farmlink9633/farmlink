@@ -3,22 +3,13 @@ import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import '../authscreens/splashscreen.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Farmer Profile',
-      theme: ThemeData(primarySwatch: Colors.green),
-      home: ProfileScreen(),
-    );
-  }
-}
+
+
+
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -43,13 +34,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> fetchProfile() async {
-    final String url = "$baseurl/farmer_profile_view/?farmer_id=3";
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String url = "$baseurl/farmer_profile_view/?farmer_id=${prefs.getString('id')}";
 
     try {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        print(data);
+        print(data['profile']);
 
         setState(() {
           name = data['profile']['username'] ?? "No Name";
@@ -85,10 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         title: Text("Profile", style: TextStyle(color: Colors.white)),
         actions: [
-          IconButton(
-            icon: Icon(Icons.settings, color: Colors.white),
-            onPressed: () {},
-          ),
+         
         ],
       ),
       body: Container(
@@ -165,7 +157,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             backgroundColor: Colors.green[700],
                           ),
-                          onPressed: () {},
+                          onPressed: () async{
+
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              prefs.remove('id');
+                            
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Splashscreen(),), (route) => false,);
+                          },
                           child: Text(
                             "Log Out",
                             style: TextStyle(

@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -48,11 +50,18 @@ class _LoginScreenState extends State<LoginScreen> {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
-      print(response.statusCode);
+      print(response.body);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        print(data);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+  
+  // Set the string in SharedPreferences
+  bool success = await prefs.setString('id', data['data']['id'].toString());
+
+
+        print(success);
         // Handle successful login (e.g., save token, navigate to next screen)
         Navigator.pushReplacement(
           context,

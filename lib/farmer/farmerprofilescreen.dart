@@ -134,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 email,
                                 style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.white70,
+                                  color: Colors.black,
                                 ),
                               ),
                             ],

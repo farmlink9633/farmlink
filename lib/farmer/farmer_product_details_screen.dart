@@ -1,3 +1,4 @@
+import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -24,7 +25,7 @@ class ProductDetailScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 child: productData['image_url'] != null
                     ? Image.network(
-                        'http://example.com${productData['image_url']}', // Replace with your base URL
+                        '$baseurl${productData['image_url']}', // Replace with your base URL
                         height: 250,
                         width: double.infinity,
                         fit: BoxFit.cover,

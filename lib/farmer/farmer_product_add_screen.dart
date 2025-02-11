@@ -24,7 +24,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
   // Pick image from gallery or camera
   Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile =await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);

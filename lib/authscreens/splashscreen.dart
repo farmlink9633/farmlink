@@ -39,7 +39,7 @@ class Splashscreen extends StatelessWidget {
                   SizedBox(
                     height: 10
                   ),
-                  Text("deserves the",
+                  Text("deserve the",
                       style: GoogleFonts.josefinSans(
                         fontSize: 45,
                         color: Colors.white,

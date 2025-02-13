@@ -1,10 +1,19 @@
-import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  final Map<String, dynamic> productData; // Pass the product data to the screen
+  final Map<String, dynamic> productData;
 
   ProductDetailScreen({required this.productData});
+
+  void _makePhoneCall(String phoneNumber) async {
+    final Uri url = Uri.parse('tel:$phoneNumber');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +29,11 @@ class ProductDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Product Image
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: productData['image_url'] != null
                     ? Image.network(
-                        '$baseurl${productData['image_url']}', // Replace with your base URL
+                        productData['image_url'],
                         height: 250,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -37,8 +45,6 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
               ),
               SizedBox(height: 20),
-
-              // Product Name
               Text(
                 productData['productname'] ?? 'No product name',
                 style: TextStyle(
@@ -48,8 +54,6 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-
-              // Description
               Text(
                 'Description:',
                 style: TextStyle(
@@ -67,8 +71,6 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 15),
-
-              // Product Date
               Text(
                 'Date: ${productData['date'] ?? 'No date available'}',
                 style: TextStyle(
@@ -78,8 +80,6 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 15),
-
-              // Farmer Contact Info
               Text(
                 'Contact: ${productData['contact'] ?? 'No contact available'}',
                 style: TextStyle(
@@ -89,8 +89,6 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-
-              // Farmer ID (if needed for reference)
               Text(
                 'Farmer ID: ${productData['farmer'] ?? 'Not available'}',
                 style: TextStyle(
@@ -100,11 +98,15 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30),
-
-              // Call button (optional, if you want to add an action for the contact number)
               ElevatedButton.icon(
                 onPressed: () {
-                  // Action when the button is pressed (e.g., make a call)
+                  if (productData['contact'] != null && productData['contact'].toString().isNotEmpty) {
+                    _makePhoneCall(productData['contact']);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('No contact number available')),
+                    );
+                  }
                 },
                 icon: Icon(Icons.call),
                 label: Text('Call Farmer'),
@@ -124,4 +126,3 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 }
-

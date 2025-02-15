@@ -89,7 +89,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[50], // Light green background
+      backgroundColor: Colors.white, 
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 14, 53, 16),
         elevation: 0,

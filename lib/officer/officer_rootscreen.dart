@@ -46,7 +46,7 @@ class _OfficerRootScreenState extends State<OfficerRootScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        selectedItemColor: const Color.fromARGB(255, 20, 85, 24),
+        selectedItemColor: const Color.fromARGB(255, 9, 72, 13),
         unselectedItemColor: Colors.grey,
         backgroundColor: Colors.white,
         items: [
@@ -60,13 +60,64 @@ class _OfficerRootScreenState extends State<OfficerRootScreen> {
   }
 }
 
-// Placeholder Screens
-class HomeScreen extends StatelessWidget {
+// Home Screen with Search Bar
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  TextEditingController _searchController = TextEditingController();
+  String searchQuery = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Home')),
-      body: Center(child: Text('Home Screen', style: TextStyle(fontSize: 20))),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              controller: _searchController,
+              onChanged: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                prefixIcon: Icon(Icons.search, color: const Color.fromARGB(255, 9, 79, 12)),
+                suffixIcon: searchQuery.isNotEmpty
+                    ? IconButton(
+                        icon: Icon(Icons.clear, color: Colors.red),
+                        onPressed: () {
+                          setState(() {
+                            _searchController.clear();
+                            searchQuery = "";
+                          });
+                        },
+                      )
+                    : null,
+                filled: true,
+                fillColor: const Color.fromARGB(255, 195, 224, 139),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: Text(
+                searchQuery.isEmpty ? 'Home Screen' : 'Searching for "$searchQuery"...',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -76,7 +127,8 @@ class NoticeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Notices')),
-      body: Center(child: Text('Notices Screen', style: TextStyle(fontSize: 20))),
+      body: Center(child: Text('Notices Screen', style: TextStyle(fontSize: 20))
+      )
     );
   }
 }
@@ -86,7 +138,8 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Chat')),
-      body: Center(child: Text('Chat Screen', style: TextStyle(fontSize: 20))),
+      body: Center(child: Text('Chat Screen', style: TextStyle(fontSize: 20))
+      )
     );
   }
 }
@@ -96,7 +149,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Profile')),
-      body: Center(child: Text('Profile Screen', style: TextStyle(fontSize: 20))),
+      body: Center(child: Text('Profile Screen', style: TextStyle(fontSize: 20)))
     );
   }
 }

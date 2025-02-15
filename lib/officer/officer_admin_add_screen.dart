@@ -18,6 +18,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
   final TextEditingController _qualificationController = TextEditingController();
   final TextEditingController _officeAddressController = TextEditingController();
   bool _isLoading = false;
+  bool _isPasswordVisible = false;
 
   // Function to register an officer
   Future<void> _registerOfficer() async {
@@ -89,13 +90,12 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
     return Scaffold(
       backgroundColor: Colors.green[50], // Light green background
       appBar: AppBar(
-  
         backgroundColor: const Color.fromARGB(255, 14, 53, 16),
         elevation: 0,
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(21.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,35 +108,58 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
                   color: const Color.fromARGB(255, 10, 62, 12),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 8),
               Text(
-                'Fill in the details below to register an officer.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+                "Create your new account",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: const Color.fromARGB(255, 154, 166, 151),
+                ),
               ),
-              SizedBox(height: 30),
-
+              SizedBox(height: 35),
               _buildTextField(_emailController, 'Email', Icons.email),
               _buildTextField(_passwordController, 'Password', Icons.lock, isPassword: true),
               _buildTextField(_usernameController, 'Username', Icons.person),
               _buildTextField(_phoneController, 'Phone Number', Icons.phone),
               _buildTextField(_qualificationController, 'Qualification', Icons.school),
               _buildTextField(_officeAddressController, 'Office Address', Icons.location_city, maxLines: 3),
-
-              SizedBox(height: 20),
+              SizedBox(height: 30),
               _isLoading
                   ? CircularProgressIndicator()
-                  : ElevatedButton.icon(
+                  : ElevatedButton(
                       onPressed: _isLoading ? null : _registerOfficer, // Disables button when loading
-                      icon: Icon(Icons.app_registration),
-                      label: Text('Register', style: GoogleFonts.roboto(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)),
+                      child: Text(
+                        'Sign up',
+                        style: GoogleFonts.roboto(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 14, 53, 16),
-                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 41),
+                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 45),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                        textStyle: TextStyle(fontSize: 16),
+                        textStyle: TextStyle(fontSize: 18),
+                        fixedSize: Size(500, 50),
                       ),
                     ),
+                    SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Already have an account",
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(width: 6),
+                  
+                ],
+              ),
             ],
           ),
         ),
@@ -149,12 +172,22 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
         controller: controller,
-        obscureText: isPassword,
+        obscureText: isPassword && !_isPasswordVisible,
         maxLines: maxLines,
         enabled: !_isLoading, // Disables input when loading
         decoration: InputDecoration(
           labelText: hint,
           prefixIcon: Icon(icon, color: const Color.fromARGB(255, 51, 96, 54)),
+          suffixIcon: isPassword ? IconButton(
+            icon: Icon(
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            ),
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
+          ) : null,
           filled: true,
           fillColor: const Color.fromARGB(255, 189, 224, 190), // Light green fill color
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),

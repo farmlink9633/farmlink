@@ -175,6 +175,7 @@ class _RegistrationState extends State<Registration> {
       controller: controller,
       obscureText: isPassword,
       decoration: InputDecoration(
+          
         labelText: label,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

@@ -90,7 +90,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
       backgroundColor: Colors.green[50], // Light green background
       appBar: AppBar(
   
-        backgroundColor: const Color.fromARGB(255, 13, 35, 14),
+        backgroundColor: const Color.fromARGB(255, 14, 53, 16),
         elevation: 0,
         centerTitle: true,
       ),
@@ -131,7 +131,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
                       icon: Icon(Icons.app_registration),
                       label: Text('Register', style: GoogleFonts.roboto(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 13, 35, 14),
+                        backgroundColor: const Color.fromARGB(255, 14, 53, 16),
                         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 41),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                         textStyle: TextStyle(fontSize: 16),

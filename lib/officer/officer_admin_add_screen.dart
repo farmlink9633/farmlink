@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class OfficerRegistrationScreen extends StatefulWidget {
@@ -86,16 +87,35 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[50], // Light green background
       appBar: AppBar(
-        title: Text('Register Officer'),
-        backgroundColor: Colors.green,
+  
+        backgroundColor: const Color.fromARGB(255, 13, 35, 14),
         elevation: 0,
+        centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Text(
+                'Register',
+                style: GoogleFonts.rubik(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 10, 62, 12),
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Fill in the details below to register an officer.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              SizedBox(height: 30),
+
               _buildTextField(_emailController, 'Email', Icons.email),
               _buildTextField(_passwordController, 'Password', Icons.lock, isPassword: true),
               _buildTextField(_usernameController, 'Username', Icons.person),
@@ -109,12 +129,12 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
                   : ElevatedButton.icon(
                       onPressed: _isLoading ? null : _registerOfficer, // Disables button when loading
                       icon: Icon(Icons.app_registration),
-                      label: Text('Register'),
+                      label: Text('Register', style: GoogleFonts.roboto(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white)),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        backgroundColor: const Color.fromARGB(255, 13, 35, 14),
+                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 41),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                        textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        textStyle: TextStyle(fontSize: 16),
                       ),
                     ),
             ],
@@ -134,12 +154,13 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
         enabled: !_isLoading, // Disables input when loading
         decoration: InputDecoration(
           labelText: hint,
-          prefixIcon: Icon(icon),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          prefixIcon: Icon(icon, color: const Color.fromARGB(255, 51, 96, 54)),
+          filled: true,
+          fillColor: const Color.fromARGB(255, 189, 224, 190), // Light green fill color
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         ),
       ),
     );
   }
 }
-
-

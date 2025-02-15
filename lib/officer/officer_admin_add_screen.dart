@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:farmlink/authscreens/login.dart';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -157,7 +158,23 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
                     ),
                   ),
                   SizedBox(width: 6),
-                  
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    },
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 13,
+                        color: Color.fromARGB(255, 4, 46, 4),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],

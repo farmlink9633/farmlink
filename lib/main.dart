@@ -2,8 +2,10 @@ import 'package:farmlink/authscreens/login.dart';
 import 'package:farmlink/authscreens/register.dart';
 import 'package:farmlink/authscreens/splashscreen.dart';
 import 'package:farmlink/officer/officer_admin_add_screen.dart';
-import 'package:farmlink/officer/officer_rootscreen.dart';
-import 'package:farmlink/officer/officerprofilescreen.dart';
+import 'package:farmlink/officer/officer_notice_screen.dart';
+import 'package:farmlink/officer/officerrootscreen.dart';
+import 'package:farmlink/officer/officer_profile_screen.dart';
+import 'package:farmlink/officer/officerrootscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
      
-      home: OfficerRootScreen()
+      home: Splashscreen()
     );
   }
 }

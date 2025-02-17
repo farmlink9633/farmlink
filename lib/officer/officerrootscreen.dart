@@ -1,22 +1,10 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(OfficerApp());
-}
+import 'package:farmlink/officer/officer_notice_screen.dart';
+import 'package:farmlink/officer/officer_chat_screen.dart';
+import 'package:farmlink/officer/officer_profile_screen.dart';
 
-class OfficerApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.green[800],
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      home: OfficerRootScreen(),
-    );
-  }
-}
+
 
 class OfficerRootScreen extends StatefulWidget {
   @override

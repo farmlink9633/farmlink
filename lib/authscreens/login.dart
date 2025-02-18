@@ -1,5 +1,6 @@
 import 'package:farmlink/authscreens/register.dart';
 import 'package:farmlink/farmer/rootscreen.dart';
+import 'package:farmlink/officer/officerrootscreen.dart';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,60 +30,73 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
-    final String email = _emailController.text;
-    final String password = _passwordController.text;
+  final String email = _emailController.text.trim();
+  final String password = _passwordController.text.trim();
 
-    if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields.')),
-      );
-      return;
-    }
+  if (email.isEmpty || password.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please fill in all fields.')),
+    );
+    return;
+  }
 
-    setState(() {
-      _isLoading = true;
-    });
+  setState(() {
+    _isLoading = true;
+  });
 
-    final Uri url = Uri.parse('${baseurl.trim()}/login/');
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'email': email, 'password': password}),
-      );
-      print(response.body);
+  final Uri url = Uri.parse('${baseurl.trim()}/login/');
+  try {
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email, 'password': password}),
+    );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+    print(response.body);
 
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-  
-  // Set the string in SharedPreferences
-  bool success = await prefs.setString('id', data['data']['id'].toString());
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
 
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
-        print(success);
-        // Handle successful login (e.g., save token, navigate to next screen)
+      // Save user ID
+      await prefs.setString('id', data['data']['id'].toString());
+
+      // Check user role and navigate accordingly
+      String role = data['data']['role'] ?? ''; // Assuming role is returned in JSON
+
+      if (role == 'farmer') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Rootscreen()),
         );
+      } else if (role == 'officer') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => OfficerRootScreen()),
+        );
       } else {
-        final error = jsonDecode(response.body)['error'] ?? 'Login failed';
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error)),
+          SnackBar(content: Text('Invalid role. Please try again.')),
         );
       }
-    } catch (e) {
+    } else {
+      final error = jsonDecode(response.body)['error'] ?? 'Login failed';
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred: $e')),
+        SnackBar(content: Text(error)),
       );
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('An error occurred: $e')),
+    );
+  } finally {
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

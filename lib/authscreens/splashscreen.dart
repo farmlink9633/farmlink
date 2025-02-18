@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:farmlink/authscreens/choosescreen.dart';
 import 'package:farmlink/authscreens/login.dart';
 import 'package:farmlink/authscreens/register.dart';
-import 'package:farmlink/authscreens/choosescreen.dart'; 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,8 +16,8 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
-    // Redirect to RoleSelectionScreen after 5 seconds
-    Future.delayed(Duration(seconds: 5), () {
+    // Redirect to RoleSelectionScreen after 6 seconds
+    Future.delayed(Duration(seconds: 6), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => RoleSelectionScreen()),

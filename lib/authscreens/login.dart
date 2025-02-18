@@ -64,23 +64,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Check user role and navigate accordingly
       String role = data['data']['role'] ?? ''; // Assuming role is returned in JSON
+      print("Full Response: $data");
 
       if (role == 'farmer') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Rootscreen()),
         );
-      } else if (role == 'officer') {
+      } 
+      else if (role == 'officer') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => OfficerRootScreen()),
         );
-      } else {
+      } 
+      else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Invalid role. Please try again.')),
         );
       }
-    } else {
+    } 
+    else {
       final error = jsonDecode(response.body)['error'] ?? 'Login failed';
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(error)),
@@ -90,7 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('An error occurred: $e')),
     );
-  } finally {
+  }
+  finally {
     setState(() {
       _isLoading = false;
     });
@@ -281,3 +286,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+

@@ -38,7 +38,7 @@ class _OfficerRootScreenState extends State<OfficerRootScreen> {
         onTap: _onItemTapped,
         selectedItemColor: const Color.fromARGB(255, 9, 72, 13),
         unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(236, 215, 228, 212),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notices'),
@@ -110,7 +110,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Farmers List')),
+      backgroundColor:const Color.fromARGB(255, 205, 216, 198)  ,
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+      ),
       body: Column(
         children: [
           Padding(
@@ -121,6 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: InputDecoration(
                 hintText: 'Search Farmers...',
                 prefixIcon: Icon(Icons.search, color: Color(0xFF094F0C)),
+                
                 suffixIcon: searchQuery.isNotEmpty
                     ? IconButton(
                         icon: Icon(Icons.clear, color: Colors.red),
@@ -134,10 +138,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     : null,
                 filled: true,
-                fillColor: Color(0xFFC3E08B),
+                fillColor: const Color.fromARGB(236, 215, 228, 212) ,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(32.0),
                   borderSide: BorderSide.none,
+                  
                 ),
               ),
             ),

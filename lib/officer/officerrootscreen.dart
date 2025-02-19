@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> fetchFarmers() async {
     try {
-      final response = await http.get(Uri.parse('YOUR_BACKEND_URL/list_view/'));
+      final response = await http.get(Uri.parse('$baseurl/list_view/'));
       
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

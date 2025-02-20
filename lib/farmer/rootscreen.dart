@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:farmlink/farmer/farmer_chat_screen';
+import 'package:farmlink/farmer/farmer_home_screen.dart';
 import 'package:farmlink/farmer/farmer_product_screen.dart';
 import 'package:farmlink/farmer/farmerprofilescreen.dart';
 import 'package:flutter/material.dart';
@@ -66,131 +67,6 @@ class _RootscreenState extends State<Rootscreen> {
 
 
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  String searchQuery = '';
-
-  // Method to handle the plant disease detection
-  void _openDiseaseDetection() {
-    // Navigate to the disease detection screen (can be a new page or dialog)
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Plant Disease Detection'),
-          content: Text('This is a feature for detecting plant diseases using the camera.'),
-          actions: [
-            TextButton(
-              child: Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  File? _image; // To store the captured image
-  final ImagePicker _picker = ImagePicker(); // ImagePicker instance
-
-
-    /// Method to handle camera permissions and image capture
-  Future<void> openCamera() async {
-    // Request camera permission
-    final permissionStatus = await Permission.camera.request();
-
-    if (permissionStatus.isGranted) {
-      try {
-        // Open the camera and capture an image
-        final XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
-
-        if (pickedFile != null) {
-          setState(() {
-            _image = File(pickedFile.path); // Update the UI with the captured image
-          });
-        } else {
-          print('No image captured.');
-        }
-      } catch (e) {
-        print('Error capturing image: $e');
-      }
-    } else {
-      print('Camera permission denied');
-      _showPermissionDeniedDialog(); // Show a dialog if permission is denied
-    }
-  }
-
-  /// Show a dialog when camera permission is denied
-  void _showPermissionDeniedDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Permission Denied'),
-          content: const Text('Camera access is required to capture images.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-
-  
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Search Bar
-        Padding(
-          padding: const EdgeInsets.all(13.0),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Search...',
-              prefixIcon: const Icon(Icons.search,color: Colors.black),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6.0),
-              ),
-              filled: true,
-              fillColor: const Color.fromARGB(255, 179, 221, 167),
-            ),
-            onChanged: (value) {
-              setState(() {
-                searchQuery = value; // Update search query
-              });
-            },
-          ),
-        ),
-                // Plant Disease Detection Button
-        Padding(
-          padding: const EdgeInsets.all(60.0),
-          child: ElevatedButton.icon(
-            onPressed: openCamera,
-            icon: Icon(Icons.camera_alt,color: Colors.black), // Camera icon
-            label: Text('Detect Plant Disease'),
-            style: ElevatedButton.styleFrom(
-              foregroundColor: const Color.fromARGB(255, 11, 52, 5), padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-               backgroundColor: const Color.fromARGB(255, 155, 203, 167), // White text
-            ),
-          ),
-        ),
-
-        // Content Below the Search Bar
-      
-      ],
-    );
-  }
-}
 
 class ScreenContent extends StatelessWidget {
   final String title;

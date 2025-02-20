@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String role = data['data']['role'] ?? ''; // Assuming role is returned in JSON
       print("Full Response: $data");
 
-      if (role == 'farmer') {
+      if (role == 'Farmer') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Rootscreen()),

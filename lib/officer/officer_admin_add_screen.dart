@@ -16,7 +16,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _qualificationController = TextEditingController();
+  final TextEditingController _designationController = TextEditingController();
   final TextEditingController _officeAddressController = TextEditingController();
   bool _isLoading = false;
   bool _isPasswordVisible = false;
@@ -29,7 +29,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
         _passwordController.text.isEmpty ||
         _usernameController.text.isEmpty ||
         _phoneController.text.isEmpty ||
-        _qualificationController.text.isEmpty ||
+        _designationController.text.isEmpty ||
         _officeAddressController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('All fields are required! ⚠️')),
@@ -50,7 +50,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
           "password": _passwordController.text.trim(),
           "username": _usernameController.text.trim(),
           "number": _phoneController.text.trim(),
-          "qualification": _qualificationController.text.trim(),
+          "designation": _designationController.text.trim(),
           "officeaddress": _officeAddressController.text.trim(),
         }),
       );
@@ -82,7 +82,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
     _passwordController.clear();
     _usernameController.clear();
     _phoneController.clear();
-    _qualificationController.clear();
+    _designationController.clear();
     _officeAddressController.clear();
   }
 
@@ -122,7 +122,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
               _buildTextField(_passwordController, 'Password', Icons.lock, isPassword: true),
               _buildTextField(_usernameController, 'Username', Icons.person),
               _buildTextField(_phoneController, 'Phone Number', Icons.phone),
-              _buildTextField(_qualificationController, 'Qualification', Icons.school),
+              _buildTextField(_designationController, 'Designation', Icons.work),
               _buildTextField(_officeAddressController, 'Office Address', Icons.location_city, maxLines: 3),
               SizedBox(height: 30),
               _isLoading

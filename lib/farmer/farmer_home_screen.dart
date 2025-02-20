@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
@@ -182,7 +183,12 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-        Text('Disease detection'),
+        SizedBox(
+          height:18
+        ),
+        Text('Disease detection',),
+        SizedBox(
+          height: 25),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

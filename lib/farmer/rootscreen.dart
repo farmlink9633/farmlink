@@ -1,9 +1,9 @@
 import 'dart:io';
-
-import 'package:farmlink/farmer/farmer_chat_screen';
+import 'package:farmlink/farmer/farmer_chat_screen.dart';
 import 'package:farmlink/farmer/farmer_home_screen.dart';
 import 'package:farmlink/farmer/farmer_product_screen.dart';
 import 'package:farmlink/farmer/farmerprofilescreen.dart';
+import 'package:farmlink/farmer/officers_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -17,8 +17,7 @@ class _RootscreenState extends State<Rootscreen> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     FarmersProductScreen(),
-    
-    const ScreenContent(title: 'Chat Screen', color: Colors.blue),
+    OfficerListScreen(),
     ProfileScreen()
   ];
 

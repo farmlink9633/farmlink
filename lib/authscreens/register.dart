@@ -24,9 +24,40 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController methodsController = TextEditingController();
 
   bool isLoading = false; // Loading state
+  bool isPasswordHidden = true; // Password visibility state
+
+  // Function to validate email
+  bool isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
 
   // Function to handle form submission
   Future<void> register(BuildContext context) async {
+    // Validate email
+    if (!isValidEmail(emailController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please enter a valid email address")),
+      );
+      return;
+    }
+
+    // Validate password length
+    if (passwordController.text.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Password must be at least 6 characters long")),
+      );
+      return;
+    }
+
+    // Validate phone number length
+    if (phoneController.text.length != 10) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Phone number must be 10 digits long")),
+      );
+      return;
+    }
+
     String url = "${baseurl.trim()}/register/"; // Replace with your API endpoint
 
     setState(() {
@@ -78,7 +109,10 @@ class _RegistrationState extends State<Registration> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
         backgroundColor: Colors.white,
         foregroundColor: const Color.fromARGB(255, 4, 56, 4),
       ),
@@ -108,7 +142,17 @@ class _RegistrationState extends State<Registration> {
               SizedBox(height: 15),
               buildTextField("Email", emailController),
               SizedBox(height: 15),
-              buildTextField("Password", passwordController, isPassword: true),
+              buildTextField(
+                "Password",
+                passwordController,
+                isPassword: true,
+                isPasswordHidden: isPasswordHidden,
+                togglePasswordVisibility: () {
+                  setState(() {
+                    isPasswordHidden = !isPasswordHidden;
+                  });
+                },
+              ),
               SizedBox(height: 15),
               buildTextField("Aadhaar", aadhaarController),
               SizedBox(height: 15),
@@ -169,13 +213,17 @@ class _RegistrationState extends State<Registration> {
   }
 
   // Helper method to create a text field
-  Widget buildTextField(String label, TextEditingController controller,
-      {bool isPassword = false}) {
+  Widget buildTextField(
+    String label,
+    TextEditingController controller, {
+    bool isPassword = false,
+    bool isPasswordHidden = true,
+    VoidCallback? togglePasswordVisibility,
+  }) {
     return TextField(
       controller: controller,
-      obscureText: isPassword,
+      obscureText: isPassword ? isPasswordHidden : false,
       decoration: InputDecoration(
-          
         labelText: label,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -188,6 +236,15 @@ class _RegistrationState extends State<Registration> {
           color: const Color.fromARGB(255, 4, 56, 4),
           fontWeight: FontWeight.bold,
         ),
+        suffixIcon: isPassword
+            ? IconButton(
+                icon: Icon(
+                  isPasswordHidden ? Icons.visibility_off : Icons.visibility,
+                  color: const Color.fromARGB(255, 4, 56, 4),
+                ),
+                onPressed: togglePasswordVisibility,
+              )
+            : null,
       ),
     );
   }

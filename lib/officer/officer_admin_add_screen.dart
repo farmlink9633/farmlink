@@ -16,8 +16,8 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _qualificationController = TextEditingController();
-  final TextEditingController _officeAddressController = TextEditingController();
+  final TextEditingController _designationController = TextEditingController();
+  final TextEditingController _officeaddressController = TextEditingController();
   bool _isLoading = false;
   bool _isPasswordVisible = false;
 
@@ -25,14 +25,32 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
   Future<void> _registerOfficer() async {
     final url = Uri.parse('$baseurl/AdminAddOfficer/');
 
+    // Check if all fields are filled
     if (_emailController.text.isEmpty ||
         _passwordController.text.isEmpty ||
         _usernameController.text.isEmpty ||
         _phoneController.text.isEmpty ||
-        _qualificationController.text.isEmpty ||
-        _officeAddressController.text.isEmpty) {
+        _designationController.text.isEmpty ||
+        _officeaddressController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('All fields are required! ⚠️')),
+      );
+      return;
+    }
+
+    // Email validation using regex
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(_emailController.text.trim())) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid email address! 📧')),
+      );
+      return;
+    }
+
+    // Password length validation
+    if (_passwordController.text.trim().length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password must be at least 6 characters long! 🔒')),
       );
       return;
     }
@@ -50,8 +68,8 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
           "password": _passwordController.text.trim(),
           "username": _usernameController.text.trim(),
           "number": _phoneController.text.trim(),
-          "qualification": _qualificationController.text.trim(),
-          "officeaddress": _officeAddressController.text.trim(),
+          "designation": _designationController.text.trim(),
+          "officeaddress": _officeaddressController.text.trim(),
         }),
       );
 
@@ -82,14 +100,14 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
     _passwordController.clear();
     _usernameController.clear();
     _phoneController.clear();
-    _qualificationController.clear();
-    _officeAddressController.clear();
+    _designationController.clear();
+    _officeaddressController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, 
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 14, 53, 16),
         elevation: 0,
@@ -122,8 +140,8 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
               _buildTextField(_passwordController, 'Password', Icons.lock, isPassword: true),
               _buildTextField(_usernameController, 'Username', Icons.person),
               _buildTextField(_phoneController, 'Phone Number', Icons.phone),
-              _buildTextField(_qualificationController, 'Qualification', Icons.school),
-              _buildTextField(_officeAddressController, 'Office Address', Icons.location_city, maxLines: 3),
+              _buildTextField(_designationController, 'Designation', Icons.work),
+              _buildTextField(_officeaddressController, 'Office Address', Icons.location_city, maxLines: 3),
               SizedBox(height: 30),
               _isLoading
                   ? CircularProgressIndicator()
@@ -145,7 +163,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
                         fixedSize: Size(500, 50),
                       ),
                     ),
-                    SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -195,19 +213,24 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
         decoration: InputDecoration(
           labelText: hint,
           prefixIcon: Icon(icon, color: const Color.fromARGB(255, 51, 96, 54)),
-          suffixIcon: isPassword ? IconButton(
-            icon: Icon(
-              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            ),
-            onPressed: () {
-              setState(() {
-                _isPasswordVisible = !_isPasswordVisible;
-              });
-            },
-          ) : null,
+          suffixIcon: isPassword
+              ? IconButton(
+                  icon: Icon(
+                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                )
+              : null,
           filled: true,
           fillColor: const Color.fromARGB(255, 189, 224, 190), // Light green fill color
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
           contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         ),
       ),

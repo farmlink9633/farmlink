@@ -1,5 +1,6 @@
 import 'package:farmlink/officer/officer_notice_add_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -25,7 +26,7 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
   }
 
   Future<void> _fetchNotices() async {
-    final response = await http.get(Uri.parse('$baseurl/GetNoticesView/'));
+    final response = await http.get(Uri.parse('https://cd2f-117-242-29-114.ngrok-free.app/GetNoticesView/'));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -54,9 +55,9 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212) ,
       appBar: AppBar(
-        title: Text('Notices'),
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
       ),
       body: Column(
         children: [
@@ -79,13 +80,16 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
                 : _filteredNotices.isEmpty
                     ? Center(child: Text('No notices found'))
                     : ListView.builder(
+                    
                         itemCount: _filteredNotices.length,
                         itemBuilder: (context, index) {
                           var notice = _filteredNotices[index];
                           return Card(
+                          
                             margin: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: ListTile(
+                              tileColor: const Color.fromARGB(236, 215, 228, 212) ,
                               title: Text(
                                 notice['title'],
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -111,7 +115,7 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
             MaterialPageRoute(builder: (context) => OfficerNoticeAddScreen()),
           );
         },
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         child: Icon(Icons.add, color: Colors.white),
         tooltip: 'Add Notice',
       ),

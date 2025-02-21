@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _terms = false;
   bool _isLoading = false;
+  bool _isPasswordHidden = true; // For password visibility toggle
 
   @override
   void dispose() {
@@ -29,79 +30,89 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _login() async {
-  final String email = _emailController.text.trim();
-  final String password = _passwordController.text.trim();
-
-  if (email.isEmpty || password.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please fill in all fields.')),
-    );
-    return;
+  // Function to validate email format
+  bool isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
   }
 
-  setState(() {
-    _isLoading = true;
-  });
+  Future<void> _login() async {
+    final String email = _emailController.text.trim();
+    final String password = _passwordController.text.trim();
 
-  final Uri url = Uri.parse('${baseurl.trim()}/login/');
-  try {
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email, 'password': password}),
-    );
+    // Validate email
+    if (!isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid email address.')),
+      );
+      return;
+    }
 
-    print(response.body);
+    // Validate password length
+    if (password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password must be at least 6 characters long.')),
+      );
+      return;
+    }
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
+    setState(() {
+      _isLoading = true;
+    });
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Uri url = Uri.parse('${baseurl.trim()}/login/');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
 
-      // Save user ID
-      await prefs.setString('id', data['data']['id'].toString());
+      print(response.body);
 
-      // Check user role and navigate accordingly
-      String role = data['data']['role'] ?? ''; // Assuming role is returned in JSON
-      print("Full Response: $data");
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
 
-      if (role == 'farmer') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Rootscreen()),
-        );
-      } 
-      else if (role == 'officer') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => OfficerRootScreen()),
-        );
-      } 
-      else {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        // Save user ID
+        await prefs.setString('id', data['data']['id'].toString());
+
+        // Check user role and navigate accordingly
+        String role = data['data']['role'] ?? ''; // Assuming role is returned in JSON
+        print("Full Response: $data");
+
+        if (role == 'Farmer') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Rootscreen()),
+          );
+        } else if (role == 'officer') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => OfficerRootScreen()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Invalid role. Please try again.')),
+          );
+        }
+      } else {
+        final error = jsonDecode(response.body)['error'] ?? 'Login failed';
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid role. Please try again.')),
+          SnackBar(content: Text(error)),
         );
       }
-    } 
-    else {
-      final error = jsonDecode(response.body)['error'] ?? 'Login failed';
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error)),
+        SnackBar(content: Text('An error occurred: $e')),
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('An error occurred: $e')),
-    );
   }
-  finally {
-    setState(() {
-      _isLoading = false;
-    });
-  }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: _isPasswordHidden, // Toggle password visibility
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -185,6 +196,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: const Color.fromARGB(255, 4, 56, 4),
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordHidden ? Icons.visibility_off : Icons.visibility,
+                      color: const Color.fromARGB(255, 4, 56, 4),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordHidden = !_isPasswordHidden;
+                      });
+                    },
                   ),
                 ),
               ),
@@ -286,4 +308,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-

@@ -164,7 +164,7 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
                     : ElevatedButton(
                         onPressed: _submitNotice,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                          backgroundColor: const Color.fromARGB(255, 46, 121, 49),
                           foregroundColor: Colors.white,
                         ),
                         child: Text('Submit'),

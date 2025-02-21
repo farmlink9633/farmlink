@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
             context,
             MaterialPageRoute(builder: (context) => Rootscreen()),
           );
-        } else if (role == 'officer') {
+        } else if (role == 'Officer') {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => OfficerRootScreen()),
@@ -211,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 13),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
@@ -219,29 +219,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Row(
                     children: [
-                      Checkbox(
-                        activeColor: const Color.fromARGB(255, 9, 118, 13),
-                        value: _terms,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _terms = value ?? false;
-                          });
-                        },
-                      ),
-                      Text(
-                        "Remember Me",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: const Color.fromARGB(255, 4, 46, 4),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      
                     ],
                   ),
                   TextButton(
                     onPressed: () {
                       // Add your forgot password logic here
                     },
+                    
+                    
                     child: Text(
                       "Forgot Password?",
                       style: TextStyle(

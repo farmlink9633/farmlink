@@ -1,20 +1,21 @@
-import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:farmlink/utils.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
-
+import 'package:farmlink/farmer/farmer_chat_screen.dart'; // Import the QueryScreen
 
 class Officer {
   final String name;
   final String designation;
+  final String officeaddress;
 
-  Officer({required this.name, required this.designation});
+  Officer({required this.name, required this.designation,required this.officeaddress});
 
   factory Officer.fromJson(Map<String, dynamic> json) {
     return Officer(
       name: json['name'] ?? 'Unknown',
       designation: json['designation'] ?? 'Unknown',
+      officeaddress: json['officeaddress'] ?? 'Unknown',
     );
   }
 }
@@ -81,8 +82,15 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                     return Card(
                       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: ListTile(
-                        title: Text(officer.name, style: TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Text(officer.designation),
+                        title: Text(officer.name, style: TextStyle(fontWeight: FontWeight.bold)),                        
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => QueryScreen(),
+                            ),
+                          );
+                        },
                       ),
                     );
                   },

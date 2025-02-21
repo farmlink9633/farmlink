@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 
-const String baseurl = 'https://0114-117-205-204-151.ngrok-free.app';
+const String baseurl = 'https://9a0e-117-196-58-124.ngrok-free.app';
 
 class OfficerNoticeScreen extends StatefulWidget {
   @override
@@ -26,7 +26,7 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
   }
 
   Future<void> _fetchNotices() async {
-    final response = await http.get(Uri.parse('https://cd2f-117-242-29-114.ngrok-free.app/GetNoticesView/'));
+    final response = await http.get(Uri.parse('$baseurl/GetNoticesView/'));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -57,7 +57,12 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(236, 215, 228, 212) ,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+         backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        title: Text(
+          "Notices",
+          style: GoogleFonts.poppins(
+          fontSize: 28),
+        ),
       ),
       body: Column(
         children: [

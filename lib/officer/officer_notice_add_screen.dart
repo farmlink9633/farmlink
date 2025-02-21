@@ -96,13 +96,14 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
         title: Text('Add Notice'),
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.white,
+          
           padding: EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
@@ -164,8 +165,9 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
                     : ElevatedButton(
                         onPressed: _submitNotice,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 46, 121, 49),
+                          backgroundColor: const Color.fromARGB(255, 109, 124, 103),
                           foregroundColor: Colors.white,
+                          fixedSize: Size(150, 40)
                         ),
                         child: Text('Submit'),
                       ),

@@ -61,7 +61,7 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.yellow[700]!, Colors.green[800]!],
+              colors: [const Color.fromARGB(255, 39, 88, 39)!, Colors.green[800]!],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -81,7 +81,7 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: isLoading
-              ? Center(child: CircularProgressIndicator(color: Colors.green))
+              ? Center(child: CircularProgressIndicator(color: const Color.fromARGB(255, 158, 221, 161)))
               : SingleChildScrollView(
                   child: Column(
                     children: [

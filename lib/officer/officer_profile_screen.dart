@@ -76,7 +76,7 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
     return Scaffold(
       backgroundColor:const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
-         backgroundColor: const Color.fromARGB(255, 116, 140, 107) ,
+         backgroundColor: const Color.fromARGB(255, 116, 140, 107), 
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

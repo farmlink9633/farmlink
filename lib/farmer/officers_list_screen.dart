@@ -1,21 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:farmlink/utils.dart';
 import 'dart:convert';
+import 'package:farmlink/utils.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:farmlink/farmer/farmer_chat_screen.dart'; // Import the QueryScreen
 
 class Officer {
-  final String name;
+  final int id;
   final String designation;
   final String officeaddress;
 
-  Officer({required this.name, required this.designation,required this.officeaddress});
+  Officer({required this.id, required this.designation, required this.officeaddress});
 
   factory Officer.fromJson(Map<String, dynamic> json) {
     return Officer(
-      name: json['name'] ?? 'Unknown',
-      designation: json['designation'] ?? 'Unknown',
-      officeaddress: json['officeaddress'] ?? 'Unknown',
+      id: json['id'],
+      designation: json['designation'],
+      officeaddress: json['officeaddress'],
     );
   }
 }
@@ -26,9 +25,8 @@ class OfficerListScreen extends StatefulWidget {
 }
 
 class _OfficerListScreenState extends State<OfficerListScreen> {
-  List<Officer> _officers = [];
-  bool _isLoading = true;
-  String _errorMessage = '';
+  List<Officer> officerList = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -37,64 +35,78 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
   }
 
   Future<void> fetchOfficers() async {
-    final String url = '$baseurl/officerlist/'; // Replace with your API URL
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['message'] == 'success') {
-          setState(() {
-            _officers = (data['data'] as List).map((json) => Officer.fromJson(json)).toList();
-            _isLoading = false;
-          });
-        } else {
-          setState(() {
-            _errorMessage = 'Failed to load officers';
-            _isLoading = false;
-          });
-        }
-      } else {
-        setState(() {
-          _errorMessage = 'Server error: ${response.statusCode}';
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
+    final response = await http.get(Uri.parse('$baseurl/officerlist/'));
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      List<dynamic> data = jsonDecode(response.body);
       setState(() {
-        _errorMessage = 'An error occurred: $e';
-        _isLoading = false;
+        officerList = data.map((json) => Officer.fromJson(json)).toList();
+        isLoading = false;
       });
+    } else {
+      throw Exception('Failed to load officers');
     }
+  }
+
+  void navigateToQueryScreen(BuildContext context, Officer officer) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QueryScreen(officer: officer), // Navigate to QueryScreen
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Officer List')),
-      body: _isLoading
+      body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : _errorMessage.isNotEmpty
-              ? Center(child: Text(_errorMessage))
-              : ListView.builder(
-                  itemCount: _officers.length,
-                  itemBuilder: (context, index) {
-                    final officer = _officers[index];
-                    return Card(
-                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: ListTile(
-                        title: Text(officer.name, style: TextStyle(fontWeight: FontWeight.bold)),                        
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => QueryScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
+          : ListView.builder(
+              itemCount: officerList.length,
+              itemBuilder: (context, index) {
+                final officer = officerList[index];
+                return Card(
+                  child: ListTile(
+                    title: Text(officer.designation),
+                    subtitle: Text(officer.officeaddress),
+                    leading: CircleAvatar(child: Text(officer.id.toString())),
+                    onTap: () => navigateToQueryScreen(context, officer), // Navigate on tap
+                  ),
+                );
+              },
+            ),
     );
   }
+}
+
+class QueryScreen extends StatelessWidget {
+  final Officer officer;
+
+  QueryScreen({required this.officer});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Query Screen')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Officer ID: ${officer.id}'),
+            Text('Designation: ${officer.designation}'),
+            Text('Office address: ${officer.officeaddress}'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: OfficerListScreen(),
+  ));
 }

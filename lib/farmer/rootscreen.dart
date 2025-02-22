@@ -31,10 +31,13 @@ class _RootscreenState extends State<Rootscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome')
+        backgroundColor: const Color.fromARGB(236, 215, 228, 212),
+        title: const Text('Welcome'),
+       
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.red,
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

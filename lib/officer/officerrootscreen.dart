@@ -15,7 +15,7 @@ class _OfficerRootScreenState extends State<OfficerRootScreen> {
   final List<Widget> _screens = [
     OfficerHomescreen(),
     OfficerNoticeScreen(),
-    ChatScreen(),
+    OfficerQueryListScreen(),
     OfficerProfileScreen(),
   ];
 
@@ -32,11 +32,12 @@ class _OfficerRootScreenState extends State<OfficerRootScreen> {
     return Scaffold(
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 84, 129, 78),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        selectedItemColor: const Color.fromARGB(255, 9, 72, 13),
+        selectedItemColor: const Color.fromARGB(255, 64, 92, 66),
         unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.red, // Temporarily set to red for testing
+         
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notices'),

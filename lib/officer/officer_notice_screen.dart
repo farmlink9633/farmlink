@@ -30,6 +30,7 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
 
     if (response.statusCode == 200) {
       setState(() {
+         print(response.body);
         _notices = jsonDecode(response.body);
         _filteredNotices = _notices;
         _isLoading = false;
@@ -61,7 +62,9 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
         title: Text(
           "Notices",
           style: GoogleFonts.poppins(
-          fontSize: 28),
+          fontSize: 28,
+          color: Colors.white
+          ),
         ),
       ),
       body: Column(

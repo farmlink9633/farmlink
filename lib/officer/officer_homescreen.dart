@@ -23,7 +23,7 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
 
   Future<void> fetchFarmers() async {
     try {
-      final response = await http.get(Uri.parse('$baseurl/list_view/'));
+      final response = await http.get(Uri.parse('$baseurl/list/'));
       
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -75,7 +75,7 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
                 prefixIcon: Icon(Icons.search),
                 suffixIcon: searchQuery.isNotEmpty
                     ? IconButton(
-                        icon: Icon(Icons.clear, color: Colors.red),
+                        icon: Icon(Icons.clear, color: const Color.fromARGB(255, 35, 79, 29)),
                         onPressed: () {
                           setState(() {
                             _searchController.clear();

@@ -69,28 +69,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.green[700]!, Colors.green[900]!],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+        title: Text(
+          'Profile',
+            style: GoogleFonts.poppins(
+            fontSize: 20,
+            color: Colors.white,
           ),
         ),
-        title: Text("Profile", style: TextStyle(color: Colors.white)),
-        actions: [
-         
-        ],
+        elevation: 0,
       ),
-      body: Container(
+      
+     body: Container(
         height: double.infinity,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-                'https://img.freepik.com/free-vector/leaves-background-with-metallic-foil_79603-914.jpg'),
-            fit: BoxFit.cover,
-          ),
+          
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -155,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            backgroundColor: Colors.green[700],
+                            backgroundColor: const Color.fromARGB(255, 116, 140, 107), 
                           ),
                           onPressed: () async{
 

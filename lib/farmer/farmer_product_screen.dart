@@ -51,6 +51,7 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       body: Column(
         children: [
           Padding(
@@ -124,8 +125,8 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
           // Action to add a new product
           Navigator.push(context, MaterialPageRoute(builder: (context) => ProductAddScreen(),));
         },
-        backgroundColor: const Color.fromARGB(255, 35, 134, 38),
-        child: Icon(Icons.add),
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107) ,
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }

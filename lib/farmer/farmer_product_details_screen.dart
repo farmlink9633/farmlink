@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -85,10 +86,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212), 
       appBar: AppBar(
-        title: Text('Product Details'),
-        backgroundColor: Colors.green,
-        elevation: 0,
+       backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        title: Text(
+          'Product Details',
+        style: GoogleFonts.poppins(
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -118,12 +125,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     )
                   : Text(
                       widget.productData['productname'] ?? 'No product name',
-                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.green),
+                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 68, 97, 69)),
                     ),
               SizedBox(height: 10),
 
               // Editable Description
-              Text('Description:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87)),
+              Text('Description:', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: const Color.fromARGB(221, 74, 106, 67))),
               SizedBox(height: 5),
               _isEditing
                   ? TextField(

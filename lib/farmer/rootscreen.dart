@@ -30,10 +30,10 @@ class _RootscreenState extends State<Rootscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     backgroundColor:  const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         
-       
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
@@ -58,8 +58,8 @@ class _RootscreenState extends State<Rootscreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 41, 73, 43),
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: const Color.fromARGB(255, 42, 77, 44),
+        unselectedItemColor: const Color.fromARGB(255, 199, 196, 196),
         onTap: _onItemTapped,
         showUnselectedLabels: true,
       ),

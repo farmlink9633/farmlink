@@ -1,5 +1,6 @@
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
@@ -70,12 +71,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Product added successfully!'),
-          backgroundColor: Colors.green,
+          backgroundColor: const Color.fromARGB(255, 60, 111, 61),
         ));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Failed to add product!'),
-          backgroundColor: Colors.red,
+          backgroundColor: const Color.fromARGB(255, 239, 88, 78),
         ));
       }
     }
@@ -84,9 +85,16 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
-        title: Text('Add Product'),
-        backgroundColor: Colors.green,
+        title: Text(
+          'Add Product',
+            style: GoogleFonts.poppins(
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         elevation: 0,
       ),
       body: Padding(
@@ -99,6 +107,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
               children: [
                 // Product Name
                 _buildTextFormField(
+                  
                   controller: _productNameController,
                   label: 'Product Name',
                   icon: Icons.production_quantity_limits,
@@ -123,7 +132,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                           height: 150,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: Colors.grey[200],
+                            color: const Color.fromARGB(255, 150, 165, 148),
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: [
                               BoxShadow(color: Colors.grey.withOpacity(0.3), blurRadius: 8, spreadRadius: 2)
@@ -165,9 +174,15 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                           onPressed: _addProduct,
-                          child: Text('Add Product'),
+                          child: Text(
+                            'Add Product',
+                          style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          color: Colors.white,
+                            ),
+                            ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
+                            backgroundColor: const Color.fromARGB(255, 116, 140, 107),
                             padding: EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
@@ -202,11 +217,11 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
           prefixIcon: Icon(icon),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.green),
+            borderSide: BorderSide(color: const Color.fromARGB(255, 89, 120, 90)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.green),
+            borderSide: BorderSide(color: const Color.fromARGB(255, 73, 110, 74) ),
           ),
         ),
         validator: validator,

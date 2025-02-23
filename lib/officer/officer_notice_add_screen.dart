@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // Define Base URL
-const String baseurl = 'https://0114-117-205-204-151.ngrok-free.app';
+const String baseurl = 'https://dda2-117-213-11-248.ngrok-free.app';
 
 class OfficerNoticeAddScreen extends StatefulWidget {
   @override
@@ -98,7 +99,12 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
-        title: Text('Add Notice'),
+        title: Text('Add Notice',
+        style: GoogleFonts.poppins(
+          fontSize: 25,
+          color: Colors.white
+          )
+          ),
         backgroundColor: const Color.fromARGB(255, 116, 140, 107),
       ),
       body: SingleChildScrollView(
@@ -115,7 +121,9 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
                     labelText: 'Title',
                     filled: true,
                     fillColor: Colors.yellow[50],
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+
+                    ),
                   ),
                   validator: (value) =>
                       value!.trim().isEmpty ? 'Enter a valid title' : null,
@@ -145,7 +153,7 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
                   onTap: _pickDate,
                   child: InputDecorator(
                     decoration: InputDecoration(
-                      labelText: 'Select Date',
+                      
                       filled: true,
                       fillColor: Colors.yellow[50],
                       border: OutlineInputBorder(),

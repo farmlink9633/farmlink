@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 10),
                 TextButton(
                   onPressed: () => _launchURL(data['buy_url']),
-                  child: Text("Buy Supplement", style: TextStyle(color: Colors.blue)),
+                  child: Text("Buy Supplement", style: TextStyle(color: const Color.fromARGB(255, 46, 79, 45))),
                 ),
               ],
             ),
@@ -169,12 +169,12 @@ class _HomeScreenState extends State<HomeScreen> {
           child: TextField(
             decoration: InputDecoration(
               hintText: 'Search...',
-              prefixIcon: const Icon(Icons.search, color: Colors.black),
+              prefixIcon: const Icon(Icons.search, color: Color.fromARGB(255, 33, 76, 38)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(6.0),
               ),
               filled: true,
-              fillColor: const Color.fromARGB(255, 179, 221, 167),
+              fillColor: const Color.fromARGB(236, 215, 228, 212) ,
             ),
             onChanged: (value) {
               setState(() {

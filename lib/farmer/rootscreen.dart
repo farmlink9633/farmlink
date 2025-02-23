@@ -31,13 +31,13 @@ class _RootscreenState extends State<Rootscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(236, 215, 228, 212),
-        title: const Text('Welcome'),
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        
        
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.red,
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -58,7 +58,7 @@ class _RootscreenState extends State<Rootscreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 8, 86, 14),
+        selectedItemColor: const Color.fromARGB(255, 41, 73, 43),
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
         showUnselectedLabels: true,

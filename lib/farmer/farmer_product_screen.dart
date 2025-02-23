@@ -51,10 +51,6 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Farmer'),
-        backgroundColor: const Color.fromARGB(255, 150, 219, 152),
-      ),
       body: Column(
         children: [
           Padding(

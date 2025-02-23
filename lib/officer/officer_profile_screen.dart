@@ -79,13 +79,9 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
          backgroundColor: const Color.fromARGB(255, 116, 140, 107), 
         flexibleSpace: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.green[700]!, Colors.green[900]!],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+            
             ),
           ),
-        ),
         title: Text(
           "Profile",
           style: GoogleFonts.poppins(
@@ -127,10 +123,10 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
                   SizedBox(height: 20),
                   Text(
                     name,
-                    style: GoogleFonts.rubik(
+                    style: GoogleFonts.poppins(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
-                      color: const Color.fromARGB(255, 102, 112, 102),
+                      color: const Color.fromARGB(255, 134, 143, 134),
                     ),
                   ),
                   SizedBox(height: 5),

@@ -30,14 +30,16 @@ class _OfficerRootScreenState extends State<OfficerRootScreen> {
     debugPrint("Building OfficerRootScreen"); // Debugging statement
 
     return Scaffold(
-      body: _screens[_selectedIndex],
+      resizeToAvoidBottomInset: false, // Prevent the screen from resizing when the keyboard appears
+      body: _screens[_selectedIndex], // Display the selected screen
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 84, 129, 78),
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: const Color.fromARGB(255, 64, 92, 66),
-        unselectedItemColor: Colors.grey,
-         
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107), // Set the background color
+        currentIndex: _selectedIndex, // Set the currently selected index
+        onTap: _onItemTapped, // Handle item taps
+        selectedItemColor: const Color.fromARGB(255, 64, 92, 66), // Color for the selected item
+        unselectedItemColor: Colors.grey, // Color for unselected items
+        type: BottomNavigationBarType.fixed, // Ensure all items are visible
+        elevation: 0, // Remove elevation/shadow
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notices'),

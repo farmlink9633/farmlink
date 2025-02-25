@@ -71,28 +71,86 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
     }
   }
 
+  // Function to show logout confirmation dialog
+  Future<void> _showLogoutConfirmation() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Logout",
+            style: GoogleFonts.poppins(
+              fontSize: 20, // Font size for dialog title
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            "Are you sure you want to logout?",
+            style: GoogleFonts.poppins(
+              fontSize: 16, // Font size for dialog content
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                "No",
+                style: GoogleFonts.poppins(
+                  fontSize: 16, // Font size for "No" button
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove('id');
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Splashscreen()),
+                  (route) => false,
+                );
+              },
+              child: Text(
+                "Yes",
+                style: GoogleFonts.poppins(
+                  fontSize: 16, // Font size for "Yes" button
+                  color: const Color.fromARGB(255, 39, 82, 41),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:const Color.fromARGB(236, 215, 228, 212),
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212),
+      
       appBar: AppBar(
-         backgroundColor: const Color.fromARGB(255, 116, 140, 107), 
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         flexibleSpace: Container(
-          decoration: BoxDecoration(
-            
-            ),
-          ),
+          decoration: BoxDecoration(),
+        ),
         title: Text(
           "Profile",
           style: GoogleFonts.poppins(
-            fontSize: 26,
+            fontSize: 24, // Font size for app bar title
             color: Colors.white,
+            fontWeight: FontWeight.normal,
           ),
         ),
         centerTitle: true,
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator(color: Colors.green))
+          ? Center(
+              child: CircularProgressIndicator(
+                color: const Color.fromARGB(255, 95, 125, 96),
+              ),
+            )
           : SingleChildScrollView(
               padding: EdgeInsets.all(20),
               child: Column(
@@ -100,22 +158,37 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
                 children: [
                   // Profile Picture Section
                   Stack(
-                    alignment: Alignment.bottomRight,
+                    alignment: Alignment.center,
                     children: [
                       CircleAvatar(
                         radius: 60,
+                        backgroundColor: const Color.fromARGB(255, 199, 204, 200),
                         backgroundImage: _profileImage != null
                             ? FileImage(_profileImage!) as ImageProvider
-                            : NetworkImage("https://www.w3schools.com/w3images/avatar2.png"),
+                            : null,
+                        child: _profileImage == null
+                            ? Icon(
+                                Icons.person,
+                                size: 60,
+                                color: const Color.fromARGB(255, 146, 151, 147),
+                              )
+                            : null,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.green[700],
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          icon: Icon(Icons.camera_alt, color: Colors.white),
-                          onPressed: _pickImage,
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 90, 122, 92),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                            ),
+                            onPressed: _pickImage,
+                          ),
                         ),
                       ),
                     ],
@@ -124,17 +197,18 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
                   Text(
                     name,
                     style: GoogleFonts.poppins(
-                      fontSize: 26,
+                      fontSize: 24, // Font size for name
                       fontWeight: FontWeight.bold,
-                      color: const Color.fromARGB(255, 134, 143, 134),
+                      color: const Color.fromARGB(255, 64, 82, 64),
                     ),
                   ),
                   SizedBox(height: 5),
                   Text(
                     email,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[700],
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.normal, 
+                      color: const Color.fromARGB(255, 50, 49, 49),
                     ),
                   ),
                   SizedBox(height: 30),
@@ -151,23 +225,15 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        backgroundColor: Colors.green[700],
+                        backgroundColor: const Color.fromARGB(255, 100, 120, 92),
                       ),
-                      onPressed: () async {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        prefs.remove('id');
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => Splashscreen()),
-                          (route) => false,
-                        );
-                      },
+                      onPressed: _showLogoutConfirmation,
                       child: Text(
-                        "Log Out",
-                        style: TextStyle(
-                          fontSize: 18,
+                        "Log out",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18, // Font size for logout button
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
                     ),
@@ -186,20 +252,25 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
       ),
       elevation: 4,
       child: ListTile(
-        leading: Icon(icon, color: Colors.green[800], size: 30),
+        tileColor: const Color.fromARGB(255, 190, 197, 183),
+        leading: Icon(
+          icon,
+          color: const Color.fromARGB(255, 75, 100, 77),
+          size: 25,
+        ),
         title: Text(
           title,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.green[900],
+          style: GoogleFonts.poppins(
+            fontSize: 16, // Font size for info row title
+            fontWeight: FontWeight.normal,
+            color: const Color.fromARGB(255, 49, 75, 51),
           ),
         ),
         trailing: Text(
           info,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.green[700],
+          style: GoogleFonts.poppins(
+            fontSize: 14, // Font size for info row trailing text
+            color: const Color.fromARGB(255, 60, 74, 60),
           ),
         ),
       ),
@@ -209,19 +280,19 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
   Widget _buildDividerWithIcon(String text) {
     return Row(
       children: [
-        Expanded(child: Divider(color: Colors.green[300], thickness: 1.5)),
+        Expanded(child: Divider(color:  const Color.fromARGB(255, 116, 143, 118), thickness: 1.5)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
             text,
-            style: GoogleFonts.rubik(
-              fontSize: 16,
+            style: GoogleFonts.poppins(
+              fontSize: 16, // Font size for divider text
               color: Colors.green[900],
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
-        Expanded(child: Divider(color: Colors.green[300], thickness: 1.5)),
+        Expanded(child: Divider(color: const Color.fromARGB(255, 116, 143, 118), thickness: 1.5)),
       ],
     );
   }

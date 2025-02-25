@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class Query {
@@ -71,7 +72,18 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Farmer Queries')),
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        title: Text(
+          'Farmer Queries',
+          style: GoogleFonts.poppins(
+              fontSize: 22,
+              color: Colors.white,
+            ),
+          ),
+      ),
+
       body: isLoading
           ? Center(child: CircularProgressIndicator())  // Loading Indicator
           : isError

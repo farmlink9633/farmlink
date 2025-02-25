@@ -76,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            "Log Out",
+            "Log out",
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           content: Text(
-            "Are you sure want to log out?",
+            "Are you sure you want to log out?",
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: Colors.black,
@@ -233,11 +233,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             _showLogoutConfirmationDialog(context); // Show confirmation dialog
                           },
                           child: Text(
-                            "Log Out",
+                            "Log out",
                             style: GoogleFonts.poppins(
                               fontSize: 17,
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                         ),
@@ -268,7 +268,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title,
           style: GoogleFonts.poppins(
             fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.normal,
             color: const Color.fromARGB(255, 59, 102, 62),
           ),
         ),

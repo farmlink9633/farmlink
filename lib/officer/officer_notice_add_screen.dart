@@ -101,7 +101,7 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
       appBar: AppBar(
         title: Text('Add Notice',
         style: GoogleFonts.poppins(
-          fontSize: 25,
+          fontSize: 23,
           color: Colors.white
           )
           ),

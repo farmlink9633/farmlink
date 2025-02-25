@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const String baseurl = 'https://dda2-117-213-11-248.ngrok-free.app';
+const String baseurl = 'https://287e-2409-4073-483-7171-9ce9-18ff-1781-65e7.ngrok-free.app';
 
 class OfficerNoticeScreen extends StatefulWidget {
   @override
@@ -66,7 +66,7 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
           title: Text(
             "Notices",
             style: GoogleFonts.poppins(
-              fontSize: 25,
+              fontSize: 23,
               color: Colors.white,
             ),
           ),
@@ -78,7 +78,7 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search Notices...',
+                  hintText: 'Search notices...',
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),

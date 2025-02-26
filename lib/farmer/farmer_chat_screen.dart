@@ -54,24 +54,27 @@ class _QueryScreenState extends State<QueryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(236, 215, 228, 212), 
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
         title: Text(
           'Submit Query',
           style: GoogleFonts.poppins(
             fontSize: 21,
             fontWeight: FontWeight.normal,
-            color: Colors.white
+            color: Colors.white,
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 116, 140, 107), 
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         elevation: 0,
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.green[50]!, Colors.white],
+            colors: [
+              const Color.fromARGB(235, 214, 232, 210),
+              const Color.fromARGB(235, 215, 233, 209),
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -81,11 +84,13 @@ class _QueryScreenState extends State<QueryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Card for Query Content and Image Picker
               Card(
                 elevation: 5,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
+                color: const Color.fromARGB(255, 223, 233, 223), // Custom background color
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Column(
@@ -96,8 +101,8 @@ class _QueryScreenState extends State<QueryScreen> {
                         decoration: InputDecoration(
                           labelText: 'Query Content',
                           labelStyle: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.green[800],
+                            fontSize: 14,
+                            color: const Color.fromARGB(255, 95, 121, 97),
                           ),
                           border: InputBorder.none,
                           hintText: 'Describe your query...',
@@ -107,29 +112,28 @@ class _QueryScreenState extends State<QueryScreen> {
                         ),
                         style: GoogleFonts.poppins(
                           fontSize: 16,
-                          color: Colors.green[900],
+                          color: const Color.fromARGB(255, 94, 123, 96),
                         ),
                       ),
-                      Divider(color: Colors.green[200]),
+                      Divider(color: const Color.fromARGB(255, 136, 165, 137)),
                       SizedBox(height: 10),
                       Row(
                         children: [
-                          Icon(Icons.image, color: Colors.green[800]),
+                          Icon(Icons.image, color: const Color.fromARGB(255, 72, 104, 74)),
                           SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: _pickImage,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green[700],
+                              backgroundColor: const Color.fromARGB(255, 111, 134, 112),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             ),
                             child: Text(
                               'Pick Image',
                               style: GoogleFonts.poppins(
-                                fontSize: 14,
+                                fontSize: 13,
                                 color: Colors.white,
                               ),
                             ),
@@ -148,22 +152,25 @@ class _QueryScreenState extends State<QueryScreen> {
                 ),
               ),
               SizedBox(height: 20),
+
+              // Card for "Asked by Farmer" Checkbox
               Card(
                 elevation: 5,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
+                color:const Color.fromARGB(255, 223, 233, 223),   // Same custom background color
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Row(
                     children: [
-                      Icon(Icons.person, color: Colors.green[800]),
+                      Icon(Icons.person, color: const Color.fromARGB(255, 72, 104, 74)),
                       SizedBox(width: 10),
                       Text(
                         'Asked by Farmer',
                         style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: Colors.green[800],
+                          fontSize: 14,
+                          color: const Color.fromARGB(255, 70, 81, 71),
                         ),
                       ),
                       Spacer(),
@@ -174,13 +181,15 @@ class _QueryScreenState extends State<QueryScreen> {
                             _isAskedByFarmer = value!;
                           });
                         },
-                        activeColor: Colors.green[700],
+                        activeColor: const Color.fromARGB(255, 67, 102, 69),
                       ),
                     ],
                   ),
                 ),
               ),
               SizedBox(height: 20),
+
+              // Submit Button
               Center(
                 child: ElevatedButton(
                   onPressed: _submitQuery,

@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Pick an image from the gallery
   Future<void> pickImageFromGallery() async {
     final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    
+
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
@@ -34,10 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Capture an image using the camera
   Future<void> openCamera() async {
     final permissionStatus = await Permission.camera.request();
-    
+
     if (permissionStatus.isGranted) {
       final XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
-      
+
       if (pickedFile != null) {
         setState(() {
           _image = File(pickedFile.path);
@@ -92,35 +92,60 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(data['disease_name'] ?? "Unknown Disease"),
+          title: Text(
+            data['disease_name'] ?? "Unknown Disease",
+            style: GoogleFonts.poppins(),
+          ),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.network(data['disease_image_url'], height: 150),
                 SizedBox(height: 10),
-                Text("Description:", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(data['description']),
+                Text(
+                  "Description:",
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  data['description'],
+                  style: GoogleFonts.poppins(),
+                ),
                 SizedBox(height: 10),
-                Text("Possible Steps:", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(data['possible_steps']),
+                Text(
+                  "Possible Steps:",
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  data['possible_steps'],
+                  style: GoogleFonts.poppins(),
+                ),
                 SizedBox(height: 10),
-                Text("Supplement:", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  "Supplement:",
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                ),
                 Row(
                   children: [
                     Image.network(data['supplement_image_url'], height: 50),
                     SizedBox(width: 10),
-                    Expanded(child: Text(data['supplement_name'])),
+                    Expanded(
+                      child: Text(
+                        data['supplement_name'],
+                        style: GoogleFonts.poppins(),
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 10),
-                
               ],
             ),
           ),
           actions: [
             TextButton(
-              child: Text("Close"),
+              child: Text(
+                "Close",
+                style: GoogleFonts.poppins(),
+              ),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -135,12 +160,21 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Error'),
-          content: Text(message),
+          title: Text(
+            'Error',
+            style: GoogleFonts.poppins(),
+          ),
+          content: Text(
+            message,
+            style: GoogleFonts.poppins(),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
+              child: Text(
+                'OK',
+                style: GoogleFonts.poppins(),
+              ),
             ),
           ],
         );
@@ -148,83 +182,190 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Open URLs in a browser
-  void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+  /// Fetch notices from the backend
+  Future<List<Map<String, dynamic>>> _fetchNotices() async {
+    final response = await http.get(Uri.parse('$baseurl/GetNoticesView/'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data.cast<Map<String, dynamic>>();
     } else {
-      print("Could not open URL: $url");
+      throw Exception('Failed to load notices');
+    }
+  }
+
+  /// Show notices in a dialog
+  void _showNoticesDialog() async {
+    try {
+      List<Map<String, dynamic>> notices = await _fetchNotices();
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'Notices',
+              style: GoogleFonts.poppins(),
+            ),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: notices.map((notice) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        notice['title'],
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        notice['description'],
+                        style: GoogleFonts.poppins(),
+                      ),
+                      SizedBox(height: 10),
+                      Divider(color: Colors.grey),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  "Close",
+                  style: GoogleFonts.poppins(),
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      _showErrorDialog("Failed to load notices. Please try again.");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(13.0),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Search...',
-              prefixIcon: const Icon(Icons.search, color: Color.fromARGB(255, 33, 76, 38)),
-              border: OutlineInputBorder(
-                
-                borderRadius: BorderRadius.circular(6.0),
-              ),
-              filled: true,
-              fillColor: const Color.fromARGB(236, 215, 228, 212) ,
-            ),
-            onChanged: (value) {
-              setState(() {
-                searchQuery = value;
-              });
-            },
-          ),
-        ),
-        SizedBox(
-          height:18
-        ),
-        Text(
-          'Disease detection',
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212),
+      appBar: AppBar(
+        title: Text(
+          '',
           style: GoogleFonts.poppins(
-              fontSize: 18,
-              color: const Color.fromARGB(255, 71, 85, 65),
-              fontWeight: FontWeight.normal,
-            ),
-          
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
-        SizedBox(
-          height: 23),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications, color: const Color.fromARGB(255, 246, 244, 244)),
+            onPressed: _showNoticesDialog, // Show notices when the icon is clicked
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            ElevatedButton.icon(
-              onPressed: _isLoading ? null : openCamera,
-              icon: Icon(Icons.camera_alt, color: Colors.black),
-              label: Text('Camera'),
+            Padding(
+              padding: const EdgeInsets.all(13.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  hintStyle: GoogleFonts.poppins(),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: Color.fromARGB(255, 33, 76, 38),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
+                  filled: true,
+                  fillColor: const Color.fromARGB(236, 215, 228, 212),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
+                },
+              ),
             ),
-            SizedBox(width: 10),
-            ElevatedButton.icon(
-              onPressed: _isLoading ? null : pickImageFromGallery,
-              icon: Icon(Icons.image, color: Colors.black),
-              label: Text('Gallery'),
+            SizedBox(height: 18),
+            Text(
+              'Disease Detection',
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                color: const Color.fromARGB(255, 71, 85, 65),
+                fontWeight: FontWeight.normal,
+              ),
             ),
+            SizedBox(height: 23),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: _isLoading ? null : openCamera,
+                  icon: Icon(
+                    Icons.camera_alt,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    'Camera',
+                    style: GoogleFonts.poppins(),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 116, 140, 107), // Button color
+                    foregroundColor: Colors.white, // Text and icon color
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton.icon(
+                  onPressed: _isLoading ? null : pickImageFromGallery,
+                  icon: Icon(
+                    Icons.image,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    'Gallery',
+                    style: GoogleFonts.poppins(),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 98, 105, 99), // Button color
+                    foregroundColor: Colors.white, // Text and icon color
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (_isLoading)
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: CircularProgressIndicator(),
+              ),
+            if (_image != null)
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Image.file(_image!, height: 200),
+              ),
           ],
         ),
-
-        if (_isLoading)
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: CircularProgressIndicator(),
-          ),
-
-        if (_image != null) 
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Image.file(_image!, height: 200),
-          ),
-      ],
+      ),
     );
   }
 }

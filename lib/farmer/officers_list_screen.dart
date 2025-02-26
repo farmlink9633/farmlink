@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:farmlink/farmer/farmery_query_screen.dart';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -56,7 +57,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => QueryScreen(officer: officer), // Navigate to QueryScreen
+        builder: (context) => FarmerChatScreen(officerId: officer.id.toString(), farmerId: '20',), 
       ),
     );
   }
@@ -84,7 +85,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                 return Card(
                   child: ListTile(
                     tileColor:const Color.fromARGB(235, 204, 215, 202), 
-                    title: Text(officer.profile['']),
+                    title: Text(officer.profile['username']),
                     subtitle: Text(officer.officeaddress),
                     leading: CircleAvatar(child: Text(officer.id.toString())),
                     onTap: () => navigateToQueryScreen(context, officer), // Navigate on tap
@@ -96,28 +97,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
   }
 }
 
-class QueryScreen extends StatelessWidget {
-  final Officer officer;
 
-  QueryScreen({required this.officer});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Query Screen')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Officer ID: ${officer.id}'),
-            Text('Designation: ${officer.designation}'),
-            Text('Office address: ${officer.officeaddress}'),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 void main() {
   runApp(MaterialApp(

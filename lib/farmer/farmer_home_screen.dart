@@ -114,10 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 SizedBox(height: 10),
-                TextButton(
-                  onPressed: () => _launchURL(data['buy_url']),
-                  child: Text("Buy Supplement", style: TextStyle(color: const Color.fromARGB(255, 46, 79, 45))),
-                ),
+                
               ],
             ),
           ),
@@ -171,6 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
               hintText: 'Search...',
               prefixIcon: const Icon(Icons.search, color: Color.fromARGB(255, 33, 76, 38)),
               border: OutlineInputBorder(
+                
                 borderRadius: BorderRadius.circular(6.0),
               ),
               filled: true,
@@ -186,9 +184,17 @@ class _HomeScreenState extends State<HomeScreen> {
         SizedBox(
           height:18
         ),
-        Text('Disease detection',),
+        Text(
+          'Disease detection',
+          style: GoogleFonts.poppins(
+              fontSize: 18,
+              color: const Color.fromARGB(255, 71, 85, 65),
+              fontWeight: FontWeight.normal,
+            ),
+          
+          ),
         SizedBox(
-          height: 25),
+          height: 23),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

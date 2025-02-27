@@ -108,13 +108,14 @@ class _RegistrationState extends State<Registration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212), 
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.pop(context),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: const Color.fromARGB(255, 4, 56, 4),
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        foregroundColor: const Color.fromARGB(255, 200, 212, 200),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -123,9 +124,9 @@ class _RegistrationState extends State<Registration> {
             children: [
               Text(
                 "Register",
-                style: GoogleFonts.rubik(
-                  fontSize: 35,
-                  color: const Color.fromARGB(255, 7, 75, 7),
+                style: GoogleFonts.poppins(
+                  fontSize: 30,
+                  color: const Color.fromARGB(255, 74, 83, 74),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -133,11 +134,11 @@ class _RegistrationState extends State<Registration> {
               Text(
                 "Create your new account",
                 style: TextStyle(
-                  fontSize: 16,
-                  color: const Color.fromARGB(255, 198, 180, 180),
+                  fontSize: 15,
+                  color: const Color.fromARGB(255, 111, 117, 109),
                 ),
               ),
-              SizedBox(height: 18),
+              SizedBox(height: 19),
               buildTextField("Username", usernameController),
               SizedBox(height: 15),
               buildTextField("Email", emailController),
@@ -165,12 +166,12 @@ class _RegistrationState extends State<Registration> {
                   : ElevatedButton(
                       onPressed: () => register(context),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 4, 46, 4),
+                        backgroundColor: const Color.fromARGB(255, 102, 121, 96), 
                         fixedSize: Size(500, 50),
                       ),
                       child: Text(
                         "Sign up",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
                       ),
                     ),
               SizedBox(height: 25),
@@ -179,9 +180,9 @@ class _RegistrationState extends State<Registration> {
                 children: [
                   Text(
                     "Already have an account",
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.black,
+                    style: GoogleFonts.poppins(
+                      fontSize: 10,
+                      color: const Color.fromARGB(255, 51, 54, 52),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -195,10 +196,10 @@ class _RegistrationState extends State<Registration> {
                     },
                     child: Text(
                       "Login",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         decoration: TextDecoration.underline,
-                        fontSize: 13,
-                        color: Color.fromARGB(255, 4, 46, 4),
+                        fontSize: 12,
+                        color: Color.fromARGB(255, 52, 65, 52),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -229,18 +230,19 @@ class _RegistrationState extends State<Registration> {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
-        fillColor: Color(0xFFC1DFCB),
+        fillColor: Color.fromARGB(255, 221, 228, 223),
         filled: true,
         labelStyle: TextStyle(
-          fontSize: 15,
-          color: const Color.fromARGB(255, 4, 56, 4),
-          fontWeight: FontWeight.bold,
+          fontSize: 14,
+          color: const Color.fromARGB(255, 41, 47, 41),
+          fontWeight: FontWeight.normal
         ),
         suffixIcon: isPassword
             ? IconButton(
                 icon: Icon(
+                  
                   isPasswordHidden ? Icons.visibility_off : Icons.visibility,
-                  color: const Color.fromARGB(255, 4, 56, 4),
+                  color: const Color.fromARGB(255, 76, 86, 76),
                 ),
                 onPressed: togglePasswordVisibility,
               )

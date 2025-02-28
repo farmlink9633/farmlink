@@ -2,6 +2,7 @@ import 'package:farmlink/farmer/farmer_product_add_screen.dart';
 import 'package:farmlink/farmer/farmer_product_details_screen.dart';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -52,6 +53,16 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(236, 215, 228, 212),
+      appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+          title: Text(
+            "Product",
+            style: GoogleFonts.poppins(
+              fontSize: 20,
+              color: Colors.white,
+            ),
+          ),
+        ),
       body: Column(
         children: [
           Padding(
@@ -59,7 +70,7 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
             child: TextField(
               controller: searchController,
               decoration: InputDecoration(
-                labelText: 'Search Products',
+                labelText: 'search products...',
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.search),
               ),

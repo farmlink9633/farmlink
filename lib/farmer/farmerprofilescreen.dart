@@ -130,11 +130,371 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  void _showEditProfileDialog(BuildContext context) {
+    TextEditingController nameController = TextEditingController(text: name);
+    TextEditingController emailController = TextEditingController(text: email);
+    TextEditingController phoneController = TextEditingController(text: phone);
+    TextEditingController aadhaarController = TextEditingController(text: aadhaar);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Edit Profile",
+            style: GoogleFonts.poppins(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: const Color.fromARGB(255, 31, 68, 36),
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: "Name",
+                    labelStyle: GoogleFonts.poppins(),
+                  ),
+                ),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    labelStyle: GoogleFonts.poppins(),
+                  ),
+                ),
+                TextField(
+                  controller: phoneController,
+                  decoration: InputDecoration(
+                    labelText: "Phone",
+                    labelStyle: GoogleFonts.poppins(),
+                  ),
+                ),
+                TextField(
+                  controller: aadhaarController,
+                  decoration: InputDecoration(
+                    labelText: "Aadhaar",
+                    labelStyle: GoogleFonts.poppins(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                "Cancel",
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Save changes
+                final updatedData = {
+                  'username': nameController.text,
+                  'email': emailController.text,
+                  'phone': phoneController.text,
+                  'aadhaar': aadhaarController.text,
+                };
+
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                final String url = "$baseurl/AdminUpdateFarmer/";
+                final response = await http.post(
+                  Uri.parse(url),
+                  body: jsonEncode({
+                    'profileid': prefs.getString('id'),
+                    ...updatedData,
+                  }),
+                  headers: {'Content-Type': 'application/json'},
+                );
+
+                if (response.statusCode == 200) {
+                  setState(() {
+                    name = nameController.text;
+                    email = emailController.text;
+                    phone = phoneController.text;
+                    aadhaar = aadhaarController.text;
+                  });
+                  Navigator.of(context).pop(); // Close the dialog
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Failed to update profile"),
+                    ),
+                  );
+                }
+              },
+              child: Text(
+                "Save",
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: const Color.fromARGB(255, 79, 94, 73),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showChangePasswordDialog(BuildContext context) {
+    TextEditingController oldPasswordController = TextEditingController();
+    TextEditingController newPasswordController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Change Password",
+            style: GoogleFonts.poppins(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: const Color.fromARGB(255, 31, 68, 36),
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: oldPasswordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "Old Password",
+                    labelStyle: GoogleFonts.poppins(),
+                  ),
+                ),
+                TextField(
+                  controller: newPasswordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "New Password",
+                    labelStyle: GoogleFonts.poppins(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                "Cancel",
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                final String url = "$baseurl/password/${prefs.getString('id')}/";
+                final response = await http.put(
+                  Uri.parse(url),
+                  body: jsonEncode({
+                    'old_password': oldPasswordController.text,
+                    'new_password': newPasswordController.text,
+                  }),
+                  headers: {'Content-Type': 'application/json'},
+                );
+
+                if (response.statusCode == 200) {
+                  Navigator.of(context).pop(); // Close the dialog
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Password updated successfully"),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Failed to update password"),
+                    ),
+                  );
+                }
+              },
+              child: Text(
+                "Save",
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: const Color.fromARGB(255, 79, 94, 73),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Delete Profile",
+            style: GoogleFonts.poppins(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: const Color.fromARGB(255, 31, 68, 36),
+            ),
+          ),
+          content: Text(
+            "Are you sure you want to delete your profile?",
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                "No",
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                final String url = "$baseurl/AdminUpdateFarmer/?profileid=${prefs.getString('id')}";
+                final response = await http.delete(Uri.parse(url));
+
+                if (response.statusCode == 200) {
+                  prefs.remove('id');
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Splashscreen(),
+                    ),
+                    (route) => false,
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Failed to delete profile"),
+                    ),
+                  );
+                }
+              },
+              child: Text(
+                "Yes",
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: const Color.fromARGB(255, 79, 94, 73),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(235, 201, 210, 199),
-      
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        title: Text(
+          "Profile",
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              size: 23,
+              color: Colors.white, // Settings icon color
+            ),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.edit,
+                          color: const Color.fromARGB(255, 31, 68, 36), // Edit icon color
+                        ),
+                        title: Text(
+                          "Edit Profile",
+                          style: GoogleFonts.poppins(
+                            color: const Color.fromARGB(255, 31, 68, 36), // Edit text color
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                          _showEditProfileDialog(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.lock,
+                          color: const Color.fromARGB(255, 31, 68, 36), // Change password icon color
+                        ),
+                        title: Text(
+                          "Change Password",
+                          style: GoogleFonts.poppins(
+                            color: const Color.fromARGB(255, 31, 68, 36), // Change password text color
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                          _showChangePasswordDialog(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.delete,
+                          color: const Color.fromARGB(255, 31, 68, 36), // Delete icon color
+                        ),
+                        title: Text(
+                          "Delete Profile",
+                          style: GoogleFonts.poppins(
+                            color: const Color.fromARGB(255, 31, 68, 36), // Delete text color
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                          _showDeleteConfirmationDialog(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
       body: Container(
         height: double.infinity,
         decoration: BoxDecoration(

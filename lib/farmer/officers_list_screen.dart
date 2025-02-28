@@ -71,7 +71,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
         title: Text(
         'Officer List',
         style: GoogleFonts.poppins(
-              fontSize: 23,
+              fontSize: 20,
               color: Colors.white,
             ),
         )

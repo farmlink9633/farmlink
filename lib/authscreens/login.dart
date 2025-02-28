@@ -83,6 +83,11 @@ class _LoginScreenState extends State<LoginScreen> {
         print("Full Response: $data");
 
         if (role == 'Farmer') {
+           SharedPreferences prefs = await SharedPreferences.getInstance();
+           prefs.setString('id',data['id']);
+
+
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => Rootscreen()),

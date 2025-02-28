@@ -28,6 +28,7 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
   Future<void> fetchMessages() async {
     final url = Uri.parse('$baseurl/chatview/?officerid=${widget.officerId}&farmerid=${widget.farmerId}');
     final response = await http.get(url);
+    print(response.body);
 
     if (response.statusCode == 200) {
       setState(() {
@@ -68,13 +69,10 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
                     itemBuilder: (context, index) {
                       return ListTile(
                         title: Text(
-                          messages[index]['message'] ?? 'No message',
+                          messages[index]['content'] ?? 'No message',
                           style: GoogleFonts.poppins(),
                         ),
-                        subtitle: Text(
-                          'Sent by: ${messages[index]['sender']}',
-                          style: GoogleFonts.poppins(),
-                        ),
+                       
                       );
                     },
                   ),

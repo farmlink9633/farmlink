@@ -1,7 +1,10 @@
+import 'package:farmlink/officer/officer_notice_add_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
+import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart'  as http;
+import 'package:shared_preferences/shared_preferences.dart';// Import Google Fonts
 
 class QueryScreen extends StatefulWidget {
   @override
@@ -21,35 +24,103 @@ class _QueryScreenState extends State<QueryScreen> {
       });
     }
   }
+  Future<void> _submitQuery() async {
+  String content = _contentController.text;
 
-  void _submitQuery() {
-    String content = _contentController.text;
-
-    // Simulate API call or submission logic
-    bool isSuccess = true; // Change this based on your actual logic
-
-    if (content.isEmpty) {
-      isSuccess = false; // If content is empty, submission fails
-    }
-
-    // Show SnackBar based on success or failure
+  if (content.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          isSuccess ? 'Query submitted successfully!' : 'Submission failed. Please try again.',
-          style: GoogleFonts.poppins(), // Apply Poppins font
+          'Query content cannot be empty!',
+          style: GoogleFonts.poppins(),
         ),
-        backgroundColor: isSuccess ? Colors.green : Colors.red,
+        backgroundColor: Colors.red,
       ),
     );
-
-    // Print details for debugging
-    print('Content: $content');
-    print('Is Asked by Farmer: $_isAskedByFarmer');
-    if (_image != null) {
-      print('Image selected');
-    }
+    return;
   }
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String farmerId = prefs.getString('farmer_id') ?? '';
+
+
+  if (farmerId.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'User not logged in!',
+          style: GoogleFonts.poppins(),
+        ),
+        backgroundColor: Colors.red,
+      ),
+    );
+    return;
+  }
+
+  // Prepare the request
+  var request = http.MultipartRequest(
+    'POST',
+    Uri.parse('$baseurl/query/'), // Replace with your actual endpoint
+  );
+
+  // Add fields to the request
+  if (farmerId.isNotEmpty) {
+    request.fields['farmer_id'] = farmerId;
+  }
+  request.fields['content'] = content;
+
+  // Add image file if selected
+  if (_image != null) {
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image',
+        _image!.path,
+      ),
+    );
+  }
+
+  // Send the request
+  try {
+    final response = await request.send();
+    if (response.statusCode == 201) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Query submitted successfully!',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+      // Clear the form after successful submission
+      _contentController.clear();
+      setState(() {
+        _image = null;
+        _isAskedByFarmer = false;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Failed to submit query. Please try again.',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'An error occurred: $e',
+          style: GoogleFonts.poppins(),
+        ),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {

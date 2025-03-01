@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (role == 'Farmer') {
            SharedPreferences prefs = await SharedPreferences.getInstance();
-           prefs.setString('id',data['id']);
+           prefs.setString('id',data['data']['id'].toString());
 
 
 

@@ -18,6 +18,7 @@ class FarmerChatScreen extends StatefulWidget {
 class _FarmerChatScreenState extends State<FarmerChatScreen> {
   List<dynamic> messages = [];
   bool isLoading = true;
+  bool isNavigating = false; // Track button loading state
 
   @override
   void initState() {
@@ -42,6 +43,27 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to load messages')),
       );
+    }
+  }
+
+  void navigateToQueryScreen() async {
+    setState(() {
+      isNavigating = true; // Show loading indicator
+    });
+
+    await Future.delayed(const Duration(seconds: 1)); // Simulating delay
+
+    if (mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => QueryScreen(officer_id: widget.officerId),
+        ),
+      ).then((_) {
+        setState(() {
+          isNavigating = false; // Hide loading indicator after returning
+        });
+      });
     }
   }
 
@@ -72,7 +94,6 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
                           messages[index]['content'] ?? 'No message',
                           style: GoogleFonts.poppins(),
                         ),
-                       
                       );
                     },
                   ),
@@ -80,15 +101,7 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () {
-                // Navigate to QueryScreen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => QueryScreen()
-                     ),
-                );
-              },
+              onPressed: isNavigating ? null : navigateToQueryScreen, // Disable when loading
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 116, 140, 107),
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -96,13 +109,22 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text(
-                'Chat with Officer',
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              ),
+              child: isNavigating
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : Text(
+                      'Chat with Officer',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
             ),
           ),
         ],
@@ -110,4 +132,3 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
     );
   }
 }
-

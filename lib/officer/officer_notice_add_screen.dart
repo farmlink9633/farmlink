@@ -1,10 +1,10 @@
+import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // Define Base URL
-const String baseurl = 'https://dda2-117-213-11-248.ngrok-free.app';
 
 class OfficerNoticeAddScreen extends StatefulWidget {
   @override

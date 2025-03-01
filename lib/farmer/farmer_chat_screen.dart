@@ -1,12 +1,16 @@
 import 'package:farmlink/officer/officer_notice_add_screen.dart';
+import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart'  as http;
-import 'package:shared_preferences/shared_preferences.dart';// Import Google Fonts
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart'; // Import Google Fonts
 
 class QueryScreen extends StatefulWidget {
+  final String officer_id;
+
+  const QueryScreen({super.key, required this.officer_id});
   @override
   _QueryScreenState createState() => _QueryScreenState();
 }
@@ -15,6 +19,7 @@ class _QueryScreenState extends State<QueryScreen> {
   final TextEditingController _contentController = TextEditingController();
   File? _image;
   bool _isAskedByFarmer = false;
+  bool _isLoading = false; // Track loading state
 
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -24,103 +29,118 @@ class _QueryScreenState extends State<QueryScreen> {
       });
     }
   }
+
   Future<void> _submitQuery() async {
-  String content = _contentController.text;
+    String content = _contentController.text;
 
-  if (content.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Query content cannot be empty!',
-          style: GoogleFonts.poppins(),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
-    return;
-  }
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String farmerId = prefs.getString('farmer_id') ?? '';
-
-
-  if (farmerId.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'User not logged in!',
-          style: GoogleFonts.poppins(),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
-    return;
-  }
-
-  // Prepare the request
-  var request = http.MultipartRequest(
-    'POST',
-    Uri.parse('$baseurl/query/'), // Replace with your actual endpoint
-  );
-
-  // Add fields to the request
-  if (farmerId.isNotEmpty) {
-    request.fields['farmer_id'] = farmerId;
-  }
-  request.fields['content'] = content;
-
-  // Add image file if selected
-  if (_image != null) {
-    request.files.add(
-      await http.MultipartFile.fromPath(
-        'image',
-        _image!.path,
-      ),
-    );
-  }
-
-  // Send the request
-  try {
-    final response = await request.send();
-    if (response.statusCode == 201) {
+    if (content.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Query submitted successfully!',
+            'Query content cannot be empty!',
             style: GoogleFonts.poppins(),
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.red,
         ),
       );
-      // Clear the form after successful submission
-      _contentController.clear();
-      setState(() {
-        _image = null;
-        _isAskedByFarmer = false;
-      });
-    } else {
+      return;
+    }
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String farmerId = prefs.getString('id') ?? '';
+
+    if (farmerId.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Failed to submit query. Please try again.',
+            'User not logged in!',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Prepare the request
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseurl/add-query/'), // Replace with your actual endpoint
+    );
+
+    // Add fields to the request
+    if (farmerId.isNotEmpty) {
+      request.fields['farmer_id'] = farmerId;
+    }
+    request.fields['asked_by_farmer'] = _isAskedByFarmer.toString();
+    request.fields['officer_id'] = widget.officer_id;
+    request.fields['content'] = content;
+
+    // Add image file if selected
+    if (_image != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'image',
+          _image!.path,
+        ),
+      );
+    }
+
+    // Set loading to true before sending the request
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Send the request
+    try {
+      final response = await request.send();
+
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Query submitted successfully!',
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+        // Clear the form after successful submission
+        _contentController.clear();
+        setState(() {
+          _image = null;
+          _isAskedByFarmer = false;
+          _isLoading = false; // Set loading to false after submission
+        });
+      } else {
+        setState(() {
+          _isLoading = false; // Set loading to false on failure
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Failed to submit query. Please try again.',
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false; // Set loading to false if error occurs
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'An error occurred: $e',
             style: GoogleFonts.poppins(),
           ),
           backgroundColor: Colors.red,
         ),
       );
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'An error occurred: $e',
-          style: GoogleFonts.poppins(),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +250,7 @@ class _QueryScreenState extends State<QueryScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
-                color:const Color.fromARGB(255, 223, 233, 223),   // Same custom background color
+                color: const Color.fromARGB(255, 223, 233, 223), // Same custom background color
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Row(
@@ -263,7 +283,7 @@ class _QueryScreenState extends State<QueryScreen> {
               // Submit Button
               Center(
                 child: ElevatedButton(
-                  onPressed: _submitQuery,
+                  onPressed: _isLoading ? null : _submitQuery, // Disable button when loading
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 116, 140, 107),
                     shape: RoundedRectangleBorder(
@@ -271,14 +291,15 @@ class _QueryScreenState extends State<QueryScreen> {
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   ),
-                  child: Text(
-                    'Submit',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? CircularProgressIndicator(color: Colors.white) // Show loading indicator
+                      : Text(
+                          'Submit',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
             ],

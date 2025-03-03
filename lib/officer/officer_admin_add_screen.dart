@@ -107,9 +107,9 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212), 
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 14, 53, 16),
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),  
         elevation: 0,
         centerTitle: true,
       ),
@@ -121,10 +121,10 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
             children: [
               Text(
                 'Register',
-                style: GoogleFonts.rubik(
-                  fontSize: 32,
+                style: GoogleFonts.poppins(
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 10, 62, 12),
+                  color: const Color.fromARGB(255, 61, 67, 61),
                 ),
               ),
               SizedBox(height: 8),
@@ -132,7 +132,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
                 "Create your new account",
                 style: TextStyle(
                   fontSize: 16,
-                  color: const Color.fromARGB(255, 154, 166, 151),
+                  color: const Color.fromARGB(255, 114, 125, 111),
                 ),
               ),
               SizedBox(height: 35),
@@ -144,25 +144,19 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
               _buildTextField(_officeaddressController, 'Office Address', Icons.location_city, maxLines: 3),
               SizedBox(height: 30),
               _isLoading
-                  ? CircularProgressIndicator()
+                  ? CircularProgressIndicator() // Show loading spinner
                   : ElevatedButton(
-                      onPressed: _isLoading ? null : _registerOfficer, // Disables button when loading
-                      child: Text(
-                        'Sign up',
-                        style: GoogleFonts.roboto(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
+                      onPressed: _isLoading ? null : _registerOfficer,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 14, 53, 16),
-                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 45),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                        textStyle: TextStyle(fontSize: 18),
+                        backgroundColor: const Color.fromARGB(255, 102, 121, 96), 
                         fixedSize: Size(500, 50),
                       ),
+                      child: Text(
+                        "Sign up",
+                        style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
+                      ),
                     ),
+                  
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -171,7 +165,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
                     "Already have an account",
                     style: TextStyle(
                       fontSize: 11,
-                      color: Colors.black,
+                      color: const Color.fromARGB(255, 51, 54, 52),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -188,7 +182,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
                       style: TextStyle(
                         decoration: TextDecoration.underline,
                         fontSize: 13,
-                        color: Color.fromARGB(255, 4, 46, 4),
+                        color: Color.fromARGB(255, 37, 55, 37),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -212,7 +206,6 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
         enabled: !_isLoading, // Disables input when loading
         decoration: InputDecoration(
           labelText: hint,
-          prefixIcon: Icon(icon, color: const Color.fromARGB(255, 51, 96, 54)),
           suffixIcon: isPassword
               ? IconButton(
                   icon: Icon(
@@ -226,7 +219,7 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
                 )
               : null,
           filled: true,
-          fillColor: const Color.fromARGB(255, 189, 224, 190), // Light green fill color
+          fillColor: const Color.fromARGB(235, 216, 227, 214), 
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,

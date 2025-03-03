@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
 
 class OfficerHomescreen extends StatefulWidget {
   @override
@@ -14,6 +13,9 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
   String searchQuery = "";
   List<dynamic> farmers = [];
   List<dynamic> filteredFarmers = [];
+
+  // Replace this with your actual base URL
+  final String baseurl = 'https://0bd3-117-244-166-11.ngrok-free.app';
 
   @override
   void initState() {
@@ -48,7 +50,7 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
         filteredFarmers = farmers
             .where((farmer) =>
                 farmer['id'].toString().contains(query) ||
-                (farmer['methods'] ?? 'Unknown')
+                (farmer['name'] ?? 'Unknown')
                     .toLowerCase()
                     .contains(query.toLowerCase()))
             .toList();
@@ -62,6 +64,14 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
       backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        title: Text(
+          'Farmers List',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.normal,
+            fontSize: 20,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -72,10 +82,14 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
               onChanged: filterFarmers,
               decoration: InputDecoration(
                 hintText: 'Search Farmers...',
+                hintStyle: GoogleFonts.poppins(), // Apply Poppins to hint text
                 prefixIcon: Icon(Icons.search),
                 suffixIcon: searchQuery.isNotEmpty
                     ? IconButton(
-                        icon: Icon(Icons.clear, color: const Color.fromARGB(255, 35, 79, 29)),
+                        icon: Icon(
+                          Icons.clear,
+                          color: const Color.fromARGB(255, 35, 79, 29),
+                        ),
                         onPressed: () {
                           setState(() {
                             _searchController.clear();
@@ -89,15 +103,15 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
                 fillColor: const Color.fromARGB(236, 215, 228, 212),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(32.0),
-                  borderSide: BorderSide(color: Colors.black), // Set border color to black
+                  borderSide: BorderSide(color: Colors.black),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(32.0),
-                  borderSide: BorderSide(color: Colors.black), // Set border color to black
+                  borderSide: BorderSide(color: Colors.black),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(32.0),
-                  borderSide: BorderSide(color: Colors.black), // Set border color to black
+                  borderSide: BorderSide(color: Colors.black),
                 ),
               ),
             ),
@@ -109,23 +123,46 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
                       searchQuery.isEmpty
                           ? 'No Farmers Registered'
                           : 'No results for "$searchQuery"',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   )
                 : ListView.builder(
                     itemCount: filteredFarmers.length,
                     itemBuilder: (context, index) {
                       final farmer = filteredFarmers[index];
-                      return ListTile(
-                        
-                        leading: CircleAvatar(
-                          child: Text(farmer['id'].toString()),
+                      return Card(
+                        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        elevation: 2,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            child: Text(
+                              farmer['id'].toString(),
+                              style: GoogleFonts.poppins(), // Apply Poppins
+                            ),
+                          ),
+                          title: Text(
+                            '${farmer['name'] ?? "Unknown"}', // Display the farmer's name
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'ID: ${farmer['id']}',
+                                style: GoogleFonts.poppins(), // Apply Poppins
+                              ),
+                              Text(
+                                'Location: ${farmer['location'] ?? "Unknown"}',
+                                style: GoogleFonts.poppins(), // Apply Poppins
+                              ),
+                            ],
+                          ),
                         ),
-                        title: Text('ID: ${farmer['id']}'),
-                        subtitle: Text(
-                            'Method: ${farmer['methods'] ?? "Unknown"}'), // Handle null case
-                        trailing: Icon(Icons.arrow_forward_ios),
                       );
                     },
                   ),

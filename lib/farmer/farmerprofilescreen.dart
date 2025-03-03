@@ -355,7 +355,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           content: Text(
-            "Are you sure you want to delete your profile?",
+            "Are you sure want to delete your profile?",
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: Colors.black,

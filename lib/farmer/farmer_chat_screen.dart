@@ -65,7 +65,7 @@ class _QueryScreenState extends State<QueryScreen> {
     // Prepare the request
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('$baseurl/add-query/'), // Replace with your actual endpoint
+      Uri.parse('$baseurl/add_query/'), // Replace with your actual endpoint
     );
 
     // Add fields to the request
@@ -102,7 +102,7 @@ class _QueryScreenState extends State<QueryScreen> {
               'Query submitted successfully!',
               style: GoogleFonts.poppins(),
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: const Color.fromARGB(255, 69, 91, 69),
           ),
         );
         // Clear the form after successful submission

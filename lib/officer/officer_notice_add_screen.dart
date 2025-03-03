@@ -99,13 +99,14 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         title: Text('Add Notice',
         style: GoogleFonts.poppins(
           fontSize: 23,
           color: Colors.white
           )
           ),
-        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -120,7 +121,7 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
                   decoration: InputDecoration(
                     labelText: 'Title',
                     filled: true,
-                    fillColor: Colors.yellow[50],
+                    fillColor: const Color.fromARGB(235, 206, 214, 205),
                     border: OutlineInputBorder(
 
                     ),
@@ -138,7 +139,7 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
                     decoration: InputDecoration(
                       labelText: 'Description',
                       filled: true,
-                      fillColor: Colors.yellow[50],
+                      fillColor: const Color.fromARGB(235, 206, 214, 205),
                       border: OutlineInputBorder(),
                     ),
                     maxLines: null,
@@ -155,7 +156,7 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
                     decoration: InputDecoration(
                       
                       filled: true,
-                      fillColor: Colors.yellow[50],
+                      fillColor: const Color.fromARGB(235, 206, 214, 205),
                       border: OutlineInputBorder(),
                     ),
                     child: Text(

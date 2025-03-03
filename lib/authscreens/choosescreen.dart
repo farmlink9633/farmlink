@@ -30,7 +30,7 @@ class RoleSelectionScreen extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 88, 101, 83),
+                color: const Color.fromARGB(255, 69, 76, 67),
               ),
             ),
             SizedBox(height: 10),
@@ -44,7 +44,6 @@ class RoleSelectionScreen extends StatelessWidget {
             SizedBox(height: 40),
             _buildRoleButton(
               context,
-              icon: Icons.agriculture,
               label: 'Farmer',
               color: const Color.fromARGB(255, 112, 127, 113),
               onTap: () {
@@ -57,7 +56,6 @@ class RoleSelectionScreen extends StatelessWidget {
             SizedBox(height: 20),
             _buildRoleButton(
               context,
-              icon: Icons.admin_panel_settings,
               label: 'Officer',
               color: const Color.fromARGB(255, 116, 143, 119),
               onTap: () {
@@ -74,28 +72,27 @@ class RoleSelectionScreen extends StatelessWidget {
   }
 
   Widget _buildRoleButton(BuildContext context,
-      {required IconData icon, required String label, required Color color, required VoidCallback onTap}) {
+      {required String label, required Color color, required VoidCallback onTap}) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.8,
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: onTap,
-        icon: Icon(icon, size: 30),
-        label: Text(
-          label,
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
           elevation: 5,
           shadowColor: Colors.black.withOpacity(0.3),
+        ),
+        child: Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

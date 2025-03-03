@@ -22,6 +22,8 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController aadhaarController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController methodsController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+
 
   bool isLoading = false; // Loading state
   bool isPasswordHidden = true; // Password visibility state
@@ -76,6 +78,7 @@ class _RegistrationState extends State<Registration> {
           "aadhaar": aadhaarController.text,
           "number": phoneController.text,
           "methods": methodsController.text,
+          "location": locationController.text,
         }),
       );
 
@@ -160,7 +163,10 @@ class _RegistrationState extends State<Registration> {
               buildTextField("Phone", phoneController),
               SizedBox(height: 15),
               buildTextField("Methods", methodsController),
+              SizedBox(height: 15),
+              buildTextField("Location", locationController),
               SizedBox(height: 36),
+            
               isLoading
                   ? CircularProgressIndicator() // Show loading spinner
                   : ElevatedButton(

@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const String baseurl = 'https://287e-2409-4073-483-7171-9ce9-18ff-1781-65e7.ngrok-free.app';
+const String baseurl = 'https://0bd3-117-244-166-11.ngrok-free.app';
 
 class OfficerNoticeScreen extends StatefulWidget {
   @override
@@ -120,7 +120,7 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => NoticeDetailScreen(noticeId: 8,),
+                                      builder: (context) => NoticeDetailScreen(noticeId: 21),
                                     ),
                                   );
                                 },

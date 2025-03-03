@@ -33,6 +33,7 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
 
     if (response.statusCode == 200) {
       setState(() {
+        print(response.body);
         messages = json.decode(response.body);
         isLoading = false;
       });

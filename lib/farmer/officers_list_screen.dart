@@ -86,7 +86,8 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
                   child: ListTile(
                     tileColor:const Color.fromARGB(235, 204, 215, 202), 
                     title: Text(officer.profile['username']),
-                    subtitle: Text(officer.officeaddress),
+                    subtitle: Text(officer.designation),
+                    trailing: Text(officer.officeaddress),
                     leading: CircleAvatar(child: Text(officer.id.toString())),
                     onTap: () => navigateToQueryScreen(context, officer), // Navigate on tap
                   ),

@@ -29,7 +29,6 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
     if (response.statusCode == 200) {
       setState(() {
         products = json.decode(response.body);
-
         print(products);
         filteredProducts = products;
         isLoading = false;
@@ -54,15 +53,15 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 116, 140, 107),
-          title: Text(
-            "Product",
-            style: GoogleFonts.poppins(
-              fontSize: 20,
-              color: Colors.white,
-            ),
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        title: Text(
+          "Product",
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            color: Colors.white,
           ),
         ),
+      ),
       body: Column(
         children: [
           Padding(
@@ -94,17 +93,33 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
                       print(product);
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailScreen(productData: product,),));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProductDetailScreen(productData: product),
+                            ),
+                          );
                         },
                         child: Card(
                           elevation: 5,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          color: const Color.fromARGB(255, 238, 246, 237), // Background color of the card
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
                                 child: product['image'] != null
-                                    ? Image.network(baseurl+product['image'], fit: BoxFit.cover)
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(15),
+                                        ),
+                                        child: Image.network(
+                                          baseurl + product['image'],
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
                                     : Icon(Icons.image, size: 50, color: Colors.grey),
                               ),
                               Padding(
@@ -112,13 +127,30 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(product['productname'],
-                                        style: TextStyle(fontWeight: FontWeight.bold)),
+                                    Text(
+                                      product['productname'],
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        color: const Color.fromARGB(255, 68, 97, 69),
+                                      ),
+                                    ),
                                     SizedBox(height: 5),
-                                    Text('₹${product['description']}',
-                                        style: TextStyle(color: Colors.grey)),
+                                    Text(
+                                      '₹${product['description']}',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 13,
+                                        color: const Color.fromARGB(255, 124, 120, 120),
+                                      ),
+                                    ),
                                     SizedBox(height: 5),
-                                    Text(product['contact']),
+                                    Text(
+                                      product['contact'],
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        color: const Color.fromARGB(255, 58, 63, 59),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -134,13 +166,16 @@ class _FarmersProductScreenState extends State<FarmersProductScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Action to add a new product
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ProductAddScreen(),));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductAddScreen(),
+            ),
+          );
         },
-        backgroundColor: const Color.fromARGB(255, 116, 140, 107) ,
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 }
-
-

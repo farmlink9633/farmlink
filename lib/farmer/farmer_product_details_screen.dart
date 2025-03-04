@@ -56,42 +56,115 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         _isEditing = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Product updated successfully!')),
+        SnackBar(
+          content: Text(
+            'Product updated successfully!',
+            style: GoogleFonts.poppins(),
+          ),
+        ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update product!')),
+        SnackBar(
+          content: Text(
+            'Failed to update product!',
+            style: GoogleFonts.poppins(),
+          ),
+        ),
       );
     }
   }
 
   // Function to delete product
   Future<void> _deleteProduct() async {
-    final url = Uri.parse('$baseurl/UpdateProductView/?ProductId=${widget.productData['id']}');
+    // Show confirmation dialog
+    bool confirmDelete = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Delete Product',
+            style: GoogleFonts.poppins(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to delete this product?',
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+            ),
+          ),
+          actions: [
+            // No Button
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Return false
+              },
+              child: Text(
+                'No',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            // Yes Button
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Return true
+              },
+              child: Text(
+                'Yes',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.green,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
 
-    final response = await http.delete(url);
+    // If user confirms deletion
+    if (confirmDelete == true) {
+      final url = Uri.parse('$baseurl/UpdateProductView/?ProductId=${widget.productData['id']}');
 
-    if (response.statusCode == 200) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Product deleted successfully!')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete product!')),
-      );
+      final response = await http.delete(url);
+
+      if (response.statusCode == 200) {
+        Navigator.pop(context); // Close the product detail screen
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Product deleted successfully!',
+              style: GoogleFonts.poppins(),
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Failed to delete product!',
+              style: GoogleFonts.poppins(),
+            ),
+          ),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(236, 215, 228, 212), 
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
-       backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         title: Text(
           'Product Details',
-        style: GoogleFonts.poppins(
+          style: GoogleFonts.poppins(
             fontSize: 20,
             color: Colors.white,
           ),
@@ -121,47 +194,81 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               _isEditing
                   ? TextField(
                       controller: _productNameController,
-                      decoration: InputDecoration(labelText: 'Product Name'),
+                      decoration: InputDecoration(
+                        labelText: 'Product Name',
+                        labelStyle: GoogleFonts.poppins(),
+                      ),
+                      style: GoogleFonts.poppins(),
                     )
                   : Text(
                       widget.productData['productname'] ?? 'No product name',
-                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 68, 97, 69)),
+                      style: GoogleFonts.poppins(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 68, 97, 69),
+                      ),
                     ),
               SizedBox(height: 10),
 
               // Editable Description
-              Text('Description:', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: const Color.fromARGB(221, 74, 106, 67))),
+              Text(
+                'Description:',
+                style: GoogleFonts.poppins(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(221, 74, 106, 67),
+                ),
+              ),
               SizedBox(height: 5),
               _isEditing
                   ? TextField(
                       controller: _descriptionController,
-                      decoration: InputDecoration(labelText: 'Description'),
+                      decoration: InputDecoration(
+                        labelText: 'Description',
+                        labelStyle: GoogleFonts.poppins(),
+                      ),
+                      style: GoogleFonts.poppins(),
                       maxLines: 3,
                     )
                   : Text(
                       widget.productData['description'] ?? 'No description available',
-                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Colors.black54,
+                      ),
                     ),
               SizedBox(height: 15),
 
               // Product Date
               Text(
                 'Date: ${widget.productData['date'] ?? 'No date available'}',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.green),
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: const Color.fromARGB(255, 37, 104, 39),
+                ),
               ),
               SizedBox(height: 15),
 
               // Farmer Contact Info
               Text(
                 'Contact: ${widget.productData['contact'] ?? 'No contact available'}',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.blue),
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: const Color.fromARGB(255, 58, 63, 59),
+                ),
               ),
               SizedBox(height: 20),
 
               // Farmer ID
               Text(
                 'Farmer ID: ${widget.productData['farmer'] ?? 'Not available'}',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black54),
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
+                ),
               ),
               SizedBox(height: 30),
 
@@ -180,8 +287,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       }
                     },
                     icon: Icon(Icons.call),
-                    label: Text('Call Farmer'),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    label: Text(
+                      'Call Farmer',
+                      style: GoogleFonts.poppins(),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 117, 162, 119),
+                      foregroundColor: Colors.white, // Text and icon color
+                    ),
                   ),
 
                   // Edit Button
@@ -193,8 +306,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         });
                       },
                       icon: Icon(Icons.edit),
-                      label: Text('Edit'),
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                      label: Text(
+                        'Edit',
+                        style: GoogleFonts.poppins(),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 129, 173, 138),
+                        foregroundColor: Colors.white, // Text and icon color
+                      ),
                     ),
 
                   // Save Button
@@ -202,16 +321,28 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ElevatedButton.icon(
                       onPressed: _updateProduct,
                       icon: Icon(Icons.save),
-                      label: Text('Save'),
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                      label: Text(
+                        'Save',
+                        style: GoogleFonts.poppins(),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 158, 182, 121),
+                        foregroundColor: Colors.white, // Text and icon color
+                      ),
                     ),
 
                   // Delete Button
                   ElevatedButton.icon(
                     onPressed: _deleteProduct,
                     icon: Icon(Icons.delete),
-                    label: Text('Delete'),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    label: Text(
+                      'Delete',
+                      style: GoogleFonts.poppins(),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 208, 139, 134),
+                      foregroundColor: Colors.white, // Text and icon color
+                    ),
                   ),
                 ],
               ),

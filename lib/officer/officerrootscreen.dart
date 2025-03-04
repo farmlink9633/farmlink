@@ -37,7 +37,7 @@ class _OfficerRootScreenState extends State<OfficerRootScreen> {
         currentIndex: _selectedIndex, // Set the currently selected index
         onTap: _onItemTapped, // Handle item taps
         selectedItemColor: const Color.fromARGB(255, 64, 92, 66), // Color for the selected item
-        unselectedItemColor: Colors.grey, // Color for unselected items
+        unselectedItemColor: const Color.fromARGB(255, 199, 196, 196), // Color for unselected items
         type: BottomNavigationBarType.fixed, // Ensure all items are visible
         elevation: 0, // Remove elevation/shadow
         items: const [

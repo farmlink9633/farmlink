@@ -1,4 +1,5 @@
 import 'package:farmlink/authscreens/choosescreen.dart';
+import 'package:farmlink/authscreens/forgotpasswordscreen.dart';
 import 'package:farmlink/authscreens/register.dart';
 import 'package:farmlink/farmer/rootscreen.dart';
 import 'package:farmlink/officer/officerrootscreen.dart';
@@ -256,9 +257,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [],
                     ),
                     TextButton(
-                      onPressed: () {
+                      onPressed: () {Navigator.push(
+                        context,
+                         MaterialPageRoute(
+                              builder: (context) => ForgotPasswordScreen(),
+                          ),
+                            );
+                        },
                         // Add your forgot password logic here
-                      },
                       child: Text(
                         "Forgot Password?",
                         style: GoogleFonts.poppins(

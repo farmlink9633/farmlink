@@ -273,33 +273,22 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(13.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search...',
-                  hintStyle: GoogleFonts.poppins(),
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: Color.fromARGB(255, 33, 76, 38),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  filled: true,
-                  fillColor: const Color.fromARGB(236, 215, 228, 212),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    searchQuery = value;
-                  });
-                },
+            
+            Image.network(
+            
+            "https://img.freepik.com/premium-vector/modern-farmer-gardener-take-care-plant-illustration_538984-777.jpg?w=900",
+            width: 400, // Set the width of the image
+            height: 300, // Set the height of the image
+            fit: BoxFit.cover, // Adjust the image to cover the space
+          ),
+            
+            SizedBox(
+              height:100
               ),
-            ),
-            SizedBox(height: 18),
             Text(
               'Disease Detection',
               style: GoogleFonts.poppins(

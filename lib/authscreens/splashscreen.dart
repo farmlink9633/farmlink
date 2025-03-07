@@ -16,13 +16,7 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
-    // Redirect to RoleSelectionScreen after 6 seconds
-    Future.delayed(Duration(seconds: 6), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => RoleSelectionScreen()),
-      );
-    });
+    // Removed the Future.delayed block
   }
 
   @override
@@ -35,7 +29,7 @@ class _SplashscreenState extends State<Splashscreen> {
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: NetworkImage(
-                  "https://img3.wallspic.com/previews/0/0/4/3/3/133400/133400-light-water-leaf-darkness-black-x750.jpg",
+                  "https://i.pinimg.com/736x/cc/c0/fd/ccc0fdc34cd11ebad966ed249761890d.jpg",
                 ),
               ),
             ),
@@ -55,63 +49,52 @@ class _SplashscreenState extends State<Splashscreen> {
                       "Your plants",
                       style: GoogleFonts.josefinSans(
                         fontSize: 45,
-                        color: Colors.white,
+                        color: const Color.fromARGB(255, 92, 113, 80),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 11),
                     Text(
                       "deserve the",
                       style: GoogleFonts.josefinSans(
                         fontSize: 45,
-                        color: Colors.white,
+                        color: const Color.fromARGB(255, 92, 113, 80),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 11),
                     Text(
                       "best care",
                       style: GoogleFonts.josefinSans(
                         fontSize: 45,
-                        color: Colors.white,
+                        color: const Color.fromARGB(255, 92, 113, 80),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 110),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Registration()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        fixedSize: Size(350, 50),
-                      ),
-                      child: Text(
-                        "Sign up",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: const Color.fromARGB(255, 4, 46, 4),
+                    SizedBox(height: 60), // Added space between text and button
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => RoleSelectionScreen()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 92, 113, 80), // Same color as the text
+                          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginScreen()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 4, 46, 4),
-                        fixedSize: Size(350, 50),
-                      ),
-                      child: Text(
-                        "Login",
-                        style: TextStyle(fontSize: 17, color: Colors.white),
+                        child: Text(
+                          "Let's get started",
+                          style: GoogleFonts.poppins(
+                            fontSize: 17,
+                            color: Colors.white, // White text color
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   ],

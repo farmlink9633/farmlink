@@ -65,7 +65,7 @@ class _NoticeDetailScreenState extends State<NoticeDetailScreen> {
           style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         content: Text(
-          "Are you sure you want to delete this notice?",
+          "Are you sure want to delete this notice?",
           style: GoogleFonts.poppins(fontSize: 16),
         ),
         actions: [
@@ -73,7 +73,7 @@ class _NoticeDetailScreenState extends State<NoticeDetailScreen> {
             onPressed: () => Navigator.pop(context, false),
             child: Text(
               "No",
-              style: GoogleFonts.poppins(fontSize: 16, color: Colors.red),
+              style: GoogleFonts.poppins(fontSize: 16, color: const Color.fromARGB(255, 186, 84, 77)),
             ),
           ),
           TextButton(

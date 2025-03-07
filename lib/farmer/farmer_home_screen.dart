@@ -264,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        backgroundColor: const Color.fromARGB(255, 92, 113, 80),
         elevation: 0,
         actions: [
           IconButton(

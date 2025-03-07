@@ -84,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           content: Text(
-            "Are you sure you want to log out?",
+            "Are you sure want to log out?",
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: Colors.black,
@@ -145,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: const Color.fromARGB(255, 31, 68, 36),
+              color: const Color.fromARGB(255, 61, 90, 65),
             ),
           ),
           content: SingleChildScrollView(
@@ -346,12 +346,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 205, 212, 205),
           title: Text(
             "Delete Profile",
             style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: const Color.fromARGB(255, 31, 68, 36),
+              color: const Color.fromARGB(255, 85, 112, 88),
             ),
           ),
           content: Text(
@@ -370,7 +371,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 "No",
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  color: Colors.grey[700],
+                  color: const Color.fromARGB(255, 90, 89, 89),
                 ),
               ),
             ),
@@ -402,7 +403,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 "Yes",
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  color: const Color.fromARGB(255, 79, 94, 73),
+                  color: const Color.fromARGB(255, 68, 92, 60),
                 ),
               ),
             ),
@@ -440,14 +441,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
+                        tileColor: const Color.fromARGB(255, 205, 212, 205),
                         leading: Icon(
                           Icons.edit,
-                          color: const Color.fromARGB(255, 31, 68, 36), // Edit icon color
+                          color: const Color.fromARGB(255, 57, 83, 61), // Edit icon color
                         ),
                         title: Text(
                           "Edit Profile",
                           style: GoogleFonts.poppins(
-                            color: const Color.fromARGB(255, 31, 68, 36), // Edit text color
+                            color: const Color.fromARGB(255, 74, 96, 77), // Edit text color
                           ),
                         ),
                         onTap: () {
@@ -456,14 +458,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                       ),
                       ListTile(
+                        tileColor: const Color.fromARGB(255, 205, 212, 205),
                         leading: Icon(
                           Icons.lock,
-                          color: const Color.fromARGB(255, 31, 68, 36), // Change password icon color
+                          color: const Color.fromARGB(255, 57, 83, 61),// Change password icon color
                         ),
                         title: Text(
                           "Change Password",
                           style: GoogleFonts.poppins(
-                            color: const Color.fromARGB(255, 31, 68, 36), // Change password text color
+                            color: const Color.fromARGB(255, 74, 96, 77), // Change password text color
                           ),
                         ),
                         onTap: () {
@@ -472,14 +475,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                       ),
                       ListTile(
+                        tileColor: const Color.fromARGB(255, 205, 212, 205),
                         leading: Icon(
                           Icons.delete,
-                          color: const Color.fromARGB(255, 31, 68, 36), // Delete icon color
+                          color: const Color.fromARGB(255, 57, 83, 61),// Delete icon color
                         ),
                         title: Text(
                           "Delete Profile",
                           style: GoogleFonts.poppins(
-                            color: const Color.fromARGB(255, 31, 68, 36), // Delete text color
+                            color: const Color.fromARGB(255, 74, 96, 77), // Delete text color
                           ),
                         ),
                         onTap: () {
@@ -500,7 +504,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              const Color.fromARGB(255, 131, 152, 123),
+              const Color.fromARGB(255, 152, 172, 144),
               const Color.fromARGB(255, 179, 197, 175),
             ],
             begin: Alignment.topCenter,
@@ -618,7 +622,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       elevation: 6,
       shadowColor: Colors.black45,
       child: ListTile(
-        tileColor: const Color.fromARGB(255, 199, 204, 199),
+        tileColor: const Color.fromARGB(235, 187, 198, 184),
         leading: Icon(
           icon,
           color: const Color.fromARGB(255, 74, 90, 75),

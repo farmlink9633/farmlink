@@ -34,7 +34,7 @@ class _RootscreenState extends State<Rootscreen> {
       
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+        backgroundColor: const Color.fromARGB(255, 92, 113, 80),
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -55,7 +55,7 @@ class _RootscreenState extends State<Rootscreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 42, 77, 44),
+        selectedItemColor: const Color.fromARGB(255, 6, 50, 10),
         unselectedItemColor: const Color.fromARGB(255, 199, 196, 196),
         onTap: _onItemTapped,
         showUnselectedLabels: true,

@@ -57,7 +57,7 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FarmerChatScreen(officerId: officer.id.toString(), farmerId: '20',), 
+        builder: (context) => FarmerChatScreen(officerId: officer.id.toString(), farmerId: '23',), 
       ),
     );
   }

@@ -11,11 +11,11 @@ class OfficerHomescreen extends StatefulWidget {
 class _OfficerHomeScreenState extends State<OfficerHomescreen> {
   TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
-  List<dynamic> farmers = [];
-  List<dynamic> filteredFarmers = [];
+  List<Farmer> farmers = [];
+  List<Farmer> filteredFarmers = [];
 
   // Replace this with your actual base URL
-  final String baseurl ='https://4e6f-117-243-203-224.ngrok-free.app';
+  final String baseurl = 'https://5f48-117-211-241-115.ngrok-free.app';
 
   @override
   void initState() {
@@ -26,11 +26,15 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
   Future<void> fetchFarmers() async {
     try {
       final response = await http.get(Uri.parse('$baseurl/list/'));
-      
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        List<Farmer> fetchedFarmers = [];
+        for (var farmerData in data['data']) {
+          fetchedFarmers.add(Farmer.fromJson(farmerData));
+        }
         setState(() {
-          farmers = data['data'];
+          farmers = fetchedFarmers;
           filteredFarmers = farmers;
         });
       } else {
@@ -49,8 +53,8 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
       } else {
         filteredFarmers = farmers
             .where((farmer) =>
-                farmer['id'].toString().contains(query) ||
-                (farmer['name'] ?? 'Unknown')
+                farmer.id.toString().contains(query) ||
+                (farmer.profile['name'] ?? 'Unknown')
                     .toLowerCase()
                     .contains(query.toLowerCase()))
             .toList();
@@ -139,12 +143,12 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
                         child: ListTile(
                           leading: CircleAvatar(
                             child: Text(
-                              farmer['id'].toString(),
+                              farmer.id.toString(),
                               style: GoogleFonts.poppins(), // Apply Poppins
                             ),
                           ),
                           title: Text(
-                            '${farmer['name'] ?? "Unknown"}', // Display the farmer's name
+                            farmer.profile['name'] ?? "Unknown", // Display the farmer's name
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold,
                             ),
@@ -153,11 +157,11 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'ID: ${farmer['id']}',
+                                'ID: ${farmer.id}',
                                 style: GoogleFonts.poppins(), // Apply Poppins
                               ),
                               Text(
-                                'Location: ${farmer['location'] ?? "Unknown"}',
+                                'Location: ${farmer.profile['location'] ?? "Unknown"}',
                                 style: GoogleFonts.poppins(), // Apply Poppins
                               ),
                             ],
@@ -169,6 +173,21 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+// Farmer class to structure the data
+class Farmer {
+  final int id;
+  final Map<String, dynamic> profile;
+
+  Farmer({required this.id, required this.profile});
+
+  factory Farmer.fromJson(Map<String, dynamic> json) {
+    return Farmer(
+      id: json['id'],
+      profile: json['profile'],
     );
   }
 }

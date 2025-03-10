@@ -50,7 +50,7 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
     setState(() => isLoading = true);
     
     try {
-      final response = await http.get(Uri.parse('$baseurl/officerquerylist/'));
+      final response = await http.get(Uri.parse('$baseurl/officerquerylist/?officerid=9'));
       print(response.body);
 
       if (response.statusCode == 200) {

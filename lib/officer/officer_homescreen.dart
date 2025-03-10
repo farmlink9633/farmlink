@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:farmlink/officer/officer_notice_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
@@ -11,30 +12,25 @@ class OfficerHomescreen extends StatefulWidget {
 class _OfficerHomeScreenState extends State<OfficerHomescreen> {
   TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
-  List<Farmer> farmers = [];
-  List<Farmer> filteredFarmers = [];
-
-  // Replace this with your actual base URL
-  final String baseurl = 'https://5f48-117-211-241-115.ngrok-free.app';
+  List<dynamic> farmers = [];
+  List<dynamic> filteredFarmers = [];
 
   @override
   void initState() {
     super.initState();
+    print('farmer');
     fetchFarmers();
   }
 
   Future<void> fetchFarmers() async {
     try {
       final response = await http.get(Uri.parse('$baseurl/list/'));
+      print(response.body);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        List<Farmer> fetchedFarmers = [];
-        for (var farmerData in data['data']) {
-          fetchedFarmers.add(Farmer.fromJson(farmerData));
-        }
         setState(() {
-          farmers = fetchedFarmers;
+          farmers = data['data'];
           filteredFarmers = farmers;
         });
       } else {
@@ -53,8 +49,8 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
       } else {
         filteredFarmers = farmers
             .where((farmer) =>
-                farmer.id.toString().contains(query) ||
-                (farmer.profile['name'] ?? 'Unknown')
+                farmer['id'].toString().contains(query) ||
+                (farmer['profile']['username'] ?? 'Unknown')
                     .toLowerCase()
                     .contains(query.toLowerCase()))
             .toList();
@@ -143,12 +139,12 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
                         child: ListTile(
                           leading: CircleAvatar(
                             child: Text(
-                              farmer.id.toString(),
+                              farmer['id'].toString(),
                               style: GoogleFonts.poppins(), // Apply Poppins
                             ),
                           ),
                           title: Text(
-                            farmer.profile['name'] ?? "Unknown", // Display the farmer's name
+                            farmer['profile']['username'] ?? "Unknown", // Display the farmer's name
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold,
                             ),
@@ -157,11 +153,11 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'ID: ${farmer.id}',
+                                'ID: ${farmer['id']}',
                                 style: GoogleFonts.poppins(), // Apply Poppins
                               ),
                               Text(
-                                'Location: ${farmer.profile['location'] ?? "Unknown"}',
+                                'Location: ${farmer['location'] ?? "Unknown"}',
                                 style: GoogleFonts.poppins(), // Apply Poppins
                               ),
                             ],
@@ -173,21 +169,6 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-// Farmer class to structure the data
-class Farmer {
-  final int id;
-  final Map<String, dynamic> profile;
-
-  Farmer({required this.id, required this.profile});
-
-  factory Farmer.fromJson(Map<String, dynamic> json) {
-    return Farmer(
-      id: json['id'],
-      profile: json['profile'],
     );
   }
 }

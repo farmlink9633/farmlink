@@ -51,6 +51,7 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
     
     try {
       final response = await http.get(Uri.parse('$baseurl/officerquerylist/'));
+      print(response.body);
 
       if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(response.body);

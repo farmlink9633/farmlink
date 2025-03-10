@@ -69,9 +69,9 @@ class _QueryScreenState extends State<QueryScreen> {
 
     // Add fields to the request
     if (farmerId.isNotEmpty) {
-      request.fields['farmer_id'] = farmerId;
+      request;
     }
-    request.fields['asked_by_farmer'] = _isAskedByFarmer.toString();
+    request.fields['is_askedbyfarmer'] = _isAskedByFarmer.toString();
     request.fields['officer_id'] = widget.officer_id;
     request.fields['content'] = content;
 

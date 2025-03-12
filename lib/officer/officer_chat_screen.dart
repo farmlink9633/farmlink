@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:farmlink/officer/officer_query_detail_screen.dart';
+import 'package:farmlink/officer/officer_query_reply_screen.dart';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,14 +10,20 @@ class Query {
   final int id;
   final String content;
   final String? imageUrl;
+  final int farmerId;
   final String farmerName;
+  final String farmerLocation;
+  final String farmerMethods;
   final bool isAskedByFarmer;
 
   Query({
     required this.id,
     required this.content,
     this.imageUrl,
+    required this.farmerId,
     required this.farmerName,
+    required this.farmerLocation,
+    required this.farmerMethods,
     required this.isAskedByFarmer,
   });
 
@@ -24,7 +32,10 @@ class Query {
       id: json['id'],
       content: json['content'] ?? 'No content available',
       imageUrl: json['image'] ?? null,
-      farmerName: json['farmer']?['name'] ?? 'Unknown Farmer',
+      farmerId: json['farmer']?['id'] ?? 0,
+      farmerName: json['farmer']?['profile'].toString() ?? 'Unknown Farmer', // Assuming profile contains the name
+      farmerLocation: json['farmer']?['location'] ?? 'Unknown Location',
+      farmerMethods: json['farmer']?['methods'] ?? 'Unknown Methods',
       isAskedByFarmer: json['is_askedbyfarmer'],
     );
   }
@@ -48,7 +59,7 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
 
   Future<void> fetchQueries() async {
     setState(() => isLoading = true);
-    
+
     try {
       final response = await http.get(Uri.parse('$baseurl/officerquerylist/?officerid=9'));
       print(response.body);
@@ -79,14 +90,13 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
         title: Text(
           'Farmer Queries',
           style: GoogleFonts.poppins(
-              fontSize: 22,
-              color: Colors.white,
-            ),
+            fontSize: 22,
+            color: Colors.white,
           ),
+        ),
       ),
-
       body: isLoading
-          ? Center(child: CircularProgressIndicator())  // Loading Indicator
+          ? Center(child: CircularProgressIndicator()) // Loading Indicator
           : isError
               ? Center(
                   child: Column(
@@ -95,9 +105,9 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
                       Text('Failed to load queries', style: TextStyle(color: Colors.red)),
                       SizedBox(height: 10),
                       ElevatedButton(
-                        onPressed: fetchQueries, 
-                        child: Text('Retry')
-                      )
+                        onPressed: fetchQueries,
+                        child: Text('Retry'),
+                      ),
                     ],
                   ),
                 )
@@ -112,7 +122,7 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(query.content),
-                            if (query.imageUrl != null) 
+                            if (query.imageUrl != null)
                               Padding(
                                 padding: const EdgeInsets.only(top: 5.0),
                                 child: Image.network(query.imageUrl!, height: 100, fit: BoxFit.cover),
@@ -124,7 +134,7 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => QueryDetailScreen(query: query),
+                              builder: (context) => QueryDetailScreen(query:  )
                             ),
                           );
                         },
@@ -136,29 +146,3 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
   }
 }
 
-class QueryDetailScreen extends StatelessWidget {
-  final Query query;
-
-  const QueryDetailScreen({Key? key, required this.query}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Query Details')),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Farmer: ${query.farmerName}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-            Text("Query: ${query.content}", style: TextStyle(fontSize: 16)),
-            SizedBox(height: 10),
-            if (query.imageUrl != null)
-              Image.network(query.imageUrl!, height: 200, fit: BoxFit.cover),
-          ],
-        ),
-      ),
-    );
-  }
-}

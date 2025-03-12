@@ -66,7 +66,7 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
           title: Text(
             "Notices",
             style: GoogleFonts.poppins(
-              fontSize: 23,
+              fontSize: 19,
               color: Colors.white,
             ),
           ),
@@ -78,7 +78,7 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search notices...',
+                  hintText: 'Search ....',
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),

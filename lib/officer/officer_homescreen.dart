@@ -70,7 +70,7 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.normal,
-            fontSize: 20,
+            fontSize: 18,
           ),
         ),
       ),
@@ -138,7 +138,9 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
                         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         elevation: 2,
                         child: ListTile(
+                          tileColor: const Color.fromARGB(255, 210, 219, 209),
                           leading: CircleAvatar(
+                            backgroundColor: const Color.fromARGB(255, 183, 199, 178),
                             child: Text(
                               farmer['id'].toString(),
                               style: GoogleFonts.poppins(), // Apply Poppins
@@ -148,6 +150,7 @@ class _OfficerHomeScreenState extends State<OfficerHomescreen> {
                             farmer['profile']['username'] ?? "Unknown", // Display the farmer's name
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold,
+                              color: const Color.fromARGB(255, 62, 65, 62)
                             ),
                           ),
                           subtitle: Column(

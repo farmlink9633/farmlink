@@ -236,7 +236,7 @@ class _RegistrationState extends State<Registration> {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
-        fillColor: Color.fromARGB(255, 221, 228, 223),
+        fillColor: const Color.fromARGB(235, 216, 227, 214), 
         filled: true,
         labelStyle: TextStyle(
           fontSize: 14,

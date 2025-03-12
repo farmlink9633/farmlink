@@ -562,9 +562,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Text(
                           name,
                           style: GoogleFonts.poppins(
-                            fontSize: 24,
+                            fontSize: 23,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: const Color.fromARGB(255, 51, 50, 50),
                           ),
                         ),
                       ),
@@ -573,7 +573,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           email,
                           style: GoogleFonts.poppins(
                             fontSize: 16,
-                            color: Colors.black,
+                            color: const Color.fromARGB(255, 75, 73, 73),
                           ),
                         ),
                       ),

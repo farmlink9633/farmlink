@@ -12,9 +12,9 @@ class OfficerRegistrationScreen extends StatefulWidget {
 }
 
 class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _designationController = TextEditingController();
   final TextEditingController _officeaddressController = TextEditingController();
@@ -26,9 +26,9 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
     final url = Uri.parse('$baseurl/AdminAddOfficer/');
 
     // Check if all fields are filled
-    if (_emailController.text.isEmpty ||
+    if (_usernameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
         _passwordController.text.isEmpty ||
-        _usernameController.text.isEmpty ||
         _phoneController.text.isEmpty ||
         _designationController.text.isEmpty ||
         _officeaddressController.text.isEmpty) {
@@ -64,9 +64,9 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
         url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
+          "username": _usernameController.text.trim(),
           "email": _emailController.text.trim(),
           "password": _passwordController.text.trim(),
-          "username": _usernameController.text.trim(),
           "number": _phoneController.text.trim(),
           "designation": _designationController.text.trim(),
           "officeaddress": _officeaddressController.text.trim(),
@@ -96,9 +96,9 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
   }
 
   void _clearFields() {
+    _usernameController.clear();
     _emailController.clear();
     _passwordController.clear();
-    _usernameController.clear();
     _phoneController.clear();
     _designationController.clear();
     _officeaddressController.clear();
@@ -136,9 +136,9 @@ class _OfficerRegistrationScreenState extends State<OfficerRegistrationScreen> {
                 ),
               ),
               SizedBox(height: 35),
+              _buildTextField(_usernameController, 'Username', Icons.person),
               _buildTextField(_emailController, 'Email', Icons.email),
               _buildTextField(_passwordController, 'Password', Icons.lock, isPassword: true),
-              _buildTextField(_usernameController, 'Username', Icons.person),
               _buildTextField(_phoneController, 'Phone Number', Icons.phone),
               _buildTextField(_designationController, 'Designation', Icons.work),
               _buildTextField(_officeaddressController, 'Office Address', Icons.location_city, maxLines: 3),

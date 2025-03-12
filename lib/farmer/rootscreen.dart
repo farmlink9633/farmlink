@@ -34,7 +34,7 @@ class _RootscreenState extends State<Rootscreen> {
       
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 92, 113, 80),
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107), 
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

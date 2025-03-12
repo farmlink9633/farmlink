@@ -147,41 +147,21 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(236, 215, 228, 212),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(236, 215, 228, 212), // Background color
-        ),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
-              Stack(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 260,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                          "https://images.pexels.com/photos/1353938/pexels-photo-1353938.jpeg",
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
+              SizedBox(height: 90), // Add padding top
               Text(
                 "Welcome back",
                 style: GoogleFonts.poppins(
                   fontSize: 29,
-                  color: const Color.fromARGB(255, 89, 105, 84), 
+                  color: const Color.fromARGB(255, 89, 105, 84),
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 17),
+              SizedBox(height: 10),
               Text(
                 "Login to your account",
                 style: GoogleFonts.poppins(
@@ -189,112 +169,123 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: const Color.fromARGB(255, 140, 148, 139),
                 ),
               ),
-              SizedBox(height: 21),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    fillColor: const Color.fromARGB(235, 201, 208, 199),  
-                    filled: true,
-                    label: Text(
-                      "Email",
-                      style: GoogleFonts.poppins(
-                        fontSize: 13,
-                        color: const Color.fromARGB(255, 54, 73, 54),
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextField(
-                  controller: _passwordController,
-                  obscureText: _isPasswordHidden, // Toggle password visibility
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    fillColor: const Color.fromARGB(235, 201, 208, 199),
-                    filled: true,
-                    label: Text(
-                      "Password",
-                      style: GoogleFonts.poppins(
-                        fontSize: 13,
-                        color: const Color.fromARGB(255, 70, 94, 70),
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordHidden ? Icons.visibility_off : Icons.visibility,
-                        color: const Color.fromARGB(255, 62, 87, 62),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordHidden = !_isPasswordHidden;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 13),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [],
-                    ),
-                    TextButton(
-                      onPressed: () {Navigator.push(
-                        context,
-                         MaterialPageRoute(
-                              builder: (context) => ForgotPasswordScreen(),
-                          ),
-                            );
-                        },
-                        // Add your forgot password logic here
-                      child: Text(
-                        "Forgot Password?",
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: const Color.fromARGB(255, 69, 94, 69),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+              SizedBox(height: 35),
+              // Card-like container for the login form
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 213, 221, 213),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: Offset(0, 5),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 105),
-              _isLoading
-                  ? CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: _login,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:const Color.fromARGB(255, 102, 121, 96),  
-                        fixedSize: Size(300, 50),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: const Color.fromARGB(235, 201, 208, 199),
+                        label: Text(
+                          "Email",
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: const Color.fromARGB(255, 54, 73, 54),
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                       ),
-                      child: Text(
-                        "Login",
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: Colors.white,
+                    ),
+                    SizedBox(height: 20),
+                    TextField(
+                      controller: _passwordController,
+                      obscureText: _isPasswordHidden,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: const Color.fromARGB(235, 201, 208, 199),
+                        label: Text(
+                          "Password",
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: const Color.fromARGB(255, 70, 94, 70),
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordHidden ? Icons.visibility_off : Icons.visibility,
+                            color: const Color.fromARGB(255, 62, 87, 62),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordHidden = !_isPasswordHidden;
+                            });
+                          },
                         ),
                       ),
                     ),
-              SizedBox(height: 18),
+                    SizedBox(height: 15),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgotPasswordScreen(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "Forgot Password?",
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: const Color.fromARGB(255, 69, 94, 69),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : ElevatedButton(
+                            onPressed: _login,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(255, 102, 121, 96),
+                              minimumSize: Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              elevation: 5,
+                            ),
+                            child: Text(
+                              "Login",
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 55),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

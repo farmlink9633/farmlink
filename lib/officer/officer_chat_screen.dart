@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:farmlink/officer/officer_query_detail_screen.dart';
-import 'package:farmlink/officer/officer_query_reply_screen.dart';
+// import 'package:farmlink/officer/officer_query_reply_screen.dart';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,7 +33,7 @@ class Query {
       content: json['content'] ?? 'No content available',
       imageUrl: json['image'] ?? null,
       farmerId: json['farmer']?['id'] ?? 0,
-      farmerName: json['farmer']?['profile'].toString() ?? 'Unknown Farmer', // Assuming profile contains the name
+      farmerName: json['farmer']?['profile']['username'].toString() ?? 'Unknown Farmer', // Assuming profile contains the name
       farmerLocation: json['farmer']?['location'] ?? 'Unknown Location',
       farmerMethods: json['farmer']?['methods'] ?? 'Unknown Methods',
       isAskedByFarmer: json['is_askedbyfarmer'],
@@ -125,18 +125,18 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
                             if (query.imageUrl != null)
                               Padding(
                                 padding: const EdgeInsets.only(top: 5.0),
-                                child: Image.network(query.imageUrl!, height: 100, fit: BoxFit.cover),
+                                child: Image.network(baseurl+query.imageUrl!, height: 100, fit: BoxFit.cover),
                               ),
                           ],
                         ),
                         trailing: Icon(Icons.arrow_forward),
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => QueryDetailScreen(query:  )
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => QueryDetailScreen(query: query )
+                          //   ),
+                          // );
                         },
                       ),
                     );

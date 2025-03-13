@@ -14,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String searchQuery = '';
   File? _image;
   bool _isLoading = false;
   final ImagePicker _picker = ImagePicker();
@@ -27,6 +26,91 @@ class _HomeScreenState extends State<HomeScreen> {
     "Rotate your plants to ensure even growth on all sides.",
   ];
   int _currentPage = 0;
+  List<Map<String, dynamic>> notices = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchNotices(); // Fetch notices when the screen loads
+  }
+
+  /// Fetch notices from the backend
+  Future<void> _fetchNotices() async {
+    try {
+      final response = await http.get(Uri.parse('$baseurl/GetNoticesView/'));
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        setState(() {
+          notices = data.cast<Map<String, dynamic>>();
+        });
+      } else {
+        throw Exception('Failed to load notices');
+      }
+    } catch (e) {
+      _showErrorDialog("Failed to load notices. Please try again.");
+    }
+  }
+
+  /// Show notices in a dialog
+  void _showNoticesDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Notices',
+            style: GoogleFonts.poppins(),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: notices.map((notice) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.pop(context); // Close the dialog
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NoticeDetailsScreen(noticeId: notice['21']),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        notice['title'],
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        notice['description'],
+                        style: GoogleFonts.poppins(),
+                      ),
+                      SizedBox(height: 10),
+                      Divider(color: Colors.grey),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text(
+                "Close",
+                style: GoogleFonts.poppins(),
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   /// Pick an image from the gallery
   Future<void> pickImageFromGallery() async {
@@ -64,6 +148,32 @@ class _HomeScreenState extends State<HomeScreen> {
       _isLoading = true;
     });
 
+    // Show a loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 207, 221, 198), // Custom color
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 20),
+              Text(
+                'Please wait...\nDisease detection is in progress.',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: const Color.fromARGB(255, 71, 85, 65),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('$baseurl/predict_disease/'),
@@ -81,6 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
         _isLoading = false;
       });
 
+      // Close the loading dialog
+      Navigator.pop(context);
+
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         _showDiseaseInfo(jsonResponse);
@@ -91,6 +204,8 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _isLoading = false;
       });
+      // Close the loading dialog
+      Navigator.pop(context);
       _showErrorDialog("Failed to upload image. Please try again.");
     }
   }
@@ -101,9 +216,12 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 207, 221, 198), // Custom color
           title: Text(
             data['disease_name'] ?? "Unknown Disease",
-            style: GoogleFonts.poppins(),
+            style: GoogleFonts.poppins(
+              color: const Color.fromARGB(255, 71, 85, 65),
+            ),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -113,7 +231,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 10),
                 Text(
                   "Description:",
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 71, 85, 65),
+                  ),
                 ),
                 Text(
                   data['description'],
@@ -122,7 +243,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 10),
                 Text(
                   "Possible Steps:",
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 71, 85, 65),
+                  ),
                 ),
                 Text(
                   data['possible_steps'],
@@ -131,7 +255,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 10),
                 Text(
                   "Supplement:",
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 71, 85, 65),
+                  ),
                 ),
                 Row(
                   children: [
@@ -153,7 +280,9 @@ class _HomeScreenState extends State<HomeScreen> {
             TextButton(
               child: Text(
                 "Close",
-                style: GoogleFonts.poppins(),
+                style: GoogleFonts.poppins(
+                  color: const Color.fromARGB(255, 12, 34, 3),
+                ),
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),
@@ -169,9 +298,12 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 207, 221, 198), // Custom color
           title: Text(
             'Error',
-            style: GoogleFonts.poppins(),
+            style: GoogleFonts.poppins(
+              color: const Color.fromARGB(255, 71, 85, 65),
+            ),
           ),
           content: Text(
             message,
@@ -182,7 +314,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'OK',
-                style: GoogleFonts.poppins(),
+                style: GoogleFonts.poppins(
+                  color: const Color.fromARGB(255, 71, 85, 65),
+                ),
               ),
             ),
           ],
@@ -191,148 +325,72 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Fetch notices from the backend
-  Future<List<Map<String, dynamic>>> _fetchNotices() async {
-    final response = await http.get(Uri.parse('$baseurl/GetNoticesView/'));
-
-    if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      return data.cast<Map<String, dynamic>>();
-    } else {
-      throw Exception('Failed to load notices');
-    }
-  }
-
-  /// Show notices in a dialog
-  void _showNoticesDialog() async {
-    try {
-      List<Map<String, dynamic>> notices = await _fetchNotices();
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              'Notices',
-              style: GoogleFonts.poppins(),
-            ),
-            content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: notices.map((notice) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        notice['title'],
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        notice['description'],
-                        style: GoogleFonts.poppins(),
-                      ),
-                      SizedBox(height: 10),
-                      Divider(color: Colors.grey),
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-            actions: [
-              TextButton(
-                child: Text(
-                  "Close",
-                  style: GoogleFonts.poppins(),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        },
-      );
-    } catch (e) {
-      _showErrorDialog("Failed to load notices. Please try again.");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
         title: Text(
-          '',
+          'Home',
           style: GoogleFonts.poppins(
             fontSize: 20,
             color: Colors.white,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.normal,
           ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 116, 140, 107), 
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         elevation: 0,
         actions: [
           IconButton(
             icon: Icon(Icons.notifications, color: const Color.fromARGB(255, 246, 244, 244)),
-            onPressed: _showNoticesDialog, // Show notices when the icon is clicked
+            onPressed: _showNoticesDialog,
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Search Bar
+            // Add space at the top of the network image
             Padding(
-              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: Offset(0, 5),
+              padding: const EdgeInsets.only(top: 20), // Add space here
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        "https://img.freepik.com/premium-vector/modern-farmer-gardener-take-care-plant-illustration_538984-777.jpg?w=900",
+                        width: double.infinity,
+                        height: 250,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    // Overlay text on the image
+                    Positioned(
+                      bottom: 2, // Position the text at the bottom
+                      child: Text(
+                        'Grow Green, Live Healthy!',
+                        style: GoogleFonts.poppins(
+                          fontSize: 20,
+                          color: const Color.fromARGB(255, 62, 92, 62),
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 10,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search notices, officers...',
-                    hintStyle: GoogleFonts.poppins(
-                      color: const Color.fromARGB(255, 140, 148, 139),
-                    ),
-                    prefixIcon: Icon(Icons.search, color: const Color.fromARGB(255, 116, 140, 107)),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      searchQuery = value;
-                    });
-                  },
-                ),
               ),
             ),
-            SizedBox(height: 20),
-            // Image with padding and rounded corners
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20), // Rounded corners
-                child: Image.network(
-                  "https://img.freepik.com/premium-vector/modern-farmer-gardener-take-care-plant-illustration_538984-777.jpg?w=900",
-                  width: double.infinity,
-                  height: 250,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
+            SizedBox(height: 25),
             // Plant Tips Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -342,14 +400,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     'Plant Tips',
                     style: GoogleFonts.poppins(
-                      fontSize: 20,
+                      fontSize: 19,
                       color: const Color.fromARGB(255, 71, 85, 65),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 10),
                   Container(
-                    height: 120,
+                    height: 170,
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: plantTips.length,
@@ -362,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         return Container(
                           margin: EdgeInsets.symmetric(horizontal: 5),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: const Color.fromARGB(255, 134, 160, 125),
                             borderRadius: BorderRadius.circular(15),
                             boxShadow: [
                               BoxShadow(
@@ -372,13 +430,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ),
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.all(20),
                           child: Center(
                             child: Text(
                               plantTips[index],
                               style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: const Color.fromARGB(255, 71, 85, 65),
+                                fontSize: 16,
+                                color: Colors.white,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -426,66 +484,115 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      // Camera and Gallery with wave design
+      // Bottom Navigation Bar with Disease Detection
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: const Color.fromARGB(255, 207, 221, 198),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: Offset(0, -5),
+            ),
+          ],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Wave Design
-            CustomPaint(
-              size: Size(double.infinity, 50),
-              painter: WavePainter(),
+            Text(
+              'Disease Detection',
+              style: GoogleFonts.poppins(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 71, 85, 65),
+              ),
             ),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton.icon(
-                  onPressed: _isLoading ? null : openCamera,
-                  icon: Icon(
-                    Icons.camera_alt,
-                    color: Colors.white,
-                  ),
-                  label: Text(
-                    'Camera',
-                    style: GoogleFonts.poppins(),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 116, 140, 107),
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                    shape: RoundedRectangleBorder(
+                // Camera Button
+                InkWell(
+                  onTap: _isLoading ? null : openCamera,
+                  child: Container(
+                    width: 110,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 116, 140, 107),
                       borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.camera_alt,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Camera',
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                ElevatedButton.icon(
-                  onPressed: _isLoading ? null : pickImageFromGallery,
-                  icon: Icon(
-                    Icons.image,
-                    color: Colors.white,
-                  ),
-                  label: Text(
-                    'Gallery',
-                    style: GoogleFonts.poppins(),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 98, 105, 99),
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                    shape: RoundedRectangleBorder(
+                // Gallery Button
+                InkWell(
+                  onTap: _isLoading ? null : pickImageFromGallery,
+                  child: Container(
+                    width: 110,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 115, 122, 116),
                       borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.image,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Gallery',
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ],
             ),
+            SizedBox(height: 10),
           ],
         ),
       ),
@@ -493,27 +600,76 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// Custom Painter for Wave Design
-class WavePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color.fromARGB(255, 116, 140, 107)
-      ..style = PaintingStyle.fill;
+/// Notice Details Screen
+class NoticeDetailsScreen extends StatelessWidget {
+  final String noticeId;
 
-    final path = Path();
-    path.moveTo(0, size.height * 0.5);
-    path.quadraticBezierTo(size.width * 0.25, size.height * 0.3, size.width * 0.5, size.height * 0.5);
-    path.quadraticBezierTo(size.width * 0.75, size.height * 0.7, size.width, size.height * 0.5);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
+  NoticeDetailsScreen({required this.noticeId});
 
-    canvas.drawPath(path, paint);
+  Future<Map<String, dynamic>> _fetchNoticeDetails() async {
+    final response = await http.get(Uri.parse('$baseurl/noticesingleview/?notice_id=$noticeId'));
+    if (response.statusCode == 200) {
+      return json.decode(response.body)['data'];
+    } else {
+      throw Exception('Failed to load notice details');
+    }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Notice Details',
+          style: GoogleFonts.poppins(),
+        ),
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+      ),
+      body: FutureBuilder<Map<String, dynamic>>(
+        future: _fetchNoticeDetails(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Failed to load notice details'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No details available'));
+          } else {
+            final notice = snapshot.data!;
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    notice['title'],
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    notice['description'],
+                    style: GoogleFonts.poppins(fontSize: 16),
+                  ),
+                  SizedBox(height: 10),
+                  if (notice['date'] != null)
+                    Text(
+                      'Date: ${notice['date']}',
+                      style: GoogleFonts.poppins(fontSize: 14),
+                    ),
+                  if (notice['officer'] != null)
+                    Text(
+                      'Officer: ${notice['officer']['name']}',
+                      style: GoogleFonts.poppins(fontSize: 14),
+                    ),
+                ],
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 }

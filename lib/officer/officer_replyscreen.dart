@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:farmlink/officer/officer_chat_screen.dart';
+import 'package:farmlink/officer/officer_query_detail_screen.dart';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

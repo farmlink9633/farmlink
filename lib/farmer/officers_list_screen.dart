@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:farmlink/farmer/farmery_query_screen.dart';
+import 'package:farmlink/farmer/farmer_query_screen.dart';
 import 'package:farmlink/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -147,9 +147,9 @@ class _QueryScreenState extends State<QueryScreen> {
       backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
         title: Text(
-          'Submit Query',
+          'Ask doubts',
           style: GoogleFonts.poppins(
-            fontSize: 21,
+            fontSize: 20,
             fontWeight: FontWeight.normal,
             color: Colors.white,
           ),

@@ -4,6 +4,7 @@ import 'package:farmlink/utils.dart'; // Ensure this import is correct
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // For Poppins font
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart'; // For date formatting
 
 class ReplyScreen extends StatefulWidget {
   final Query query;
@@ -17,6 +18,7 @@ class ReplyScreen extends StatefulWidget {
 class _ReplyScreenState extends State<ReplyScreen> {
   final TextEditingController _replyController = TextEditingController();
   bool _isLoading = false;
+  String? _replyDateTime; // To store the reply's date and time
 
   Future<void> _submitReply() async {
     setState(() => _isLoading = true);
@@ -34,6 +36,16 @@ class _ReplyScreenState extends State<ReplyScreen> {
       );
 
       if (response.statusCode == 201) {
+        final responseData = json.decode(response.body);
+        final createdAt = responseData['created_at']; // Get the created_at field from the response
+        final formattedDate = createdAt != null
+            ? DateFormat('MMM d, yyyy hh:mm a').format(DateTime.parse(createdAt).toLocal())
+            : 'No date available';
+
+        setState(() {
+          _replyDateTime = formattedDate; // Store the formatted date and time
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -43,9 +55,8 @@ class _ReplyScreenState extends State<ReplyScreen> {
             backgroundColor: const Color.fromARGB(255, 60, 99, 61),
           ),
         );
-        Navigator.pop(context); // Go back to the previous screen
       } else {
-        throw Exception('Failed to submit reply');
+        throw Exception('Failed to submit reply: ${response.body}');
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -118,12 +129,17 @@ class _ReplyScreenState extends State<ReplyScreen> {
                   color: const Color.fromARGB(221, 34, 48, 30), // Text color
                 ),
                 cursorColor: const Color.fromARGB(255, 116, 140, 107), // Cursor color
-                cursorWidth: 2.0,
-                cursorHeight: 20.0,
-                cursorRadius: Radius.circular(2.0),
-                selectionControls: MyCustomTextSelectionControls(), // Custom selection handles
               ),
             ),
+            SizedBox(height: 20),
+            if (_replyDateTime != null) // Display the reply's date and time
+              Text(
+                'Reply sent on: $_replyDateTime',
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: const Color.fromARGB(255, 116, 140, 107),
+                ),
+              ),
             SizedBox(height: 20),
             Center(
               child: _isLoading
@@ -151,21 +167,6 @@ class _ReplyScreenState extends State<ReplyScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// Custom Text Selection Handles
-class MyCustomTextSelectionControls extends MaterialTextSelectionControls {
-  @override
-  Widget buildHandle(BuildContext context, TextSelectionHandleType type, double textLineHeight, [VoidCallback? onTap]) {
-    return Container(
-      width: 20.0,
-      height: 20.0,
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 116, 140, 107), // Custom handle color
-        shape: BoxShape.circle,
       ),
     );
   }

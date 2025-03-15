@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart'; // For date formatting
 
 class FarmerChatScreen extends StatefulWidget {
   final String officerId;
@@ -29,11 +30,10 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
   Future<void> fetchMessages() async {
     final url = Uri.parse('$baseurl/chatview/?officerid=${widget.officerId}&farmerid=${widget.farmerId}');
     final response = await http.get(url);
-    print(response.body);
+    print(response.body); // Debugging: Print API response
 
     if (response.statusCode == 200) {
       setState(() {
-        print(response.body);
         messages = json.decode(response.body);
         isLoading = false;
       });
@@ -90,10 +90,46 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
                 : ListView.builder(
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(
-                          messages[index]['content'] ?? 'No message',
-                          style: GoogleFonts.poppins(),
+                      final message = messages[index];
+                      final createdAt = message['created_at']; // Get the 'created_at' field
+                      print('Message $index - created_at: $createdAt'); // Debugging
+
+                      // Handle null and convert UTC to local time
+                      final dateTime = createdAt != null 
+                          ? DateTime.parse(createdAt).toLocal() // Convert to local time
+                          : null; // Handle null case
+                      final formattedDate = dateTime != null
+                          ? DateFormat('MMM d, yyyy hh:mm a').format(dateTime) // Format local time
+                          : 'No date available'; // Provide a fallback for null dates
+
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                        color: const Color.fromARGB(255, 186, 197, 184), // Set card background color
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.all(8),
+                          title: Text(
+                            message['content'] ?? 'No message',
+                            style: GoogleFonts.poppins(),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (message['image'] != null)
+                                Image.network(
+                                  '$baseurl${message['image']}',
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              Text(
+                                formattedDate,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  color: const Color.fromARGB(255, 89, 112, 89), // Change date color to blue
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -115,7 +151,7 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 125, 150, 127),
                         strokeWidth: 2,
                       ),
                     )

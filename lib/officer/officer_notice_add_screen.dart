@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-// Define Base URL
+
 
 class OfficerNoticeAddScreen extends StatefulWidget {
   @override
@@ -56,7 +56,7 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
           'title': _titleController.text.trim(),
           'description': _descriptionController.text.trim(),
           'date': _selectedDate!.toIso8601String(),
-          'officer': 3, // 🔹 Replace with actual officer ID (if needed)
+          'officer': 9, // 🔹 Replace with actual officer ID (if needed)
         }),
       );
 
@@ -174,7 +174,7 @@ class _OfficerNoticeAddScreenState extends State<OfficerNoticeAddScreen> {
                     : ElevatedButton(
                         onPressed: _submitNotice,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 109, 124, 103),
+                          backgroundColor: const Color.fromARGB(255, 106, 122, 99),
                           foregroundColor: Colors.white,
                           fixedSize: Size(150, 40)
                         ),

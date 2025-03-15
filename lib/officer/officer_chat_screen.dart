@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:farmlink/officer/officer_query_detail_screen.dart';
-// import 'package:farmlink/officer/officer_query_reply_screen.dart';
-import 'package:farmlink/utils.dart';
+import 'package:farmlink/officer/officer_replyscreen.dart'; // Ensure this import is correct
+import 'package:farmlink/utils.dart'; // Ensure this import is correct
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:photo_view/photo_view.dart'; // For image zooming
 
 class Query {
   final int id;
@@ -33,7 +33,7 @@ class Query {
       content: json['content'] ?? 'No content available',
       imageUrl: json['image'] ?? null,
       farmerId: json['farmer']?['id'] ?? 0,
-      farmerName: json['farmer']?['profile']['username'].toString() ?? 'Unknown Farmer', // Assuming profile contains the name
+      farmerName: json['farmer']?['profile']['username'].toString() ?? 'Unknown Farmer',
       farmerLocation: json['farmer']?['location'] ?? 'Unknown Location',
       farmerMethods: json['farmer']?['methods'] ?? 'Unknown Methods',
       isAskedByFarmer: json['is_askedbyfarmer'],
@@ -90,23 +90,44 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
         title: Text(
           'Farmer Queries',
           style: GoogleFonts.poppins(
-            fontSize: 22,
+            fontSize: 20,
             color: Colors.white,
+            fontWeight: FontWeight.normal,
           ),
         ),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator()) // Loading Indicator
+          ? Center(
+              child: CircularProgressIndicator(
+                color: const Color.fromARGB(255, 116, 140, 107),
+              ),
+            ) // Loading Indicator
           : isError
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Failed to load queries', style: TextStyle(color: Colors.red)),
+                      Text(
+                        'Failed to load queries',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.red,
+                        ),
+                      ),
                       SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: fetchQueries,
-                        child: Text('Retry'),
+                        child: Text(
+                          'Retry',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 116, 140, 107),
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        ),
                       ),
                     ],
                   ),
@@ -116,28 +137,87 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
                   itemBuilder: (context, index) {
                     final query = queryList[index];
                     return Card(
-                      child: ListTile(
-                        title: Text(query.farmerName, style: TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Column(
+                      color: const Color.fromARGB(255, 202, 216, 201), // Color of the queries box
+                      margin: EdgeInsets.all(8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(query.content),
-                            if (query.imageUrl != null)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 5.0),
-                                child: Image.network(baseurl+query.imageUrl!, height: 100, fit: BoxFit.cover),
+                            Text(
+                              query.farmerName,
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
                               ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              query.content,
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                              ),
+                            ),
+                            if (query.imageUrl != null)
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Scaffold(
+                                        appBar: AppBar(
+                                          title: Text(
+                                            'Image Preview',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        body: PhotoView(
+                                          imageProvider: NetworkImage(baseurl + query.imageUrl!),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Image.network(
+                                    baseurl + query.imageUrl!,
+                                    height: 150,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            SizedBox(height: 12),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ReplyScreen(query: query),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Reply',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(255, 106, 126, 99), // Color of the reply button
+                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                        trailing: Icon(Icons.arrow_forward),
-                        onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => QueryDetailScreen(query: query )
-                          //   ),
-                          // );
-                        },
                       ),
                     );
                   },
@@ -145,4 +225,3 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
     );
   }
 }
-

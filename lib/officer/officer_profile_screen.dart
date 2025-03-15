@@ -87,7 +87,7 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
             "Are you sure want to log out?",
             style: GoogleFonts.poppins(
               fontSize: 16,
-              color: Colors.black,
+              color: const Color.fromARGB(255, 26, 25, 25),
             ),
           ),
           actions: [
@@ -560,7 +560,7 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
                           style: GoogleFonts.poppins(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: const Color.fromARGB(255, 39, 41, 38), // Name color set to white
                           ),
                         ),
                       ),
@@ -569,7 +569,7 @@ class _OfficerProfileScreenState extends State<OfficerProfileScreen> {
                           email,
                           style: GoogleFonts.poppins(
                             fontSize: 16,
-                            color: Colors.black,
+                            color: const Color.fromARGB(255, 60, 68, 61),
                           ),
                         ),
                       ),

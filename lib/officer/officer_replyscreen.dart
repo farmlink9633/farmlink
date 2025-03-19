@@ -20,58 +20,69 @@ class _ReplyScreenState extends State<ReplyScreen> {
   bool _isLoading = false;
   String? _replyDateTime; // To store the reply's date and time
 
-  Future<void> _submitReply() async {
-    setState(() => _isLoading = true);
+  
+Future<void> _submitReply() async {
+  setState(() => _isLoading = true);
 
-    try {
-      final response = await http.post(
-        Uri.parse('$baseurl/add_query/'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'content': _replyController.text,
-          'farmer_id': widget.query.farmerId,
-          'officer_id': 9, // Replace with the actual officer ID
-          'is_askedbyfarmer': false, // Officer is replying, so this is false
-        }),
-      );
+  try {
+    // Create a multipart request
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseurl/add_query/'),
+    );
 
-      if (response.statusCode == 201) {
-        final responseData = json.decode(response.body);
-        final createdAt = responseData['created_at']; // Get the created_at field from the response
-        final formattedDate = createdAt != null
-            ? DateFormat('MMM d, yyyy hh:mm a').format(DateTime.parse(createdAt).toLocal())
-            : 'No date available';
+    // Add headers
+    request.headers['Content-Type'] = 'multipart/form-data';
 
-        setState(() {
-          _replyDateTime = formattedDate; // Store the formatted date and time
-        });
+    // Add form fields
+    request.fields['content'] = _replyController.text;
+    request.fields['farmer_id'] = widget.query.farmerId.toString();
+    request.fields['officer_id'] = '9'; // Replace with the actual officer ID
+    request.fields['is_askedbyfarmer'] = 'false'; // Officer is replying, so this is false
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Reply submitted successfully! Farmers can now view your reply.',
-              style: GoogleFonts.poppins(),
-            ),
-            backgroundColor: const Color.fromARGB(255, 60, 99, 61),
-          ),
-        );
-      } else {
-        throw Exception('Failed to submit reply: ${response.body}');
-      }
-    } catch (e) {
+    // Send the request
+    final response = await request.send();
+
+    // Get the response
+    final responseData = await response.stream.bytesToString();
+
+    if (response.statusCode == 201) {
+      final responseJson = json.decode(responseData);
+      final createdAt = responseJson['created_at']; // Get the created_at field from the response
+      final formattedDate = createdAt != null
+          ? DateFormat('MMM d, yyyy hh:mm a').format(DateTime.parse(createdAt).toLocal())
+          : 'No date available';
+
+      setState(() {
+        _replyDateTime = formattedDate; // Store the formatted date and time
+      });
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Failed to submit reply: $e',
+            'Reply submitted successfully! Farmers can now view your reply.',
             style: GoogleFonts.poppins(),
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: const Color.fromARGB(255, 60, 99, 61),
         ),
       );
-    } finally {
-      setState(() => _isLoading = false);
+    } else {
+      throw Exception('Failed to submit reply: $responseData');
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Failed to submit reply: $e',
+          style: GoogleFonts.poppins(),
+        ),
+        backgroundColor: Colors.red,
+      ),
+    );
+  } finally {
+    setState(() => _isLoading = false);
   }
+}
 
   @override
   Widget build(BuildContext context) {

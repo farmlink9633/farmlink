@@ -11,7 +11,12 @@ class Officer {
   final String officeaddress;
   final Map profile;
 
-  Officer( {required this.id, required this.designation, required this.officeaddress,required this.profile});
+  Officer({
+    required this.id,
+    required this.designation,
+    required this.officeaddress,
+    required this.profile,
+  });
 
   factory Officer.fromJson(Map<String, dynamic> json) {
     return Officer(
@@ -57,7 +62,10 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FarmerChatScreen(officerId: officer.id.toString(), farmerId: '23',), 
+        builder: (context) => FarmerChatScreen(
+          officerId: officer.id.toString(),
+          farmerId: '23',
+        ),
       ),
     );
   }
@@ -65,31 +73,60 @@ class _OfficerListScreenState extends State<OfficerListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:const Color.fromARGB(236, 215, 228, 212),
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 116, 140, 107), 
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         title: Text(
-        'Officer List',
-        style: GoogleFonts.poppins(
-              fontSize: 20,
-              color: Colors.white,
-            ),
-        )
+          'Officer List',
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+      ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(
+              child: CircularProgressIndicator(
+                color: const Color.fromARGB(255, 116, 140, 107),
+              ),
+            )
           : ListView.builder(
               itemCount: officerList.length,
               itemBuilder: (context, index) {
                 final officer = officerList[index];
                 return Card(
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: ListTile(
-                    tileColor:const Color.fromARGB(235, 204, 215, 202), 
-                    title: Text(officer.profile['username']),
-                    subtitle: Text(officer.designation),
-                    trailing: Text(officer.officeaddress),
-                    leading: CircleAvatar(child: Text(officer.id.toString())),
-                    onTap: () => navigateToQueryScreen(context, officer), // Navigate on tap
+                    tileColor: const Color.fromARGB(235, 204, 215, 202),
+                    title: Text(
+                      officer.profile['username'],
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(
+                      officer.designation,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                      ),
+                    ),
+                    trailing: Text(
+                      officer.officeaddress,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                      ),
+                    ),
+                    leading: CircleAvatar(
+                      child: Text(
+                        officer.id.toString(),
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    onTap: () => navigateToQueryScreen(context, officer),
                   ),
                 );
               },

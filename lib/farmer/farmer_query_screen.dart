@@ -91,46 +91,103 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
+                      final isFarmer = message['is_farmer'] == true; // Check if the message is from the farmer
                       final createdAt = message['created_at']; // Get the 'created_at' field
                       print('Message $index - created_at: $createdAt'); // Debugging
 
                       // Handle null and convert UTC to local time
-                      final dateTime = createdAt != null 
+                      final dateTime = createdAt != null
                           ? DateTime.parse(createdAt).toLocal() // Convert to local time
                           : null; // Handle null case
                       final formattedDate = dateTime != null
                           ? DateFormat('MMM d, yyyy hh:mm a').format(dateTime) // Format local time
                           : 'No date available'; // Provide a fallback for null dates
 
-                      return Card(
-                        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                        color: const Color.fromARGB(255, 186, 197, 184), // Set card background color
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(8),
-                          title: Text(
-                            message['content'] ?? 'No message',
-                            style: GoogleFonts.poppins(),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (message['image'] != null)
-                                Image.network(
-                                  '$baseurl${message['image']}',
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
+                      return Column(
+                        children: [
+                          // Farmer's Query (Left Side)
+                          if (isFarmer)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+                                  child: Card(
+                                    color: const Color.fromARGB(255, 186, 197, 184), // Farmer's message color
+                                    margin: const EdgeInsets.all(8),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            message['content'] ?? 'No message',
+                                            style: GoogleFonts.poppins(),
+                                          ),
+                                          if (message['image'] != null)
+                                            Image.network(
+                                              '$baseurl${message['image']}',
+                                              width: 100,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            formattedDate,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              color: const Color.fromARGB(255, 89, 112, 89), // Change date color
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              Text(
-                                formattedDate,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  color: const Color.fromARGB(255, 89, 112, 89), // Change date color to blue
+                              ],
+                            ),
+                          // Officer's Reply (Right Side, below the farmer's query)
+                          if (!isFarmer)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+                                  child: Card(
+                                    color: const Color.fromARGB(255, 220, 240, 255), // Officer's reply color
+                                    margin: const EdgeInsets.all(8),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            message['content'] ?? 'No message',
+                                            style: GoogleFonts.poppins(),
+                                          ),
+                                          if (message['image'] != null)
+                                            Image.network(
+                                              '$baseurl${message['image']}',
+                                              width: 100,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            formattedDate,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              color: const Color.fromARGB(255, 89, 112, 89), // Change date color
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
+                              ],
+                            ),
+                        ],
                       );
                     },
                   ),

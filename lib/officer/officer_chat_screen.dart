@@ -136,89 +136,172 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
                   itemCount: queryList.length,
                   itemBuilder: (context, index) {
                     final query = queryList[index];
-                    return Card(
-                      color: const Color.fromARGB(255, 202, 216, 201), // Color of the queries box
-                      margin: EdgeInsets.all(8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              query.farmerName,
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              query.content,
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                              ),
-                            ),
-                            if (query.imageUrl != null)
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Scaffold(
-                                        appBar: AppBar(
-                                          title: Text(
-                                            'Image Preview',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
+                    return Column(
+                      children: [
+                        // Farmer Query (Left Side)
+                        if (query.isAskedByFarmer)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+                                child: Card(
+                                  color: const Color.fromARGB(255, 202, 216, 201), // Color of the queries box
+                                  margin: EdgeInsets.all(8),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          query.farmerName,
+                                          style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16, // Adjusted size for farmer name
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          query.content,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        if (query.imageUrl != null)
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => Scaffold(
+                                                    appBar: AppBar(
+                                                      title: Text(
+                                                        'Image Preview',
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    body: PhotoView(
+                                                      imageProvider: NetworkImage(baseurl + query.imageUrl!),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(top: 8.0),
+                                              child: Image.network(
+                                                baseurl + query.imageUrl!,
+                                                height: 150,
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        SizedBox(height: 12),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => ReplyScreen(query: query),
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              'Reply',
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color.fromARGB(255, 106, 126, 99), // Color of the reply button
+                                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                             ),
                                           ),
                                         ),
-                                        body: PhotoView(
-                                          imageProvider: NetworkImage(baseurl + query.imageUrl!),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        // Officer Reply (Right Side, below the farmer query)
+                        if (!query.isAskedByFarmer)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+                                child: Card(
+                                  color: const Color.fromARGB(255, 220, 240, 255), // Light blue color for officer's reply
+                                  margin: EdgeInsets.all(8),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Me', // Display "Me" for officer's reply
+                                          style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
                                         ),
-                                      ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          query.content,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        if (query.imageUrl != null)
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => Scaffold(
+                                                    appBar: AppBar(
+                                                      title: Text(
+                                                        'Image Preview',
+                                                        style: GoogleFonts.poppins(
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    body: PhotoView(
+                                                      imageProvider: NetworkImage(baseurl + query.imageUrl!),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(top: 8.0),
+                                              child: Image.network(
+                                                baseurl + query.imageUrl!,
+                                                height: 150,
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Image.network(
-                                    baseurl + query.imageUrl!,
-                                    height: 150,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
-                            SizedBox(height: 12),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ReplyScreen(query: query),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  'Reply',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(255, 106, 126, 99), // Color of the reply button
-                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                            ],
+                          ),
+                      ],
                     );
                   },
                 ),

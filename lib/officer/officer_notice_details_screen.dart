@@ -28,12 +28,14 @@ class _NoticeDetailScreenState extends State<NoticeDetailScreen> {
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
+      print(apiUrl);
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         if (responseData['message'] == 'success') {
           setState(() {
             noticeData = responseData['data'];
             isLoading = false;
+            print(noticeData!['officer']['profile']);
           });
         } else {
           setState(() {
@@ -182,7 +184,15 @@ class _NoticeDetailScreenState extends State<NoticeDetailScreen> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        "Officer: ${noticeData?['officer'] ?? "N/A"}",
+                        "Officer ID: ${noticeData?['officer']['id'] ?? "N/A"}",
+                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "Officer Name: ${noticeData?['officer']['profile']['username'] ?? "N/A"}",
+                        style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "Officer Designation: ${noticeData?['officer']['designation'] ?? "N/A"}",
                         style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
                       ),
                       const Divider(thickness: 1, height: 20, color: Color.fromARGB(255, 89, 87, 87),),

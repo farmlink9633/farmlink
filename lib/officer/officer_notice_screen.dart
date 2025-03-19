@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class OfficerNoticeScreen extends StatefulWidget {
   @override
   _OfficerNoticeScreenState createState() => _OfficerNoticeScreenState();
@@ -117,10 +116,11 @@ class _OfficerNoticeScreenState extends State<OfficerNoticeScreen> {
                                   style: TextStyle(color: const Color.fromARGB(255, 118, 115, 115)),
                                 ),
                                 onTap: () {
+                                  // Pass the correct noticeId to the NoticeDetailScreen
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => NoticeDetailScreen(noticeId: 21),
+                                      builder: (context) => NoticeDetailScreen(noticeId: notice['id']),
                                     ),
                                   );
                                 },

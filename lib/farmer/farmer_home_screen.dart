@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart'; // For date formatting
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -57,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 220, 245, 223), // Changed background color
           title: Text(
             'Notices',
             style: GoogleFonts.poppins(),
@@ -71,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => NoticeDetailsScreen(noticeId: notice['21']),
+                        builder: (context) => NoticeDetailsScreen(noticeId: notice['id'].toString()),
                       ),
                     );
                   },
@@ -90,6 +92,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         notice['description'],
                         style: GoogleFonts.poppins(),
                       ),
+                      SizedBox(height: 5),
+                      if (notice['date'] != null)
+                        Text(
+                          'Date: ${DateFormat('MMM d, yyyy hh:mm a').format(DateTime.parse(notice['date']))}',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: const Color.fromARGB(255, 57, 73, 56), // Grey color for the date
+                          ),
+                        ),
                       SizedBox(height: 10),
                       Divider(color: Colors.grey),
                     ],
@@ -341,8 +352,12 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         elevation: 0,
         actions: [
+          // Notification Icon without a rectangular box
           IconButton(
-            icon: Icon(Icons.notifications, color: const Color.fromARGB(255, 246, 244, 244)),
+            icon: Icon(
+              Icons.notifications,
+              color: Colors.white, // Icon color
+            ),
             onPressed: _showNoticesDialog,
           ),
         ],
@@ -618,12 +633,15 @@ class NoticeDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(236, 215, 228, 212),
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
         title: Text(
           'Notice Details',
-          style: GoogleFonts.poppins(),
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+          ),
         ),
-        backgroundColor: const Color.fromARGB(255, 116, 140, 107),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: _fetchNoticeDetails(),
@@ -656,13 +674,38 @@ class NoticeDetailsScreen extends StatelessWidget {
                   SizedBox(height: 10),
                   if (notice['date'] != null)
                     Text(
-                      'Date: ${notice['date']}',
-                      style: GoogleFonts.poppins(fontSize: 14),
+                      'Date: ${DateFormat('MMM d, yyyy hh:mm a').format(DateTime.parse(notice['date']))}',
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: const Color.fromARGB(255, 71, 83, 71), // Grey color for the date
+                      ),
                     ),
+                  SizedBox(height: 20),
                   if (notice['officer'] != null)
-                    Text(
-                      'Officer: ${notice['officer']['name']}',
-                      style: GoogleFonts.poppins(fontSize: 14),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Posted by:',
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Name: ${notice['officer']['profile']['username']}',
+                          style: GoogleFonts.poppins(fontSize: 14),
+                        ),
+                        Text(
+                          'Designation: ${notice['officer']['designation']}',
+                          style: GoogleFonts.poppins(fontSize: 14),
+                        ),
+                        Text(
+                          'Office Address: ${notice['officer']['officeaddress']}',
+                          style: GoogleFonts.poppins(fontSize: 14),
+                        ),
+                      ],
                     ),
                 ],
               ),

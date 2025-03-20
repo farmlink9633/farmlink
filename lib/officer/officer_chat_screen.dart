@@ -157,14 +157,14 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
                                           query.farmerName,
                                           style: GoogleFonts.poppins(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 16, // Adjusted size for farmer name
+                                            fontSize: 14, // Adjusted size for farmer name
                                           ),
                                         ),
                                         SizedBox(height: 8),
                                         Text(
                                           query.content,
                                           style: GoogleFonts.poppins(
-                                            fontSize: 14,
+                                            fontSize: 13,
                                           ),
                                         ),
                                         if (query.imageUrl != null)
@@ -240,21 +240,14 @@ class _OfficerQueryListScreenState extends State<OfficerQueryListScreen> {
                               Container(
                                 constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
                                 child: Card(
-                                  color: const Color.fromARGB(255, 220, 240, 255), // Light blue color for officer's reply
+                                  color: const Color.fromARGB(255, 165, 189, 162), // Light blue color for officer's reply
                                   margin: EdgeInsets.all(8),
                                   child: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          'Me', // Display "Me" for officer's reply
-                                          style: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        SizedBox(height: 8),
+                                  
                                         Text(
                                           query.content,
                                           style: GoogleFonts.poppins(

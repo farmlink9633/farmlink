@@ -98,7 +98,7 @@ Future<void> _submitReply() async {
             color: Colors.white,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.white), // Back button color
+        iconTheme: IconThemeData(color: const Color.fromARGB(255, 43, 41, 41)), // Back button color
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

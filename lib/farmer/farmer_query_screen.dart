@@ -105,15 +105,15 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
 
                       return Column(
                         children: [
-                          // Farmer's Query (Left Side)
+                          // Farmer's Chat (Right Side)
                           if (isFarmer)
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.end, // Align to the right
                               children: [
                                 Container(
                                   constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
                                   child: Card(
-                                    color: const Color.fromARGB(255, 186, 197, 184), // Farmer's message color
+                                    color: const Color.fromARGB(255, 200, 224, 195), // Farmer's message color
                                     margin: const EdgeInsets.all(8),
                                     child: Padding(
                                       padding: const EdgeInsets.all(12.0),
@@ -146,15 +146,15 @@ class _FarmerChatScreenState extends State<FarmerChatScreen> {
                                 ),
                               ],
                             ),
-                          // Officer's Reply (Right Side, below the farmer's query)
+                          // Officer's Reply (Left Side)
                           if (!isFarmer)
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.start, // Align to the left
                               children: [
                                 Container(
                                   constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
                                   child: Card(
-                                    color: const Color.fromARGB(255, 220, 240, 255), // Officer's reply color
+                                    color: const Color.fromARGB(255, 229, 243, 226), // Officer's reply color
                                     margin: const EdgeInsets.all(8),
                                     child: Padding(
                                       padding: const EdgeInsets.all(12.0),
